@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "g9GBs6Bg5S4GdxSCjXbt6J7/UvvMm/0yB5eci2X0Yq1oAnR5wnHSrVrhQPRYryM+9toe6H9v/rBXJhrhAuYgQg==",
+  "dgSpecHash": "tExEC+1YNfV1+pmDmDRJCKKz92oLBP+W6h2aF97AmpTmzQ92N4g9PkNvc5KxvYVDDlQNOAyKg6wKyxiVYzZTkQ==",
   "success": true,
-  "projectFilePath": "D:\\repos\\MVC\\MVC\\MVC.csproj",
+  "projectFilePath": "D:\\repos\\Projeto_cSharp\\MVC\\MVC\\MVC.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\renancporto\\.nuget\\packages\\entityframework\\6.4.4\\entityframework.6.4.4.nupkg.sha512",
     "C:\\Users\\renancporto\\.nuget\\packages\\firebaseadmin\\2.3.0\\firebaseadmin.2.3.0.nupkg.sha512",

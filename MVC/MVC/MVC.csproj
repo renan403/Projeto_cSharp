@@ -35,7 +35,7 @@
       <HintPath>Dll\Email.dll</HintPath>
     </Reference>
     <Reference Include="Seguranca">
-      <HintPath>..\..\Seguranca\Seguranca\bin\Debug\net6.0\Seguranca.dll</HintPath>
+      <HintPath>..\..\Dll\Seguranca.dll</HintPath>
     </Reference>
   </ItemGroup>
 

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "tdVT2OP7R6vr7BzjgJCw7Vfd2Xzts9nQYAyhyfNgspHPVa8UTFiiiNa7CSo9qIRMhjhtAkmjN5xoaUVwcTHv9A==",
+  "dgSpecHash": "pz+meN1ILZ2X+VZgGL5jPC5t9X5K6GdBI7BoGruy63ILdxwhfenlOWYv/g4Kluck8qD8rHTkKiz8SKFHSyM1iw==",
   "success": true,
-  "projectFilePath": "D:\\repos\\ApiProjeto\\ApiProjeto\\ApiProjeto.csproj",
+  "projectFilePath": "D:\\repos\\Projeto_cSharp\\ApiProjeto\\ApiProjeto\\ApiProjeto.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\renancporto\\.nuget\\packages\\firebaseauthentication.net\\3.7.2\\firebaseauthentication.net.3.7.2.nupkg.sha512",
     "C:\\Users\\renancporto\\.nuget\\packages\\firebasedatabase.net\\4.1.0\\firebasedatabase.net.4.1.0.nupkg.sha512",

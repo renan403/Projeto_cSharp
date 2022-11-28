@@ -6830,11 +6830,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\repos\\ApiProjeto\\ApiProjeto\\ApiProjeto.csproj",
+      "projectUniqueName": "D:\\repos\\Projeto_cSharp\\ApiProjeto\\ApiProjeto\\ApiProjeto.csproj",
       "projectName": "ApiProjeto",
-      "projectPath": "D:\\repos\\ApiProjeto\\ApiProjeto\\ApiProjeto.csproj",
+      "projectPath": "D:\\repos\\Projeto_cSharp\\ApiProjeto\\ApiProjeto\\ApiProjeto.csproj",
       "packagesPath": "C:\\Users\\renancporto\\.nuget\\packages\\",
-      "outputPath": "D:\\repos\\ApiProjeto\\ApiProjeto\\obj\\",
+      "outputPath": "D:\\repos\\Projeto_cSharp\\ApiProjeto\\ApiProjeto\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\renancporto\\AppData\\Roaming\\NuGet\\NuGet.Config",

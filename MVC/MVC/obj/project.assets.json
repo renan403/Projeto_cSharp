@@ -10061,11 +10061,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\repos\\MVC\\MVC\\MVC.csproj",
+      "projectUniqueName": "D:\\repos\\Projeto_cSharp\\MVC\\MVC\\MVC.csproj",
       "projectName": "MVC",
-      "projectPath": "D:\\repos\\MVC\\MVC\\MVC.csproj",
+      "projectPath": "D:\\repos\\Projeto_cSharp\\MVC\\MVC\\MVC.csproj",
       "packagesPath": "C:\\Users\\renancporto\\.nuget\\packages\\",
-      "outputPath": "D:\\repos\\MVC\\MVC\\obj\\",
+      "outputPath": "D:\\repos\\Projeto_cSharp\\MVC\\MVC\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\renancporto\\AppData\\Roaming\\NuGet\\NuGet.Config",
