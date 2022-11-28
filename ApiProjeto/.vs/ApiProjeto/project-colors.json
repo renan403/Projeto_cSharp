@@ -1,0 +1,16 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "e66aee41-6ba6-4ea3-983b-65c8185ae16e": {
+      "ProjectGuid": "e66aee41-6ba6-4ea3-983b-65c8185ae16e",
+      "DisplayName": "ApiProjeto",
+      "ColorIndex": 0
+    },
+    "919fd655-f067-4ba2-b932-d926e85dd6b4": {
+      "ProjectGuid": "919fd655-f067-4ba2-b932-d926e85dd6b4",
+      "DisplayName": "Documentos de Script",
+      "ColorIndex": 1
+    }
+  },
+  "NextColorIndex": 2
+}
