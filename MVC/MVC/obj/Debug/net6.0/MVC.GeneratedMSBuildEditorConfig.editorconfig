@@ -1,0 +1,132 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = MVC
+build_property.RootNamespace = MVC
+build_property.ProjectDir = D:\repos\MVC\MVC\
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = D:\repos\MVC\MVC
+build_property._RazorSourceGeneratorDebug = 
+
+[D:/repos/MVC/MVC/Views/Conta/AcessoSeg.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFcQWNlc3NvU2VnLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/repos/MVC/MVC/Views/Conta/AddEndereco.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFcQWRkRW5kZXJlY28uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/repos/MVC/MVC/Views/Conta/AlterarEndereco.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFcQWx0ZXJhckVuZGVyZWNvLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/repos/MVC/MVC/Views/Conta/AlterarProduto.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFcQWx0ZXJhclByb2R1dG8uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/repos/MVC/MVC/Views/Conta/Carteira.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFcQ2FydGVpcmEuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/repos/MVC/MVC/Views/Conta/DetalhePedido.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFcRGV0YWxoZVBlZGlkby5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/repos/MVC/MVC/Views/Conta/Endereco.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFcRW5kZXJlY28uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/repos/MVC/MVC/Views/Conta/ExibirRecibo.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFcRXhpYmlyUmVjaWJvLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/repos/MVC/MVC/Views/Conta/FinalizarCompra.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFcRmluYWxpemFyQ29tcHJhLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/repos/MVC/MVC/Views/Conta/FinalizarPedido.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFcRmluYWxpemFyUGVkaWRvLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/repos/MVC/MVC/Views/Conta/SeusPedidos.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFcU2V1c1BlZGlkb3MuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/repos/MVC/MVC/Views/Conta/SeusProdutos.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFcU2V1c1Byb2R1dG9zLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/repos/MVC/MVC/Views/Conta/SuaConta.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFcU3VhQ29udGEuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/repos/MVC/MVC/Views/Conta/Transacoes.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFcVHJhbnNhY29lcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/repos/MVC/MVC/Views/Conta/VendaNoApp.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFcVmVuZGFOb0FwcC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/repos/MVC/MVC/Views/Home/Home.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxIb21lLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/repos/MVC/MVC/Views/Login/CriarConta.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cQ3JpYXJDb250YS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/repos/MVC/MVC/Views/Login/EmailEnviado.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cRW1haWxFbnZpYWRvLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/repos/MVC/MVC/Views/Login/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cTG9naW4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/repos/MVC/MVC/Views/Login/RecuperarSenha.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cUmVjdXBlcmFyU2VuaGEuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/repos/MVC/MVC/Views/Produtos/Carrinho.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHV0b3NcQ2FycmluaG8uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/repos/MVC/MVC/Views/Produtos/ComprarProd.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHV0b3NcQ29tcHJhclByb2QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/repos/MVC/MVC/Views/Produtos/Produtos.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHV0b3NcUHJvZHV0b3MuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/repos/MVC/MVC/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/repos/MVC/MVC/Views/Shared/LayoutNota.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXExheW91dE5vdGEuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/repos/MVC/MVC/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/repos/MVC/MVC/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/repos/MVC/MVC/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/repos/MVC/MVC/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-q0a04yuu0e

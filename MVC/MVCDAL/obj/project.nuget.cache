@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "dgSpecHash": "5nL+qWTp3fLffN1Y7ZkRXtr4B8mEkZt19jdUEKDUg6c5cj5HoV7oqOExytXMohYbzSXqRM1zq68n3VJB5yzMFw==",
+  "success": true,
+  "projectFilePath": "D:\\repos\\MVC\\MVCDAL\\MVCDAL.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\renancporto\\.nuget\\packages\\microsoft.aspnetcore.http.features\\5.0.17\\microsoft.aspnetcore.http.features.5.0.17.nupkg.sha512",
+    "C:\\Users\\renancporto\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\6.0.0\\microsoft.extensions.configuration.abstractions.6.0.0.nupkg.sha512",
+    "C:\\Users\\renancporto\\.nuget\\packages\\microsoft.extensions.primitives\\6.0.0\\microsoft.extensions.primitives.6.0.0.nupkg.sha512",
+    "C:\\Users\\renancporto\\.nuget\\packages\\system.io.pipelines\\5.0.2\\system.io.pipelines.5.0.2.nupkg.sha512",
+    "C:\\Users\\renancporto\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

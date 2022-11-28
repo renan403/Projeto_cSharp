@@ -1,0 +1,88 @@
+﻿@{
+    ViewBag.title = "Sua conta";
+}
+
+
+  <div class="container ">
+      
+  <div class="row row-cols-3 ">
+    <div class="col columnHome boxConta">
+        <a class="link-dark" asp-action="SeusPedidos" asp-controller="Conta">
+        <div class="card cardConta">
+          <div class="card-body" style="display:flex">
+            <img src="~/icones/sacolaCompras.png" style="height:50px;width:50px"/>
+              <div style="margin-left:5%">
+                <h5 class="card-title" >Seus pedidos</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Rastrear, devolver ou comprar produtos novamente</h6>
+              </div>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="col columnHome boxConta">
+         <a class="link-dark" asp-action="AcessoSeg" asp-controller="Conta">
+       <div class="card cardConta" >
+         <div class="card-body" style="display:flex">
+           <img src="~/icones/shield.png" style="height:50px;width:50px"/>
+             <div style="margin-left:5%">
+                <h5 class="card-title">Acesso a segurança</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Alterar o login, nome ou email</h6>
+             </div>
+         </div>
+       </div>
+      </a>
+    </div>
+    <div class="col columnHome boxConta">
+        <a class="link-dark" asp-action="Endereco" asp-controller="Conta">
+        <div class="card cardConta">
+          <div class="card-body" style="display:flex">
+            <img src="~/icones/localização.png" style="height:50px;width:50px"/>
+             <div style="margin-left:5%">
+              <h5 class="card-title">Endereços</h5>
+              <h6 class="card-subtitle mb-2 text-muted">Alterar endereços para pedidos</h6>
+             </div>
+           </div>
+        </div>
+       </a>
+    </div>
+    <div class="col columnHome boxConta">
+        <a class="link-dark" asp-action="Carteira" asp-controller="Conta">
+       <div class="card cardConta">
+         <div class="card-body" style="display:flex">
+           <img src="~/icones/card.png" style="height:50px;width:50px"/>
+            <div style="margin-left:5%">
+              <h5 class="card-title">Seus pagamentos</h5>
+              <h6 class="card-subtitle mb-2 text-muted">Gerenciar formas de pagamentos e vizualizar transações</h6>          
+            </div>
+         </div>
+       </div>
+     </a>
+    </div>
+    <div class="col columnHome boxConta">
+       <a class="link-dark" asp-action="SeusProdutos" asp-controller="Conta">
+        <div class="card cardConta">      
+         <div class="card-body" style="display:flex">
+           <img src="~/icones/restituição.png" style="height:50px;width:50px"/>
+           <div style="margin-left:5%">
+            <h5 class="card-title">Venda no App</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Acesse para vizualizar e vender seus produtos no APP</h6>       
+           </div>
+         </div>     
+        </div>
+      </a>
+    </div>
+    <div class="col columnHome boxConta">
+         <a class="link-dark" href="https://github.com/renan403">
+        <div class="card cardConta">
+          <div class="card-body" style="display:flex">
+            <img src="~/icones/assistente.png" style="height:50px;width:50px"/>
+            <div style="margin-left:5%">
+                <h5 class="card-title">Atendimento ao cliente</h5>
+                <h6 class="card-subtitle mb-2 text-muted"></h6>
+            </div>
+          </div>
+        </div> 
+       </a>
+    </div>
+  </div>
+</div>
