@@ -29,13 +29,13 @@
               { 
                 <tbody>
                 <tr>
-                  <td scope="row">@item.Object.Produto[0].Data</td>  
+                  <td scope="row">@item.Value.Produto[0].Data</td>  
                   <td scope="row"></td> 
                 </tr>
                 <tr>
-                  <td scope="row"><h6>@item.Object.Cartao.Bandeira ****@item.Object.Cartao.QuatroDigCard</h6>
+                  <td scope="row"><h6>@item.Value.Cartao.Bandeira ****@item.Value.Cartao.QuatroDigCard</h6>
                       <a href="#" class="text-decoration-none text-orange">Número do pedido @item.Key</a></td>
-                  <td style="text-align:right;" scope="row"><h6>-R$ @item.Object.Produto[0].ValorTotal</h6></td>
+                  <td style="text-align:right;" scope="row"><h6>-R$ @item.Value.Produto[0].ValorTotal</h6></td>
                 </tr>            
               </tbody>
               }

@@ -1,20 +1,22 @@
-﻿using MVC.Models.Service;
+﻿using Firebase.Auth;
+using MVC.Services.Funcoes;
+using System.Security.Policy;
 
 namespace MVC.Services
 {
     public class UserService : IDisposable
     {
         private bool disposedValue;
-
-        public async Task DeletarUser(string urlDeleteEmail)
+        private IConfiguration _iconfig;
+        public UserService(IConfiguration iconfig)
         {
-            using HttpClient client = new();
-            await client.DeleteAsync(urlDeleteEmail);
+            _iconfig = iconfig;
         }
-        public async Task<string?> RegistrarUser(string url, string email, string pwd)
+        public async Task<string?> RegistrarUser(string nome, string email, string pwd)
         {
             try
             {
+                string url = $"{_iconfig.GetValue<string>("UrlApi")}Auth/Register/{nome}";
                 using HttpClient client = new();
                 var ch = Chave.GetKey();
                 MultipartFormDataContent form = new()
@@ -35,12 +37,14 @@ namespace MVC.Services
             }
 
         }
-        public async Task<string> RetornaID(string urlEmail)
+        public async Task<string?> RetornaID(string email)
         {
             try
             {
+                var ch = Chave.GetKey();
+                string url = $"{_iconfig.GetValue<string>("UrlApi")}Auth/ReturnId/{email}";
                 using HttpClient client = new();
-                var rt = await client.GetAsync(urlEmail);
+                var rt = await client.GetAsync(url);
                 if (rt.IsSuccessStatusCode)
                 {
                     return await rt.Content.ReadAsStringAsync();
@@ -49,17 +53,17 @@ namespace MVC.Services
             }
             catch (Exception e)
             {
-
                 return null;
             }
             
         }
-        public async Task<string> RetornaNome(string urlIdUser)
-        {
+        public async Task<string> RetornaNome(string userId)
+        { 
             try
             {
+                string url = $"{_iconfig.GetValue<string>("UrlApi")}Auth/ReturnName/{userId}";
                 using HttpClient client = new();
-                var rt = await client.GetAsync(urlIdUser);
+                var rt = await client.GetAsync(url);
                 if (rt.IsSuccessStatusCode)
                 {
                     return await rt.Content.ReadAsStringAsync();
@@ -73,10 +77,11 @@ namespace MVC.Services
             }
 
         }
-        public async Task<string> TrocarNome(string url, string IdUser, string nome)
+        public async Task<string> TrocarNome(string IdUser, string nome)
         {
             try
             {
+                string url = $"{_iconfig.GetValue<string>("UrlApi")}Auth/ChangeName";
                 using HttpClient client = new();
                 MultipartFormDataContent form = new() 
                 {
@@ -96,10 +101,11 @@ namespace MVC.Services
             }
 
         }
-        public async Task<string?> Logar(string url, string email, string pwd)
+        public async Task<string?> Logar(string email, string pwd)
         {
             try
             {
+                string url = $"{_iconfig.GetValue<string>("UrlApi")}Auth/Login";
                 using HttpClient client = new();
                 var ch = Chave.GetKey();
                 MultipartFormDataContent form = new()
@@ -120,10 +126,11 @@ namespace MVC.Services
             }
 
         }
-        public async Task<bool> DeletarConta(string urlDelConta, string email, string pwd, string idUser)
+        public async Task<bool> DeletarConta(string email, string pwd, string idUser)
         {
             try
             {
+                string url = $"{_iconfig.GetValue<string>("UrlApi")}Auth/DeleteAcount";
                 using HttpClient client = new();
                 var ch = Chave.GetKey();
 
@@ -133,11 +140,33 @@ namespace MVC.Services
                     {new StringContent(Convert.ToBase64String(Seguranca.Cript.EncryptarStringParaByte(pwd, ch.Item1, ch.Item2, "#P>EET|MkkPa{oE0[Zcm"))), "pwd"},
                     {new StringContent(idUser), "idUser" }
                 };
-                return Convert.ToBoolean(await (await client.PostAsync(urlDelConta, content)).Content.ReadAsStringAsync());
+                return Convert.ToBoolean(await (await client.PostAsync(url, content)).Content.ReadAsStringAsync());
             }
             catch (Exception)
             {
                 return false;
+            }
+        }
+        public async Task<string> ResetarSenha(string email)
+        {
+            try
+            {
+                using HttpClient client = new();
+                string url = $"{_iconfig.GetValue<string>("UrlApi")}Auth/RecoverPassword";
+                var ch = Chave.GetKey();
+                MultipartFormDataContent content = new()
+                {
+                    {new StringContent(Convert.ToBase64String(Seguranca.Cript.EncryptarStringParaByte(email, ch.Item1, ch.Item2, "#P>EET|MkkPa{oE0[Zcm"))), "email"},                   
+                };
+                var rt = await client.PostAsync(url,content);
+                if(rt.IsSuccessStatusCode)
+                    return await rt.Content.ReadAsStringAsync();
+                return "erro";
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
 

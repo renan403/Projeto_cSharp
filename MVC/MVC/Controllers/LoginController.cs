@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using MVC.Models;
 using System.Diagnostics;
-using MVC.Models.Service;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Primitives;
 using MVC.Services;
+using MVC.Services.Funcoes;
 
 namespace MVC.Controllers
 {
@@ -18,7 +18,7 @@ namespace MVC.Controllers
         }
 
         [HttpGet]
-        public IActionResult Login( string? Tela)
+        public IActionResult Login(string? Tela)
         {
             using (GeralService geral = new())
             {
@@ -41,31 +41,31 @@ namespace MVC.Controllers
             string nome;
             string idUsuario;
 
-            using (UserService serv = new())
+            using (UserService serv = new(_iconfig))
             {
-                var login = await serv.Logar($"{_iconfig.GetValue<string>("UrlApi")}Auth/Login", user.Email, user.Senha);
+                var login = await serv.Logar(user.Email, user.Senha);
 
                 if (login == "Logged")
                 {
-                    using (Data data = new())
+
+                    using EnderecoService endServ = new(_iconfig);
+                    idUsuario = await serv.RetornaID(user.Email);
+                    nome = await serv.RetornaNome(idUsuario);
+
+                    var end = await endServ.RetornarEndPadrao(idUsuario);
+
+                    if (end == null)
+                        HttpContext.Session.SetString("Endereço", $"Cadastre");
+                    else
+                        HttpContext.Session.SetString("Endereço", $"{end.Endereco}/{end.Numero}/{end.Cidade}/{end.UF}/{end.Cep}/{end.Nome}");
+                    using CartaoService cartaoServ = new(_iconfig);
+                    var cartoes = await cartaoServ.ReturnCard(idUsuario);
+                    foreach (var cartao in cartoes)
                     {
-                        using EnderecoService endServ = new();
-                        idUsuario = await serv.RetornaID($"{_iconfig.GetValue<string>("UrlApi")}Auth/ReturnId/{user.Email}");
-                        nome = await serv.RetornaNome($"{_iconfig.GetValue<string>("UrlApi")}Auth/ReturnName/{idUsuario}");
-
-                        var end = await endServ.RetornarEndPadrao($"{_iconfig.GetValue<string>("UrlApi")}Address/ReturnPattern/{idUsuario}");
-
-                        if (end == null)                       
-                            HttpContext.Session.SetString("Endereço", $"Cadastre");                      
-                        else
-                            HttpContext.Session.SetString("Endereço", $"{end.Endereco}/{end.Numero}/{end.Cidade}/{end.UF}/{end.Cep}/{end.Nome}");
-                        var cartoes = await data.ReturnCard(idUsuario);
-                        foreach (var cartao in cartoes)
-                        {
-                            HttpContext.Session.SetString("cartao", cartao.Key);
-                            break;
-                        }
+                        HttpContext.Session.SetString("cartao", cartao.Key);
+                        break;
                     }
+
                     HttpContext.Session.SetString("IdUsuario", idUsuario);
                     HttpContext.Session.SetString("Senha", user.Senha ?? "");
                     HttpContext.Session.SetString("SessaoEmail", user.Email ?? "");
@@ -73,8 +73,8 @@ namespace MVC.Controllers
 
                     if (!string.IsNullOrEmpty(HttpContext.Session.GetString("SessaoNome")))// Verificar sessão para não dar erro nas condições
                     {
-                        using GeralService end = new();
-                        HttpContext.Session.SetString("nomeFormatado", end.FormatarNomeNav(HttpContext.Session.GetString("SessaoNome") ?? ""));
+                        using GeralService endGeral = new();
+                        HttpContext.Session.SetString("nomeFormatado", endGeral.FormatarNomeNav(HttpContext.Session.GetString("SessaoNome") ?? ""));
                     }
                     if (tela == null)
                         return RedirectToAction("Home", "Home");
@@ -94,7 +94,7 @@ namespace MVC.Controllers
         [HttpGet]
         public IActionResult CriarConta()
         {
-            ModelUsuario model = new ();
+            ModelUsuario model = new();
             using (GeralService geral = new())
             {
                 ViewBag.nomeUser = geral.RetornaNomeNull(HttpContext.Session.GetString("nomeFormatado") ?? "");
@@ -113,21 +113,19 @@ namespace MVC.Controllers
             }
             if (ModelState.IsValid)
             {
-                using (Data data = new())
-                {
 
-                    using UserService serv = new();                        
-                    var rt = await serv.RegistrarUser(model.Nome, model.Email, model.Senha);
-                    if (rt == "Criado")
-                    {
-                        TempData["email"] = model.Email;
-                    }
-                    else
-                    {
-                        model.Erro = rt;
-                        return View(model);
-                    }
+                using UserService serv = new(_iconfig);
+                var rt = await serv.RegistrarUser(model.Nome, model.Email, model.Senha);
+                if (rt == "Criado")
+                {
+                    TempData["email"] = model.Email;
                 }
+                else
+                {
+                    model.Erro = rt;
+                    return View(model);
+                }
+
 
                 return RedirectToAction("EmailEnviado", "Login");
             }
@@ -137,12 +135,12 @@ namespace MVC.Controllers
         {
             string email = TempData["email"] as string ?? "";
             if (email != "")
-            {        
+            {
                 ViewData["ContaEmailEnviado"] = TempData["email"];
                 return View();
             }
             return RedirectToAction("Home", "Home");
-        }        
+        }
         [HttpGet]
         public IActionResult RecuperarSenha()
         {
@@ -154,10 +152,10 @@ namespace MVC.Controllers
         {
 
             TempData["email"] = model.Email;
-            if(TempData["email"] as string != "" || TempData["email"] != null) 
+            if (TempData["email"] as string != "" || TempData["email"] != null)
             {
-                using Auth auth = new();
-                var resp = await auth.ResetPassword(model.Email ?? "");
+                UserService user = new(_iconfig);               
+                var resp = await user.ResetarSenha(model.Email ?? "");
                 if (resp == "Altered")
                 {
                     return RedirectToAction("EmailEnviado", "Login");

@@ -1,4 +1,6 @@
-﻿using MVC.Models;
+﻿using Firebase.Auth;
+using FirebaseAdmin.Auth;
+using MVC.Models;
 
 namespace MVC.Services
 {
@@ -6,9 +8,16 @@ namespace MVC.Services
     {
         private bool disposedValue;
 
-        public async Task AddItemUnico(string urlAddItemUnico, ModelProduto prod)
+        private readonly IConfiguration _iconfig;
+        public CompraService(IConfiguration iconfig)
         {
-            HttpClient client = new();
+            _iconfig = iconfig;
+        }
+
+        public async Task AddItemUnico(string userId, ModelProduto prod)
+        {
+            string url = $"{_iconfig.GetValue<string>("UrlApi")}Purchase/PickUpProduct/{userId}";
+                HttpClient client = new();
             MultipartFormDataContent content = new()
             {
                 {new StringContent((prod.Cancelado).ToString() ?? ""),"Cancelado"},
@@ -28,22 +37,24 @@ namespace MVC.Services
                 {new StringContent(prod.UrlImg ?? ""),"UrlImg"},
                 {new StringContent(prod.ValorTotal.ToString() ?? ""),"ValorTotal"},
             };
-            await client.PostAsync(urlAddItemUnico, content);
+            await client.PostAsync(url, content);
         }
 
-        public async Task AlterarItemUnico(string urlalterarItemUnico, string qtd)
+        public async Task AlterarItemUnico(string userId, string qtd)
         {
-            HttpClient client = new();
+            string url = $"{_iconfig.GetValue<string>("UrlApi")}Purchase/AddOneItem/{userId}";
+                HttpClient client = new();
             MultipartFormDataContent content = new()
             {
                 {new StringContent(qtd),"quantidade"},
             };
-            await client.PatchAsync(urlalterarItemUnico, content);
+            await client.PatchAsync(url, content);
         }
-        public async Task<ModelProduto?> PegarProduto(string urlPegarProd)
+        public async Task<ModelProduto?> PegarProduto(string userId)
         {
+            string url = $"{_iconfig.GetValue<string>("UrlApi")}Purchase/PickUpProduct/{userId}";
             HttpClient client = new();           
-            var prod = await client.GetAsync(urlPegarProd);
+            var prod = await client.GetAsync(url);
             if (prod.IsSuccessStatusCode)
             {
                return await prod.Content.ReadFromJsonAsync<ModelProduto>();

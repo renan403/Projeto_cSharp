@@ -186,5 +186,10 @@ namespace ApiMvc.Database
             }
 
         }
+        public async Task<string> ResetarSenha(string email)
+        {
+            Auth auth = new();
+            return await auth.ResetPassword(email);
+        }
     }
 }

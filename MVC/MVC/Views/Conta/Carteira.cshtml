@@ -47,16 +47,19 @@
                     @if (ViewBag.CartaoPadrao != null)
                     {
                        <hr>
-                       <div style="display:flex;">
-                             <img src="@ViewBag.CartaoPadrao.Object.CaminhoImgCartao" width="200" height="125"/>   
-                             <div style="margin-left:2%">
-                                <h4>@ViewBag.CartaoPadrao.Object.NomeCard</h4>
-                                <p style="font-size:15px">Cartão de crédito terminando em @ViewBag.CartaoPadrao.Object.QuatroDigCard </p>                              
-                                <a class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#@ViewBag.CartaoPadrao.Key" href="@ViewBag.CartaoPadrao.Key">Editar</a>
-                                <h6 class="bordaBottom py-1 cardPadrao">Cartão Padrão</h6>                           
-                            </div>  
-                           
-                       </div> 
+                        @foreach (var i in @ViewBag.CartaoPadrao){
+                            <div style="display:flex;">
+                                <img src="@i.Value.CaminhoImgCartao" width="200" height="125" />
+                                <div style="margin-left:2%">
+                                    <h4>@i.Value.NomeCard</h4>
+                                    <p style="font-size:15px">Cartão de crédito terminando em @i.Value.QuatroDigCard </p>
+                                    <a class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#@i.Key" href="@i.Key">Editar</a>
+                                    <h6 class="bordaBottom py-1 cardPadrao">Cartão Padrão</h6>
+                                </div>
+
+                            </div>
+                        }
+                       
                         
                     }
                     
@@ -64,14 +67,14 @@
              {
 
                         
-                        @if (!cartao.Object.Padrao)
+                        @if (!cartao.Value.Padrao)
                         {       
                             <hr />
                             <div style="display:flex;">
-                                  <img src="@cartao.Object.CaminhoImgCartao" width="200" height="125"/>                              
+                                  <img src="@cartao.Value.CaminhoImgCartao" width="200" height="125"/>                              
                                   <div style="margin-left:2%">
-                                     <h4>@cartao.Object.NomeCard</h4>
-                                     <p style="font-size:15px">Cartão de crédito terminando em @cartao.Object.QuatroDigCard </p>
+                                     <h4>@cartao.Value.NomeCard</h4>
+                                    <p style="font-size:15px">Cartão de crédito terminando em @cartao.Value.QuatroDigCard </p>
                                      <a class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#@cartao.Key" href="@cartao.Key">Editar</a><br>
                                      @Html.ActionLink("Tornar Padrão","AlterarCartao","Conta",new{Card = $"{cartao.Key}" },new{@class="text-decoration-none"})
                                  </div>
@@ -219,8 +222,11 @@ function PopOver(){
 </script>
 @if(ViewBag.CartaoPadrao != null)
 {
+    @foreach (var j in ViewBag.CartaoPadrao){
+
+    
     <form enctype="application/x-www-form-urlencoded" method="post">
-                 <div class="modal fade" id="@ViewBag.CartaoPadrao.Key" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                 <div class="modal fade" id="@j.Key" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                      
                         <div class="modal-content">
@@ -245,15 +251,16 @@ function PopOver(){
                                   </div>
                              </div>
                           </div>
-                          <div class="modal-body d-flex justify-content-between align-items-center">                             
-                            <button type="submit" value="remove%%@ViewBag.CartaoPadrao.Key" name="btn" class="btn text-danger">Remover cartão</button>                          
+                          <div class="modal-body d-flex justify-content-between align-items-center">
+                            <button type="submit" value="remove%%@j.Key" name="btn" class="btn text-danger">Remover cartão</button>
                             <div class="btn-group">
                               <button type="button" class="btn" data-bs-dismiss="modal">Cancelar</button>
-                              <button type="submit" value="alterar%%@ViewBag.CartaoPadrao.Key" name="btn" class="btn">Alterar</button>
+                                <button type="submit" value="alterar%%@j.Key" name="btn" class="btn">Alterar</button>
                             </div>
                           </div>
                         </div>                     
                       </div>
                   </div>
                 </form>
+    }
 }

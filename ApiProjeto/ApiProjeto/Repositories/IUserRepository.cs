@@ -8,5 +8,6 @@
         Task<string> RetornaID(string? email);
         Task<bool> TrocarNome(string userId, string nome);
         Task<bool> DeletarConta(string userId, string email, string senha);
+        Task<string> ResetarSenha(string email);
     }
 }

@@ -7,11 +7,11 @@ namespace ApiMvc.Database
     {
 
 
-        public async Task<Array> RetornarNotaFiscal(string userId)
+        public async Task<Dictionary<string,ModelNotaFiscal>> RetornarNotaFiscal(string userId)
         {
             var key = await GetUserKey(userId);
             var notas = await _client.Child($"Usuarios/{key}/NotaFiscal").OnceAsync<ModelNotaFiscal>();
-            return notas.OrderByDescending(m => m.Object.Registro).ToArray();
+            return notas.OrderByDescending(m => m.Object.Registro).ToDictionary(m => m.Key, n=> n.Object);
         }
         public async Task<bool> GerarNotaFiscal(string userId, ModelNotaFiscal notaFiscal)
         {

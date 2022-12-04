@@ -30,26 +30,26 @@
                         <div class="row">
                            
                              <div class="col order-first">                                             
-                                               PEDIDO REALIZADO<br />@item.Object.Produto[0].Data                                           
+                                               PEDIDO REALIZADO<br />@item.Value.Produto[0].Data                                           
                                             </div>
                                             <div class="col">
-                                              TOTAL<br /> R$@item.Object.Produto[0].ValorTotal
+                                              TOTAL<br /> R$@item.Value.Produto[0].ValorTotal
                                             </div>
                                             <div class="col ">
                                               ENVIAR PARA <br /> 
                                                 <a class="text-decoration-none text-capitalize" 
                                                    data-bs-trigger="focus hover"
                                                    data-bs-content="<ul class='list-unstyled text-capitalize'>
-                                                                       <li ><strong>@item.Object.Endereco.Nome</strong></li>
-                                                                       <li>@item.Object.Endereco.Endereco, @item.Object.Endereco.Numero</li>
-                                                                       <li>@item.Object.Endereco.Cidade, @item.Object.Endereco.UF</li>
-                                                                       <li>@item.Object.Endereco.Cep</li>
-                                                                       <li>@item.Object.Endereco.Pais</li>
+                                                                       <li ><strong>@item.Value.Endereco.Nome</strong></li>
+                                                                       <li>@item.Value.Endereco.Endereco, @item.Value.Endereco.Numero</li>
+                                                                       <li>@item.Value.Endereco.Cidade, @item.Value.Endereco.UF</li>
+                                                                       <li>@item.Value.Endereco.Cep</li>
+                                                                       <li>@item.Value.Endereco.Pais</li>
                                                                     </ul>" 
                                                    data-bs-toggle="popover" 
                                                    data-bs-html="true"
                                                    data-bs-placement="bottom" 
-                                                   data-bs-container="body">@item.Object.Endereco.Nome
+                                                   data-bs-container="body">@item.Value.Endereco.Nome
                                                 </a>
                                             </div>
                                             <div class="col  order-last">
@@ -60,7 +60,7 @@
                         </div>
                    </div>
                    <div class="card-body" style="border:none">
-                         @foreach(var i in item.Object.Produto)
+                         @foreach(var i in item.Value.Produto)
                          {
                              @if(i.Recebido == true)
                              {
@@ -76,8 +76,8 @@
                                                <li class="mb-1"><h5>@Html.ActionLink($"{@i.NomeProd}","Produtos","Produtos", new{id = $"{@i.IdProduto}"}, new {@class="text-decoration-none text-capitalize link-laranja-cinza" })</h5></li>
                                                <li class="mb-1">R$<span> @i.PrecoProd</span></li>
                                                <li class="mb-3">Vendido por:<a class="text-decoration-none link-laranja-cinza text-capitalize" href="#"> @i.NomeVendedor</a></li>
-                                               <li class="mb-1"><h6>Entregue  @item.Object.Destinatario.Data</h6></li>
-                                               <li class="mb-1">Assinado por: @item.Object.Destinatario.Nome</li>
+                                               <li class="mb-1"><h6>Entregue  @item.Value.Destinatario.Data</h6></li>
+                                               <li class="mb-1">Assinado por: @item.Value.Destinatario.Nome</li>
                                                <li class="mb-3">Elegível para devolução até [data por extenso]</li>                         
                                                <li class="mb-1"><a href="/Produtos/Produtos/@i.IdProduto" class="btn btnEndCompra"><img src="~/icones/sacola-de-compras.png" widht="25px" height="25px"/>&nbsp;Compra novamente</a></li>                         
                                              </ul>                                                                                           
@@ -120,7 +120,7 @@
                                           <div class="row">
                                               
                                             <div class="col order-last">                                             
-                                               Entregue <br>@item.Object.Destinatario.Data                                             
+                                               Entregue <br>@item.Value.Destinatario.Data                                             
                                             </div>
                                             <div class="col">
                                               Enviado

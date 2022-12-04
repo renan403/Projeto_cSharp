@@ -60,6 +60,14 @@ namespace ApiProjeto.Controllers
             if (rt)
                 return Ok(rt);
             return Conflict();
-        }       
+        }
+        [HttpPost("RecoverPassword")]
+        public async Task<IActionResult> RecuperarSenha([FromForm] string email)
+        {
+            var rt = await _userRepository.ResetarSenha(email);
+            if (rt.Length > 0)
+                return Ok(rt);
+            return Conflict();
+        }
     }
 }

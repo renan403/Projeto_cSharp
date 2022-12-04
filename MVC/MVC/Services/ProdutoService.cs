@@ -1,6 +1,6 @@
 ﻿using Firebase.Database;
 using MVC.Models;
-using MVC.Models.Service;
+using MVC.Services.Funcoes;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -14,20 +14,27 @@ namespace MVC.Services
     public class ProdutoService : IDisposable
     {
         private bool disposedValue;
+        private readonly IConfiguration _iconfig;
+        public ProdutoService(IConfiguration iconfig)
+        {       
+            _iconfig = iconfig;
+        }
 
-        public async Task DeletarProdAsync(string uri)
+        public async Task DeletarProdAsync(string keyProd)
         {
+            string url = $"{_iconfig.GetValue<string>("UrlApi")}Product/DeleteOneProd/{keyProd}";
             using (HttpClient client = new())
             {
-                client.BaseAddress = new Uri(uri);
-                await client.DeleteAsync(uri);
+                client.BaseAddress = new Uri(url);
+                await client.DeleteAsync(url);
             }
         }
-        public async Task<ModelProduto?> RetornaProdutoPorID(string uriProdId)
+        public async Task<ModelProduto?> RetornaProdutoPorID(string prodId)
         {
+            string url = $"{_iconfig.GetValue<string>("UrlApi")}Product/ReturnProd/{prodId}";
             using (HttpClient client = new())
             {             
-               var resp = await client.GetAsync(uriProdId);
+               var resp = await client.GetAsync(url);
                 if (resp.IsSuccessStatusCode)
                 {
                     return await resp.Content.ReadFromJsonAsync<ModelProduto>();
@@ -36,11 +43,11 @@ namespace MVC.Services
                 return null;
             }
         }
-        public async Task<Dictionary<string, ModelProduto>?> RetornarArrayProdutosVendedor(string uri)
+        public async Task<Dictionary<string, ModelProduto>?> RetornarArrayProdutosVendedor(string userId)
         {
             using(HttpClient httpClient = new())
             {
-                var Url = new Uri(uri);
+                var Url = new Uri($"{_iconfig.GetValue<string>("UrlApi")}Product/GetProdSeller/{userId}");
                 var response = await httpClient.GetAsync(Url);
                 if (response.IsSuccessStatusCode)
                 {
@@ -56,15 +63,15 @@ namespace MVC.Services
                 return null;
             }
         }
-        public async Task<HttpResponseMessage> AlterarProduto(string idUser,string? img, string email, string pwd, ModelProduto p, string uri)
+        public async Task<HttpResponseMessage> AlterarProduto(string userId,string? img, string email, string pwd, ModelProduto p)
         {
             using (HttpClient client = new())
             {
-                var Url = new Uri(uri);
+                var Url = new Uri($"{_iconfig.GetValue<string>("UrlApi")}Product/AlterProd/{userId}");
                 var ch = Chave.GetKey();
                 MultipartFormDataContent multiContent = new()
                 {
-                    { new StringContent(idUser), "IdUser" },
+                    { new StringContent(userId), "IdUser" },
                     { new StringContent($"{Convert.ToBase64String(Seguranca.Cript.EncryptarStringParaByte(pwd, ch.Item1, ch.Item2, "#P>EET|MkkPa{oE0[Zcm"))}"), "Pwd" },
                     { new StringContent($"{Convert.ToBase64String(Seguranca.Cript.EncryptarStringParaByte(email, ch.Item1, ch.Item2, "#P>EET|MkkPa{oE0[Zcm"))}"), "Email" },
                     { new StringContent($"{p.IdProduto}"), "IdProduto" },
@@ -95,12 +102,11 @@ namespace MVC.Services
                 return await client.PatchAsync(Url, multiContent);
             }
         }
-        public async Task<HttpResponseMessage> VendaNoApp(string idUser, string email, string pwd, ModelProduto p, string uri)
+        public async Task<HttpResponseMessage> VendaNoApp(string userId, string email, string pwd, ModelProduto p)
         {
-            using (ProdutoService prod = new())
-            {
+          
                 HttpClient client = new();
-                var Url = new Uri(uri);
+                var Url = new Uri($"{_iconfig.GetValue<string>("UrlApi")}Product/{userId}");
                 byte[] file;
                 using (var br = new BinaryReader(p.File.OpenReadStream()))
                 {
@@ -109,7 +115,7 @@ namespace MVC.Services
                 var ch = Chave.GetKey();
                 var multiContent = new MultipartFormDataContent
                 {
-                    { new StringContent(idUser), "IdUser" },
+                    { new StringContent(userId), "IdUser" },
                     { new StringContent($"{Convert.ToBase64String(Seguranca.Cript.EncryptarStringParaByte(pwd, ch.Item1, ch.Item2, "#P>EET|MkkPa{oE0[Zcm"))}"), "Pwd" },
                     { new StringContent($"{Convert.ToBase64String(Seguranca.Cript.EncryptarStringParaByte(email, ch.Item1, ch.Item2, "#P>EET|MkkPa{oE0[Zcm"))}"), "Email" },
                     { new ByteArrayContent(file), "file", p.File.FileName },
@@ -125,7 +131,7 @@ namespace MVC.Services
                 };
 
                 return await client.PostAsync(Url, multiContent);
-            }
+            
         }
         public static string PegarNomeUrl(string url)
         {

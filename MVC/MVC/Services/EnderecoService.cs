@@ -1,5 +1,7 @@
-﻿using MVC.Models;
-using MVC.Models.Service;
+﻿using FirebaseAdmin.Auth;
+using MVC.Models;
+using MVC.Services.Funcoes;
+using Newtonsoft.Json;
 using System;
 using System.Runtime.InteropServices;
 using System.Security.Policy;
@@ -9,23 +11,26 @@ namespace MVC.Services
     public class EnderecoService : IDisposable
     {
         private bool disposedValue;
-
-        public async Task<ModelEndereco?> RetornarEndPadrao(string urlRtPadrao)
+        private readonly IConfiguration _iconfig;
+        public EnderecoService(IConfiguration config)
         {
-
+            _iconfig = config;
+        }
+        public async Task<ModelEndereco?> RetornarEndPadrao(string userId)
+        {
+            string url = $"{_iconfig.GetValue<string>("UrlApi")}Address/ReturnPattern/{userId}";
             using HttpClient client = new();
-            var response = await client.GetAsync(urlRtPadrao);
+            var response = await client.GetAsync(url);
             if (response.IsSuccessStatusCode)
             {
                 return await response.Content.ReadFromJsonAsync<ModelEndereco>();
             }
             return null;
-
         }
-        public async Task SalvarEndereco(string urlSaveEnd, ModelEndereco m)
+        public async Task SalvarEndereco(string userId, ModelEndereco m)
         {
             using HttpClient client = new();
-            var Url = new Uri(urlSaveEnd);
+            var Url = new Uri($"{_iconfig.GetValue<string>("UrlApi")}Address/SaveAddress/{userId}");
 
             MultipartFormDataContent multiContent = new()
             {
@@ -46,30 +51,37 @@ namespace MVC.Services
 
             var resp = await client.PostAsync(Url, multiContent);
         }
-        public async Task DeletarEndereco(string urlDelete)
+        public async Task DeletarEndereco(string userId, string opcao)
         {
+            string url = $"{_iconfig.GetValue<string>("UrlApi")}Address/DeleteAddress/{userId}/{opcao}";
             using HttpClient client = new();
-            await client.DeleteAsync(urlDelete);
+            await client.DeleteAsync(url);
         }
-        public async Task<Dictionary<string, ModelEndereco>?> PuxarEnderecos(string urlPuxarEnd)
+        public async Task<Dictionary<string, ModelEndereco>?> PuxarEnderecos(string userId)
         {
+            string url = $"{_iconfig.GetValue<string>("UrlApi")}Address/PullAddress/{userId}";
             using HttpClient client = new();
-            return await client.GetFromJsonAsync<Dictionary<string, ModelEndereco>>(urlPuxarEnd);
+            return await client.GetFromJsonAsync<Dictionary<string, ModelEndereco>>(url);
         }
-        public async Task MudarPadrao(string urlMudarPadrao, string key)
+        public async Task MudarPadrao(string userId, string key)
         {
+            string url = $"{_iconfig.GetValue<string>("UrlApi")}Address/ChangeDefault/{userId}";
             using HttpClient client = new();
-            var resp = await client.PutAsync(urlMudarPadrao, new MultipartFormDataContent()
+            var resp = await client.PutAsync(url, new MultipartFormDataContent()
             {
                 {new StringContent(key),"key"}
             });
         }
-        public async Task AlterarEndereco(string urlAltEnd, ModelEndereco m)
+        public async Task AlterarEndereco(string userId,string key, ModelEndereco m)
         {
+            string url = $"{_iconfig.GetValue<string>("UrlApi")}Address/AlterAddress/{userId}/{key}";
             using HttpClient client = new();
-            var Url = new Uri(urlAltEnd);
+            var Url = new Uri(url);
+            var jsonEndereco = JsonConvert.SerializeObject(m);
             MultipartFormDataContent multiContent = new()
             {
+
+                { new StringContent($"{jsonEndereco}"), "jsonEndereco" },
                 { new StringContent($"{m.Pais}"), "Pais" },
                 { new StringContent($"{m.Cep}"), "Cep" },
                 { new StringContent($"{m.Numero}"), "Numero" },

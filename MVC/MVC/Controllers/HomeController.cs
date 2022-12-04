@@ -2,13 +2,13 @@
 using MVC.Models;
 using System.Diagnostics;
 using System.Text;
-using MVC.Models.Service;
 using System.Text.Json;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Net.Http;
 using System.Security.Cryptography;
 using MVC.Services;
+using MVC.Services.Funcoes;
 
 namespace MVC.Controllers
 {
@@ -23,8 +23,6 @@ namespace MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Home()
         {
-            CarrinhoService Serv = new();
-            await Serv.RetornaCarrinho($"{_iconfig.GetValue<string>("UrlApi")}Cart/ReturnCart/aK8aShCLmIjmRRerc1ErIl7THjjmPTOG1GH7cPFT");
             
                 
             client = new()

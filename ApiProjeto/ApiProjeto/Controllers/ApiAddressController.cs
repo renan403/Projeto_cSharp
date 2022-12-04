@@ -1,5 +1,6 @@
 ﻿using ApiMvc.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace ApiMvc.Controllers
 {
@@ -18,7 +19,7 @@ namespace ApiMvc.Controllers
         {          
             return await _address.MudarPadrao(userId, key) ? Ok() : NotFound();
         }
-        [HttpDelete("DeleteUser/{userId}/{key}")]
+       
         [HttpGet("CheckPattern/{idUser}")]
         public async Task<IActionResult> CheckPattern(string userId)
         {
@@ -41,8 +42,9 @@ namespace ApiMvc.Controllers
             return NotFound();
         }
         [HttpPatch("AlterAddress/{idUser}/{key}")]
-        public async Task<IActionResult> AlterAddress([FromRoute] string idUser,[FromRoute] string key, [FromForm] ModelEndereco objEnd)
+        public async Task<IActionResult> AlterAddress([FromRoute] string idUser,[FromRoute] string key, [FromForm] ModelEndereco objEnd , [FromForm] string jsonEndereco)
         {
+            var json = JsonConvert.DeserializeObject<ModelEndereco>(jsonEndereco);
             var rt = await _address.AlterarEndereco(key,idUser,objEnd);
             if(rt)
                 return NoContent();

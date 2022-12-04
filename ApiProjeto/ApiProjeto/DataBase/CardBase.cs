@@ -1,6 +1,7 @@
 ﻿using ApiMvc.FireData;
 using ApiMvc.Repositories;
 using Firebase.Database;
+using System.Linq;
 
 namespace ApiMvc.Database
 {
@@ -66,13 +67,14 @@ namespace ApiMvc.Database
             }
             return "falha";
         }
-        public async Task<IReadOnlyCollection<FirebaseObject<ModelCartao>>> ReturnCard(string userId)
+        public async Task<Dictionary<string,ModelCartao>> ReturnCard(string userId)
         {
             var key = await GetUserKey(userId);
-            return (await _client.Child($"Usuarios/{key}/Card").OnceAsync<ModelCartao>()).ToArray();
+            var resp = await _client.Child($"Usuarios/{key}/Card").OnceAsync<ModelCartao>();
+            return resp.ToDictionary(m => m.Key, n => n.Object);
 
         }
-        public async Task DeleteCard(string userId, string cartao)
+        public async Task<bool> DeleteCard(string userId, string cartao)
         {
             var key = await GetUserKey(userId);
 
@@ -84,8 +86,11 @@ namespace ApiMvc.Database
                 {
                     cart.Object.Padrao = true;
                     await _client.Child($"Usuarios/{key}/Card/{cart.Key}").PatchAsync(cart.Object);
+                    return true;
                 }
+                return false;
             }
+            return false;
         }
         public async Task<bool> AlterarCard(string userId, string cartao, string nome, string data)
         {
@@ -98,7 +103,9 @@ namespace ApiMvc.Database
                 NomeCard = nome,
                 Cvv = dadosCard.Object.Cvv,
                 CaminhoImgBandeira = dadosCard.Object.CaminhoImgBandeira,
+                CaminhoImgCartao=dadosCard.Object.CaminhoImgCartao,
                 NumeroCard = dadosCard.Object.NumeroCard,
+                Padrao=dadosCard.Object.Padrao,
                 Bandeira = dadosCard.Object.Bandeira,
                 DataExpiracao = data,
                 Erro = dadosCard.Object.Erro,
@@ -118,7 +125,7 @@ namespace ApiMvc.Database
                 var cartoes = (await ReturnCard(userId)).ToArray();
                 foreach (var cartao in cartoes)
                 {
-                    if (cartao.Object.Padrao)
+                    if (cartao.Value.Padrao)
                     {
                         return true;
                     }
@@ -128,17 +135,19 @@ namespace ApiMvc.Database
 
             return false;
         }
-        public async Task<FirebaseObject<ModelCartao>?> RetornarCartaoPadrao(string userId)
+        public async Task<Dictionary<string,ModelCartao>?> RetornarCartaoPadrao(string userId)
         {
             var key = await GetUserKey(userId);
 
             var cartoes = (await _client.Child($"Usuarios/{key}/Card").OnceAsync<ModelCartao>());
             foreach (var card in cartoes)
             {
-                if (card.Object.Padrao)
-                    return card;
+                if (card.Object.Padrao)                
+                    return  new Dictionary<string, ModelCartao>
+                    {
+                        { card.Key, card.Object }
+                    };                                       
             }
-
             return null;
         }
         public async Task<bool> MudarPadraoCard(string userId, string key)
@@ -147,9 +156,9 @@ namespace ApiMvc.Database
             var cartao = await Cartao(userId, key);
             try
             {
-                var CardAtualPadrao = await RetornarCartaoPadrao(userId);
-                CardAtualPadrao.Object.Padrao = false;
-                await _client.Child($"Usuarios/{chave}/Card/{CardAtualPadrao.Key}").PatchAsync(CardAtualPadrao.Object);
+                var CardAtualPadrao = (await RetornarCartaoPadrao(userId)).FirstOrDefault();
+                CardAtualPadrao.Value.Padrao = false;
+                await _client.Child($"Usuarios/{chave}/Card/{CardAtualPadrao.Key}").PatchAsync(CardAtualPadrao.Value);
                 cartao.Padrao = true;
                 await _client.Child($"Usuarios/{chave}/Card/{key}").PatchAsync(cartao);
                 return true;

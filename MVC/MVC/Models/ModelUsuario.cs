@@ -52,15 +52,15 @@ namespace MVC.Models
     
     public class ModelCartao
     {
-        public string? NomeCard { get; set; }
-        public string? NumeroCard { get; set; }
-        public string? DataExpiracao { get; set; }
-        public int? Cvv { get; set; }
-        public string? Bandeira { get; set; }
+        public string? NomeCard { get; set; } = string.Empty;
+        public string? NumeroCard { get; set; } = string.Empty;
+        public string? DataExpiracao { get; set; } = string.Empty;
+        public int? Cvv { get; set; } = 0;
+        public string? Bandeira { get; set; } = string.Empty;
         public string? Erro { get; set; } = string.Empty;
-        public string? CaminhoImgBandeira { get; set; }
-        public string? CaminhoImgCartao { get; set; }
-        public bool Padrao { get; set; }
-        public string? QuatroDigCard { get; set; }
+        public string? CaminhoImgBandeira { get; set; } = string.Empty;
+        public string? CaminhoImgCartao { get; set; } = string.Empty;
+        public bool Padrao { get; set; } = false;
+        public string? QuatroDigCard { get; set; } = string.Empty;
     }
 }
