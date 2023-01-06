@@ -37,8 +37,7 @@ namespace MVC.Services
                var resp = await client.GetAsync(url);
                 if (resp.IsSuccessStatusCode)
                 {
-                    return await resp.Content.ReadFromJsonAsync<ModelProduto>();
-                    
+                    return await resp.Content.ReadFromJsonAsync<ModelProduto>();                  
                 }
                 return null;
             }

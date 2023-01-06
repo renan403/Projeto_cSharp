@@ -42,24 +42,41 @@ namespace ApiMvc.Controllers
             return NotFound();
         }
         [HttpPatch("AlterAddress/{idUser}/{key}")]
-        public async Task<IActionResult> AlterAddress([FromRoute] string idUser,[FromRoute] string key, [FromForm] ModelEndereco objEnd , [FromForm] string jsonEndereco)
+        public async Task<IActionResult> AlterAddress([FromRoute] string idUser,[FromRoute] string key, [FromForm] string jsonEndereco)
         {
-            var json = JsonConvert.DeserializeObject<ModelEndereco>(jsonEndereco);
-            var rt = await _address.AlterarEndereco(key,idUser,objEnd);
+            var endereco = JsonConvert.DeserializeObject<ModelEndereco>(jsonEndereco);
+            var rt = await _address.AlterarEndereco(key,idUser, endereco ?? new ModelEndereco());
             if(rt)
                 return NoContent();
             return NotFound();
         }
         [HttpGet("ReturnPattern/{idUser}")]
-        public async Task<ModelEndereco> ReturnPattern(string idUser)
+        public async Task<IActionResult> ReturnPattern(string idUser)
         {
-           return await _address.RetornaEnderecoPadrao(idUser);
+            try
+            {
+                var rt = await _address.RetornaEnderecoPadrao(idUser);
+                return Ok(rt);
+            }
+            catch (Exception)
+            {
+                return BadRequest(new ModelEndereco());
+            }
+            
         }
         [HttpPost("SaveAddress/{idUser}")]
         public async Task<IActionResult> SaveAddress([FromRoute]string idUser, [FromForm] ModelEndereco end)
         {
-            await _address.SalvarEndereco(idUser, end);
-            return Ok();
+            try
+            {
+                await _address.SalvarEndereco(idUser, end);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return Forbid($"Erro: {e.Message.ToString()}");
+            }
+            
         }
     }
 }

@@ -65,10 +65,18 @@ namespace ApiMvc.Database
         }
         public async Task<ModelProduto?> ReturnProductForIDAsync(string idProd)
         {
-            if (idProd != "")
+            try
             {
-                var retorno = (await _client.Child("Produtos").OnceAsync<ModelProduto>()).Where(m => m.Object.IdProduto == idProd).FirstOrDefault().Object;
-                return retorno;
+                if (idProd != "")
+                {
+                    var retorno = (await _client.Child("Produtos").OnceAsync<ModelProduto>()).Where(m => m.Object.IdProduto == idProd).FirstOrDefault().Object;
+                    return retorno;
+                }
+            }
+            catch (Exception)
+            {
+
+                return null;
             }
             return null;
         }

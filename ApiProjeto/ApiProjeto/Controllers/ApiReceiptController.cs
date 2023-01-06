@@ -47,7 +47,7 @@ namespace ApiProjeto.Controllers
         {
             try
             {
-                ModelNotaFiscal nota = JsonConvert.DeserializeObject<ModelNotaFiscal>(notaJson);
+                ModelNotaFiscal nota = JsonConvert.DeserializeObject<ModelNotaFiscal>(notaJson) ?? new ModelNotaFiscal();
                 await _IReceipt.GerarNotaFiscal(userId,nota);
                 return Ok();
             }

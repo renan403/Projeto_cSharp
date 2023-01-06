@@ -1,6 +1,4 @@
 ﻿@using Firebase.Database
- @{
-  }
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -47,7 +45,157 @@
           </div>
         </div>
     </div>
-   <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow border-bottom">
+
+
+    <script type="text/javascript">
+              $(document).ready(function(){
+                  $('[data-bs-toggle="popover"]').popover();
+              });
+          </script>
+    <header class="navbar navbar-bg-colorEsc sticky-top d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-1 mb-4">
+        <div class="col-3 p-3">
+            <a href="/" style="margin-left:20%" class=" text-decoration-none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" color="white" class="bi bi-house" viewBox="0 0 16 16">
+                    <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z" />
+                </svg>
+                <span class="text-light">Inicio</span>
+            </a>
+        </div>
+        <div class="col-sm-6">
+             <form class=" justify-content-lg-start d-flex" role="search">
+                 <input type="search" class="form-control text-bg-dark semBordaDireita" style="width:70%" placeholder="Pesquisar..." aria-label="Pesquisar" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Não desenvolvido">
+                 <button class="input-group-text semBordaEsquerda BarraDePesquisa" id="BarraDePesquisa"><img src="~/icones/search.svg" class="imgPesquisa" alt="" /></button>
+             </form>              
+        </div>
+        <div class="col-3  ">
+            <div class=" d-flex me-4 justify-content-center ">
+                @if (ViewBag.nomeUser == null)
+                {
+                    <a class="btn bntPersGeral text-light me-4 " style="width:150px" data-bs-toggle="modal" data-bs-target="#ModalEndereco">
+                        <div class="text-overflow ">Endereço</div>
+                    </a>
+                }
+                else if (ViewBag.RNCUC[0] == "Cadastre")
+                {
+                    @Html.ActionLink("Cadastrar endereço","AddEndereco","Conta",null, new {@class="btn bntPersGeral text-light me-4",@style="width:150px"})
+                }
+                else if (ViewBag.RNCUC[0] == "Sem endereço")
+                {
+                    @Html.ActionLink("Cadastrar endereço","AddEndereco","Conta",null, new {@class="btn bntPersGeral text-light me-4",@style="width:150px"})
+                }
+                else
+                {
+
+                    <div class="btn bntPersGeral botaoEnderecoInicio d-flex letraP position-relative me-2 " title="Endereço Padrão" data-bs-toggle="modal" data-bs-target="#ModalEndereco">
+                        <div>
+                            <span class="position-absolute spanBotaoEnd translate-middle text-opacity-50 text-light" style="white-space: nowrap;">
+                                <span class="">Seu endereço padrão</span>
+                            </span>
+                            <img src="~/icones/location.png" width="15px">
+                            <div class="bot text-overflow">
+                                <span>@ViewBag.RNCUC[2]</span>
+                            </div>
+                            <div class="spanCep ">
+                                <span style="white-space:nowrap">@ViewBag.RNCUC[4]</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                @if (ViewBag.nomeUser != null)
+                {
+                   @* @Html.ActionLink($"{@ViewBag.nomeUser}","SuaConta","Conta",null, new {@class="btn bntPersGeral",@style="margin-right:25px",@id="droplogin",@aria_expanded="false"})
+*@
+                    <div class="btn-group">
+                        <button class="btn bntPersGeral dropdown-toggle drop-nome" style="margin-right:25px" type="button" id="droplogin" data-bs-toggle="dropdown" aria_expanded="false"> @ViewBag.nomeUser</button>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="droplogin">
+                            <li>@Html.ActionLink("Sua conta","SuaConta","Conta",null, new {@class="dropdown-item"})</li>
+                            <li>@Html.ActionLink("Seus Pedidos","SeusPedidos","Conta",null, new {@class="dropdown-item"})</li>
+                            <li>@Html.ActionLink("Seu Carrinho","Carrinho","Produtos",null, new {@class="dropdown-item position-relative"})</li>
+                            <li><hr class="dropdown-divider text-bg-light"></li>
+                            <li><a class="dropdown-item link-light" href="/Home/Home/Sair">Sair</a></li>
+                        </ul>
+                    </div>
+                   
+                }
+                else
+                {
+                    @Html.ActionLink("Login","Login","Login",null, new {@class="btn bntPersGeral me-2"})
+                    @Html.ActionLink("Criar conta","CriarConta","Login",null, new {@class="btn bntPersGeral"})
+                }
+
+            </div>
+        </div>
+        @*<a href="/" style="margin-left:5%" class=" text-decoration-none bordarParaTest">                              
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" color="white" class="bi bi-house" viewBox="0 0 16 16">
+                <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z" />
+            </svg>              
+            <span class="text-light" style="position:absolute;top:36px;left:4.65%">Inicio</span>    
+        </a>
+        <ul class="nav col-12 col-md-auto mb-1 justify-content-center mb-md-0 bordarParaTest">
+             <li>
+                  <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3 d-flex" role="search">
+                      <input type="search" class="form-control  text-bg-dark semBordaDireita" placeholder="Pesquisar..." aria-label="Pesquisar" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Não desenvolvido">
+                      <button class="input-group-text semBordaEsquerda BarraDePesquisa" id="BarraDePesquisa"><img src="~/icones/search.svg" class="imgPesquisa" alt="" /></button>
+                  </form>
+             </li>
+        </ul>
+             
+        <div class="col-md-4 d-flex me-4 bordarParaTest">
+             @if(ViewBag.nomeUser == null)
+            {
+                <a class="btn bntPersGeral text-light me-4 " style="width:150px" data-bs-toggle="modal" data-bs-target="#ModalEndereco">
+                <div class="text-overflow ">Endereço</div>
+                </a>
+            }
+            else if(ViewBag.RNCUC[0] == "Cadastre") 
+            {
+                @Html.ActionLink("Cadastrar endereço","AddEndereco","Conta",null, new {@class="btn bntPersGeral text-light me-4",@style="width:150px"})
+            }
+            else if (ViewBag.RNCUC[0] == "Sem endereço")
+            {
+                @Html.ActionLink("Cadastrar endereço","AddEndereco","Conta",null, new {@class="btn bntPersGeral text-light me-4",@style="width:150px"})
+            }
+            else
+            {
+
+                <div class="btn bntPersGeral botaoEnderecoInicio d-flex letraP position-relative me-2 " title="Endereço Padrão" data-bs-toggle="modal" data-bs-target="#ModalEndereco">
+                  <div>
+                      <span class="position-absolute spanBotaoEnd translate-middle text-opacity-50 text-light" style="white-space: nowrap;">
+                          <span class="">Seu endereço padrão</span>
+                      </span>
+                      <img src="~/icones/location.png" width="15px">
+                      <div class="bot text-overflow">
+                          <span>@ViewBag.RNCUC[2]</span>
+                      </div>
+                      <div class="spanCep ">
+                          <span style="white-space:nowrap">@ViewBag.RNCUC[4]</span>
+                      </div>
+                  </div>
+              </div>   
+            }
+            
+            @if (ViewBag.nomeUser != null)
+            {
+                @Html.ActionLink($"{@ViewBag.nomeUser}","SuaConta","Conta",null, new {@class="btn bntPersGeral",@style="margin-right:25px",@id="droplogin",@aria_expanded="false"})
+                <ul class="dropdown-menu dropdown-menu-dark" style="margin-left:7%" aria-labelledby="droplogin">
+                    <li>@Html.ActionLink("Sua conta","SuaConta","Conta",null, new {@class="dropdown-item"})</li>
+                    <li>@Html.ActionLink("Seus Pedidos","SeusPedidos","Conta",null, new {@class="dropdown-item"})</li>
+                    <li>@Html.ActionLink("Seu Carrinho","Carrinho","Produtos",null, new {@class="dropdown-item position-relative"})</li>
+                    <li><hr class="dropdown-divider text-bg-light"></li>
+                    <li><a class="dropdown-item link-light" href="/Home/Home/Sair">Sair</a></li>
+                </ul>
+            }
+            else
+            {
+                @Html.ActionLink("Login","Login","Login",null, new {@class="btn bntPersGeral me-2"})
+                @Html.ActionLink("Criar conta","CriarConta","Login",null, new {@class="btn bntPersGeral"})
+            }
+           
+        </div>*@
+    </header>
+ <!---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+  @* <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow border-bottom">
 
           <div class="navbar-brand col-md-3 col-lg-2 me-0 px-3">
                <a style="margin-left:30%;border-radius:100%; " title="Inicio" asp-area="" asp-controller="Home" asp-action="Home"><img style="border-radius:100%;" class="bordaTerra" src="https://images.vexels.com/media/users/3/152418/isolated/lists/098366e6994dd75ab46b47cd27b2c9d4-icone-do-planeta-terra.png" width = "70" /></a>
@@ -57,97 +205,42 @@
           </button>
 
         
-
-          <div >
-              <span class="d-flex"  data-bs-container="body" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Não desenvolvido">
-                 <input size="90" type="text" class="form-control form-control-dark semBordaDireita" placeholder="Pesquisar " aria-label="Search" aria-describedby="BarraDePesquisa"> 
-                 <a href="#">
-                     <span class="input-group-text semBordaEsquerda" id="BarraDePesquisa"  style="background:orange; border-color:orange;"><img src="~/icones/search.svg" style="width:22px;height:23px" alt="" /></span>
-                 </a>
-              </span>
-          </div>
-          <script type="text/javascript">
-              $(document).ready(function(){
-                  $('[data-bs-toggle="popover"]').popover();
-              });
-          </script>
-          @if(ViewBag.nomeUser == null)
-            {
-                <a  class="nav-link bordaBottomLogin px-5 py-2 text-Laranja " style="width:150px" data-bs-toggle="modal" data-bs-target="#ModalEndereco">           
-                     <div class="text-overflow">Endereço</div>
-                </a>
-            }
-            else if(ViewBag.RNCUC[0] == "Cadastre") 
-            {
-               @Html.ActionLink("Cadastrar endereço","AddEndereco","Conta",null, new {@class="nav-link bordaBottomLogin px-3 py-2 text-Laranja",@style="width:150px"})
-            }
-            else if (ViewBag.RNCUC[0] == "Sem endereço")
-            {
-                 @Html.ActionLink("Cadastrar endereço","AddEndereco","Conta",null, new {@class="nav-link bordaBottomLogin px-3 py-2 text-Laranja",@style="width:150px"})
-            }
-            else
-            {
-                <a href="#" title="Endereço padrão">
-                    <div class="navbar-nav">
-                        <div class="nav-item text-nowrap">
-                          <div class="nav-link bordaBottomLogin px-3 text-Laranja botaoEnderecoInicio d-flex letraP position-relative " data-bs-toggle="modal" data-bs-target="#ModalEndereco"> 
-                              <div >
-                                  <span class="position-absolute spanBotaoEnd translate-middle text-opacity-50 text-light" style="white-space: nowrap;">
-                                    <span class="">Seu endereço padrão</span>                
-                                  </span>                  
-                                  <img src="~/icones/location.png" width="15px">
-                                  <div class="bot text-overflow" >
-                                     <span >@ViewBag.RNCUC[2]</span>
-                                  </div>             
-                                  <div class="spanCep " >
-                                      <span style="white-space:nowrap">@ViewBag.RNCUC[4]</span>
-                                  </div>
-                              </div>
-                           </div>
-                       </div>
-                   </div>
-              </a>
-            }     
+          
+              
           <div class="navbar-nav">
             <div class="nav-item text-nowrap">
                <div class="dropdown ">                       
                   @if(ViewBag.nomeUser != null)
                   {
                       @Html.ActionLink($"{@ViewBag.nomeUser}","SuaConta","Conta",null, new {@class="nav-link bordaBottomLogin dropdown-toggle px-5 text-Laranja",@style="margin-right:25px",@id="dropdownMenuButton2",@aria_expanded="false"})
+                        <ul class="dropdown-menu dropdown-menu-dark" style="margin-left:7%" aria-labelledby="dropdownMenuButton2">
+                            <li>@Html.ActionLink("Sua conta","SuaConta","Conta",null, new {@class="dropdown-item"})</li>
+                            <li>@Html.ActionLink("Seus Pedidos","SeusPedidos","Conta",null, new {@class="dropdown-item"})</li>
+                            <li>@Html.ActionLink("Seu Carrinho","Carrinho","Produtos",null, new {@class="dropdown-item position-relative"})</li>
+                            <li><hr class="dropdown-divider text-bg-light"></li>
+                            <li><a class="dropdown-item link-light" href="/Home/Home/Sair">Sair</a></li>
+                        </ul>
                   }                           
                   else
                   {
                       @Html.ActionLink("Fazer Login","Login","Login",null, new {@class="nav-link bordaBottomLogin dropdown-toggle px-5 text-Laranja",@style="margin-right:25px",@id="dropdownMenuButton2",@aria_expanded="false"})
+                      <ul class="dropdown-menu dropdown-menu-dark" style="margin-left:7%" aria-labelledby="dropdownMenuButton2">
+                          <li>@Html.ActionLink("Login","Login","Login",null, new {@class="dropdown-item"})</li>
+                          <li><hr class="dropdown-divider"></li>
+                          <li>@Html.ActionLink("Criar conta","CriarConta","Login",null, new {@class="dropdown-item"})</li>
+                      </ul>
                   }                  
-                  @if(ViewBag.nomeUser!= null)
-                  {                                                 
-                     <ul class="dropdown-menu dropdown-menu-dark" style="margin-left:7%" aria-labelledby="dropdownMenuButton2">
-                       <li>@Html.ActionLink("Sua conta","SuaConta","Conta",null, new {@class="dropdown-item"})</li>
-                       <li>@Html.ActionLink("Seus Pedidos","SeusPedidos","Conta",null, new {@class="dropdown-item"})</li>
-                       <li>@Html.ActionLink("Seu Carrinho","Carrinho","Produtos",null, new {@class="dropdown-item position-relative"})</li>
-                       <li><hr class="dropdown-divider text-bg-light"></li>
-                       <li><a class="dropdown-item link-light" href="/Home/Home/Sair">Sair</a></li>
-                     </ul>
-                   }
-                   else
-                   {
-                     <ul class="dropdown-menu dropdown-menu-dark" style="margin-left:7%" aria-labelledby="dropdownMenuButton2">
-                       <li>@Html.ActionLink("Login","Login","Login",null, new {@class="dropdown-item"})</li>                                          
-                       <li><hr class="dropdown-divider"></li>
-                       <li>@Html.ActionLink("Criar conta","CriarConta","Login",null, new {@class="dropdown-item"})</li>                       
-                     </ul>
-                   }
                </div>
             </div>
           </div>
-    </header>
+    </header>*@
 
-    <div class="conteudo">
-        <main role="main" class="pb-3" >
+    
+        <main role="main" class="pb-3 conteudo">
             @RenderBody()
         </main>
-    </div>        
-      <footer class="text-white mt-3 py-0 fixar-rodape">
+    
+    <footer class="text-white footer-bg-colorEsc mt-3 py-0 fixar-rodape">
           <div class="container py-2">
             <p class="float-end mb-1">     
                  <!-- <li class="ms-3"><a class="link-light social-svg" href="#"><svg role="img" class="bi" width="30" height="30" aria-label="Twitter"><title>Twitter</title><use xlink:href="#twitter"/></svg></a></li> -->

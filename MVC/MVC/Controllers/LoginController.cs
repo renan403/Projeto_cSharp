@@ -54,7 +54,7 @@ namespace MVC.Controllers
 
                     var end = await endServ.RetornarEndPadrao(idUsuario);
 
-                    if (end == null)
+                    if (end.Endereco == null && end.Numero == 0)
                         HttpContext.Session.SetString("Endereço", $"Cadastre");
                     else
                         HttpContext.Session.SetString("Endereço", $"{end.Endereco}/{end.Numero}/{end.Cidade}/{end.UF}/{end.Cep}/{end.Nome}");
@@ -85,8 +85,8 @@ namespace MVC.Controllers
                     }
 
                 }
-            }
-
+                user.Resposta = login;
+            }         
             return View(user);
 
         }

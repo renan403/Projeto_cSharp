@@ -23,23 +23,34 @@ namespace MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Home()
         {
-            
-                
-            client = new()
+
+            try
             {
-                BaseAddress = new Uri(_iconfig.GetValue<string>("UrlApi"))
-            };
-            HttpResponseMessage response = await client.GetAsync("Product/GetAll");
-            if (response.IsSuccessStatusCode)
-            {
-               
-                ViewBag.Produtos = await response.Content.ReadFromJsonAsync<Dictionary<string, ModelProduto>>();
+                client = new()
+                {
+                    BaseAddress = new Uri(_iconfig.GetValue<string>("UrlApi"))
+                };
+                HttpResponseMessage response = await client.GetAsync("Product/GetAll");
+                if (response.IsSuccessStatusCode)
+                {
+
+                    ViewBag.Produtos = await response.Content.ReadFromJsonAsync<Dictionary<string, ModelProduto>>();
+                }
+                using (GeralService geral = new())
+                {
+                    ViewBag.nomeUser = geral.RetornaNomeNull(HttpContext.Session.GetString("nomeFormatado") ?? "");
+                    ViewBag.RNCUC = geral.RetornoRNCUC(HttpContext.Session.GetString("Endereço") ?? "");
+                }
             }
-            using (GeralService geral = new())
+            catch (Exception)
             {
-                ViewBag.nomeUser = geral.RetornaNomeNull(HttpContext.Session.GetString("nomeFormatado") ?? "");
-                ViewBag.RNCUC = geral.RetornoRNCUC(HttpContext.Session.GetString("Endereço") ?? "");
-            }
+                ViewBag.Produtos = new Dictionary<string, ModelProduto>();
+            }            
+            return View();
+        }
+        [HttpGet]
+        public IActionResult teste()
+        {
             return View();
         }
         [HttpGet("/Home/Home/Sair")]

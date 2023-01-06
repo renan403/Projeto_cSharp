@@ -1,5 +1,6 @@
 ﻿using ApiMvc.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace ApiProjeto.Controllers
 {
@@ -13,10 +14,11 @@ namespace ApiProjeto.Controllers
             _card = icard;
         }
         [HttpPost("SaveCard/{userId}")]
-        public async Task<IActionResult> SalvarCartao([FromRoute] string userId, [FromForm] ModelCartao cartao)
+        public async Task<IActionResult> SalvarCartao([FromRoute] string userId, [FromForm] string jsonCartao)
         {
+            ModelCartao cartao = JsonConvert.DeserializeObject<ModelCartao>(jsonCartao) ?? new ModelCartao();
             var resp = await _card.SalvarCard(userId, cartao);
-            return Ok(resp);
+            return resp.Length > 0 ? Ok(resp) : BadRequest();
         }
         [HttpGet("ReturnCard/{userId}")]
         public async Task<IActionResult> RetornarCartao([FromRoute] string userId)
@@ -28,7 +30,7 @@ namespace ApiProjeto.Controllers
         public async Task<IActionResult> DeletarCartao([FromRoute] string userId, [FromRoute] string card)
         {
             var rt = await _card.DeleteCard(userId, card);
-            return Ok(rt);
+            return rt ? Ok(rt) : Forbid(rt.ToString());
         }
         [HttpGet("ReturnPatternCard/{userId}")]
         public async Task<IActionResult> RetornarCartaoPadrao([FromRoute] string userId)
@@ -39,20 +41,42 @@ namespace ApiProjeto.Controllers
         [HttpPatch("ChangePatternCard/{userId}")]
         public async Task<IActionResult> MudarCartaoPadrao([FromRoute] string userId, [FromForm] string key)
         {
-            var rt = await _card.MudarPadraoCard(userId,key);
-            return Ok(rt);
+            try
+            {
+                return Ok(await _card.MudarPadraoCard(userId, key));
+            }
+            catch (Exception)
+            {
+                return BadRequest(false);
+            }
+            
         }
         [HttpGet("Card/{userId}/{keyCard}")]
         public async Task<IActionResult> Cartao([FromRoute] string userId, [FromRoute] string keyCard)
         {
-            var rt = await _card.Cartao(userId, keyCard);
-            return Ok(rt);
+            try
+            {
+                return Ok(await _card.Cartao(userId, keyCard));
+            }
+            catch (Exception)
+            {
+                return BadRequest(new ModelCartao());
+            }
+            
         }
         [HttpPatch("AlterCard/{userId}")]
         public async Task<IActionResult> AlterarCartao([FromRoute] string userId, [FromForm] string cartao, [FromForm] string nome, [FromForm] string data)
         {
-            var rt = await _card.AlterarCard(userId, cartao, nome, data);
-            return Ok(rt);
+            try
+            {
+                var rt = await _card.AlterarCard(userId, cartao, nome, data);
+                return Ok(rt);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+            
         }
     }
 }

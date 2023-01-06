@@ -14,7 +14,10 @@ footer.fixar-rodape {
 }
 .conteudo{
     flex:1 0 auto;
+  
 }
+
+
 .progress {
     height: 5px;
     background-color: white;
@@ -317,13 +320,14 @@ fontsmall{
     }
 
 .form-control:focus {
-    border-color: rgba(232,163,0, 0.30);
+    border-color:white;
     box-shadow: 0 0 0 0.08rem rgba(232,163,0, 0.30);
 }
 .form-select:focus {
-    border-color: rgba(232,163,0, 0.30);
+    border-color: #3a415a;
     box-shadow: 0 0 0 0.08rem rgba(232,163,0, 0.30);
 }
+
 
 .rodape {
     background-image: linear-gradient( to bottom, black, black );
@@ -347,10 +351,53 @@ fontsmall{
     margin-top: 12px;
 }
 
+.BarraDePesquisa {
+    background: white;
+    border-color: white;
+}
+.imgPesquisa {
+    width: 20px;
+    height: 20px
+}
+.bntPersGeral {
+    border: 1px solid #3a415a;
+    color: white
+}
+    .bntPersGeral:focus {
+        color: white ;
+        border: 1px solid #3a415a;
+    }
+
+    .bntPersGeral:hover {
+        border: 1px solid #3a415a;
+        background-color: #3a415a;
+        color: white;
+    }
+
+.bntPersGeral-bg-Darkpurple {
+    border: 1px solid black;
+    background-color: #005c81;
+    color: white
+}
+
+    .bntPersGeral-bg-Darkpurple:hover {
+        border: 1px solid #3a415a;
+        background-color: #02779e;
+        color: white;
+    }
+
+.navbar-bg-colorEsc {
+    background-color: #090f13;
+}
+.footer-bg-colorEsc {
+    background-color: #090f13;
+}
+
+
 body {
     background-attachment: fixed;
-    background-color: black;
-    background-image: linear-gradient( to bottom,transparent,rgba(79,79,79,0.100), rgba(255,140,0,0.20),rgba(255,140,0,0.30));
+    background-color: #171f25;
+    /*background-image: linear-gradient( to bottom,transparent,rgba(79,79,79,0.100), rgba(255,140,0,0.20),rgba(255,140,0,0.30));*/
 }
 
 .mesmaLinha {

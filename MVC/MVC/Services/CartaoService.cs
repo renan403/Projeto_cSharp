@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using MVC.Models;
+using Newtonsoft.Json;
 using System.Security.Policy;
 
 namespace MVC.Services
@@ -20,26 +21,23 @@ namespace MVC.Services
             {
                 string url = $"{_iconfig.GetValue<string>("UrlApi")}Card/SaveCard/{userId}";
                 HttpClient client = new();
+
+                var jsonCartao = JsonConvert.SerializeObject(cartao);
+
                 MultipartFormDataContent form = new()
-            {
-                {new StringContent(cartao.DataExpiracao),"DataExpiracao" },
-                {new StringContent(cartao.NomeCard),"NomeCard"},
-                {new StringContent(cartao.NumeroCard),"NumeroCard"},
-                {new StringContent(cartao.QuatroDigCard),"QuatroDigCard"},
-                {new StringContent(cartao.Padrao.ToString()),"Padrao"},
-                {new StringContent(cartao.Erro),"Erro"},
-                {new StringContent(cartao.CaminhoImgCartao),"CaminhoImgCartao"},
-                {new StringContent(cartao.Cvv.ToString()),"Cvv"},
-                {new StringContent(cartao.Bandeira),"Bandeira"},
-                {new StringContent(cartao.CaminhoImgBandeira),"CaminhoImgBandeira" }
-            };
-                var resp = await client.PostAsync(url, form);
+                {
+                    {new StringContent(jsonCartao),"jsonCartao" },
+                };
+                var resp = await client.PostAsync(url, form);               
                 if (resp.IsSuccessStatusCode)
                 {
                     return await resp.Content.ReadAsStringAsync();
                 }
-                    
-                return await resp.Content.ReadAsStringAsync();
+                if ((await resp.Content.ReadAsStringAsync()).ToLower().Contains("bad request"))
+                {
+                    return "Cartão não adicionado, tente mais tarde ou entre em contato com suporte";
+                }
+                return "erro";
             }
             catch (Exception)
             {

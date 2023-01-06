@@ -9,7 +9,7 @@ namespace ApiMvc.Database
     public class AddressBase : Base , IAddressRepository
     {       
 
-        public async Task<ModelEndereco> RetornaEnderecoPadrao(string? idUser)
+        public async Task<ModelEndereco?> RetornaEnderecoPadrao(string? idUser)
         {           
             var user = (await _client.Child("Usuarios").OnceAsync<ModelUsuario>())
                 .Where(u => u.Object.IdUser == idUser)
@@ -26,7 +26,7 @@ namespace ApiMvc.Database
 
                 }
             }
-            return null;
+            return new ModelEndereco();
         }
         public async Task<bool> SalvarEndereco(string userId, ModelEndereco model)
         {
@@ -154,7 +154,7 @@ namespace ApiMvc.Database
             }
             else
             {
-                return null;
+                return new Dictionary<string, ModelEndereco>();
             }
 
 

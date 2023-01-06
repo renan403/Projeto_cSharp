@@ -80,21 +80,7 @@ namespace MVC.Services
             var jsonEndereco = JsonConvert.SerializeObject(m);
             MultipartFormDataContent multiContent = new()
             {
-
-                { new StringContent($"{jsonEndereco}"), "jsonEndereco" },
-                { new StringContent($"{m.Pais}"), "Pais" },
-                { new StringContent($"{m.Cep}"), "Cep" },
-                { new StringContent($"{m.Numero}"), "Numero" },
-                { new StringContent($"{m.UF}"), "UF" },
-                { new StringContent($"{m.Cidade}"), "Cidade" },
-                { new StringContent($"{m.Endereco}"), "Endereco" },
-                { new StringContent($"{m.Padrao}"), "Padrao" },
-                { new StringContent($"{m.Bairro}"), "bairro" },
-                { new StringContent($"{m.Complemento}"), "Complemento" },
-                { new StringContent($"{m.Telefone}"), "Telefone" },
-                { new StringContent($"{m.Nome}"), "Nome" },
-                { new StringContent($"{m.Estado}"), "Estado" }
-
+                { new StringContent($"{jsonEndereco}"), "jsonEndereco" },              
             };
 
             await client.PatchAsync(Url, multiContent);
