@@ -4,7 +4,8 @@
 }
 @Html.AntiForgeryToken()
 
-<div class="form-signin w-100 m-auto h-50">
+
+<div class="form-signin" id="AjustaLoginTela">
     @using (Html.BeginForm(FormMethod.Post, new { enctype = "application/x-www-form-urlencoded" }))
     {
         @Html.ValidationSummary()
@@ -32,6 +33,14 @@
                 <div style="margin: 2% 0 0 2%">
                     <h5 style="color:rgb(193,55,55)">  <img src="~/icones/exclamation-triangle.svg" style="width:30px; margin:0 0 0 2%" /> Houve um problema</h5>
                     <p>E-mail não autenticado</p>
+                </div>
+            </div>
+        }
+        else if (Model.Resposta == "Sistema")
+        {
+            <div class="boxErroLogin  card border-info ">
+                <div style="margin: 2% 0 0 2%">
+                    <h5 style="color:rgb(193,55,55)">  <img src="~/icones/1873373.svg" style="width:30px; margin:0 0 0 2%" /> Sistema está fora do ar, por favor tente mais tarde.</h5>
                 </div>
             </div>
         }
@@ -66,4 +75,13 @@
         <a style="width:100%;" class="btn bntPersGeral btn-sm" asp-action="CriarConta" asp-controller="Login"><strong>Criar sua conta</strong></a>
     </div>
 </div>
-   
+<script type="text/javascript">
+    var h = document.documentElement.clientHeight * 0.005;
+    document.getElementById("AjustaLoginTela").style.marginTop = h + '%';
+    window.onresize = resizeLogin
+    function resizeLogin() {
+        var h = document.documentElement.clientHeight * 0.005;
+        document.getElementById("AjustaLoginTela").style.marginTop = h + '%';
+    }
+
+</script>

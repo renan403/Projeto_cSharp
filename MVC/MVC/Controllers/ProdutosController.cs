@@ -42,8 +42,16 @@ namespace MVC.Controllers
                 return View(model);
 
             }
+            try
+            {
+                ViewBag.pagProduto = model = await prodServ.RetornaProdutoPorID(IdProduto);
+            }
+            catch (Exception)
+            {
 
-            ViewBag.pagProduto = model = await prodServ.RetornaProdutoPorID(IdProduto);
+                ViewBag.pagProduto = model = new ModelProduto();
+            }
+
             TempData["prodId"] = IdProduto;
 
             return View(model);
@@ -60,7 +68,7 @@ namespace MVC.Controllers
                         CarrinhoService carrinho = new(_iconfig);
 
 
-                        var jaPossuiNoCarrinho = await carrinho.PossuiNoCarrinho(HttpContext.Session.GetString("IdUsuario"),idP);
+                        var jaPossuiNoCarrinho = await carrinho.PossuiNoCarrinho(HttpContext.Session.GetString("IdUsuario"), idP);
                         if (jaPossuiNoCarrinho)
                         {
                             string resp = await carrinho.AddQtdCarrinho(HttpContext.Session.GetString("IdUsuario"), idP, select);
@@ -251,7 +259,7 @@ namespace MVC.Controllers
                 return RedirectToAction("Carrinho", "Produtos");
             }
 
-            await car.DeleteProdCarrinho(HttpContext.Session.GetString("IdUsuario"),excluir);
+            await car.DeleteProdCarrinho(HttpContext.Session.GetString("IdUsuario"), excluir);
 
             return RedirectToAction("Carrinho", "Produtos");
         }

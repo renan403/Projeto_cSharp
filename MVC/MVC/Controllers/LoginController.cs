@@ -85,6 +85,9 @@ namespace MVC.Controllers
                     }
 
                 }
+                if (string.IsNullOrEmpty(login))
+                user.Resposta = "Sistema";
+                else
                 user.Resposta = login;
             }         
             return View(user);

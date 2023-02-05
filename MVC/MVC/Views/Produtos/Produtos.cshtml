@@ -5,8 +5,8 @@
 
 }
 
-
-<div class="album py-5 body">
+@if (Model.IdProduto != null){
+  <div class="album py-5 body">
     <div class="container">     
        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
            <div class="col">
@@ -296,3 +296,14 @@
     }
 )
 </script>
+}else{
+
+    <div class="card" id="AjustaNaTela" style="margin:auto;width:25rem;">
+        <div class="card-header">
+            <h4>Produto indisponível</h4>
+        </div>
+        <div class="card-body">
+            <p class="card-text">Esse produto não está mais cadastrado em nosso site</p>
+        </div>
+    </div>
+}

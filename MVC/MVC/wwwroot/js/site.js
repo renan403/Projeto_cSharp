@@ -1,5 +1,15 @@
 ﻿
 
+var h = document.documentElement.clientHeight / 3 ;
+document.getElementById("AjustaNaTela").style.marginTop = h+'px';
+window.onresize = resizeteste
+    function resizeteste() {
+        var h = document.documentElement.clientHeight / 4;
+        document.getElementById("AjustaNaTela").style.marginTop = h + 'px';
+
+}
+
+
 
 function Avaliar(estrela) {
     var url = window.location;

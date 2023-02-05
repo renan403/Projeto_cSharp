@@ -41,7 +41,7 @@ namespace ApiMvc.Database
         {
             var key = await GetUserKey(userId);
             var produtos = await PegarNotaFiscal(userId, nota);
-            ModelDestinatario destinatario = new() { Nome = nome, Data = DateTime.Now.ToString("dd 'de' MMMMM 'de' yyyy") };
+            ModelDestinatario destinatario = new() { Nome = nome, Data = DateTime.Now.ToString("dd 'de' MMMMM 'de' yyyy"), Devolucao = DateTime.Now.AddDays(7).ToString("dd 'de' MMMMM 'de' yyyy") };
             foreach (var produto in produtos.Produto)
             {
                 produtos.Destinatario = destinatario;

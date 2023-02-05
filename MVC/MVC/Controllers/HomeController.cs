@@ -45,7 +45,7 @@ namespace MVC.Controllers
             catch (Exception)
             {
                 ViewBag.Produtos = new Dictionary<string, ModelProduto>();
-            }            
+            }
             return View();
         }
         [HttpGet]
