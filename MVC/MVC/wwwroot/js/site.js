@@ -11,6 +11,7 @@ window.onresize = resizeteste
 
 
 
+
 function Avaliar(estrela) {
     var url = window.location;
     url = url.toString()

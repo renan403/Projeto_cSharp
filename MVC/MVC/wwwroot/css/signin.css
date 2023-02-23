@@ -2,16 +2,21 @@ html,
 body {
   height: 100%;
 }
+.eye-conf {
 
-.submit-olho {
-    position: absolute;
-    top:30%;
-    right: 2%;
-    z-index: 1;
-    border: none;
-    background: transparent;
-    outline: none;
+    border: dotted 1px red
 }
+
+
+    .submit-olho {
+        position: absolute;
+        top: 30%;
+        right: 2%;
+        z-index: 1;
+        border: none;
+        background: transparent;
+        outline: none;
+    }
 .submit-line {
     position: relative;
     width: 100%;

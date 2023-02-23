@@ -62,7 +62,7 @@ namespace MVC.Controllers
             {
                 //Retornar Endereço Padrao atualizado
                 EnderecoService endServ = new(_iconfig);
-                await endServ.DeletarEndereco(HttpContext.Session.GetString("IdUsuario"),$"{opcao[0] ?? "erro"}");
+                await endServ.DeletarEndereco(HttpContext.Session.GetString("IdUsuario"), $"{opcao[0] ?? "erro"}");
                 var end = await endServ.RetornarEndPadrao(HttpContext.Session.GetString("IdUsuario"));
                 if (end != null)
                 {
@@ -115,25 +115,24 @@ namespace MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> AddEndereco(ModelEndereco model)
         {
-            if (ModelState.IsValid)
+
+            //Retornar Endereço Padrao atualizado
+            EnderecoService endServ = new(_iconfig);
+
+            await endServ.SalvarEndereco(HttpContext.Session.GetString("IdUsuario"), model);
+            var end = await endServ.RetornarEndPadrao(HttpContext.Session.GetString("IdUsuario"));
+            if (end == null)
             {
-                //Retornar Endereço Padrao atualizado
-                EnderecoService endServ = new(_iconfig);
-
-                await endServ.SalvarEndereco(HttpContext.Session.GetString("IdUsuario"), model);
-                var end = await endServ.RetornarEndPadrao(HttpContext.Session.GetString("IdUsuario"));
-                if (end == null)
-                {
-                    HttpContext.Session.SetString("Endereço", $"Cadastre");
-                }
-                else
-                {
-
-                    HttpContext.Session.SetString("Endereço", $"{end.Endereco}/{end.Numero}/{end.Cidade}/{end.UF}/{end.Cep}/{end.Nome}");
-                }
-                return RedirectToAction("Endereco", "Conta");
+                HttpContext.Session.SetString("Endereço", $"Cadastre");
             }
-            return View();
+            else
+            {
+
+                HttpContext.Session.SetString("Endereço", $"{end.Endereco}/{end.Numero}/{end.Cidade}/{end.UF}/{end.Cep}/{end.Nome}");
+            }
+            return RedirectToAction("Endereco", "Conta");
+
+
         }
 
         public IActionResult AcessoSeg()
@@ -347,7 +346,7 @@ namespace MVC.Controllers
                 return RedirectToAction("FinalizarCompra", "Conta");
             }
 
-            await car.DeleteProdCarrinho(HttpContext.Session.GetString("IdUsuario"),excluir);
+            await car.DeleteProdCarrinho(HttpContext.Session.GetString("IdUsuario"), excluir);
 
             return RedirectToAction("FinalizarCompra", "conta");
         }
@@ -392,7 +391,6 @@ namespace MVC.Controllers
             using (NotaFiscalService notaServ = new(_iconfig))
             {
                 ViewBag.NotasFiscais = await notaServ.RetornarNotaFiscal(HttpContext.Session.GetString("IdUsuario"));
-
             }
             return View();
         }

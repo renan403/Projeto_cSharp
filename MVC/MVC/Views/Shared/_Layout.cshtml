@@ -52,18 +52,17 @@
             $('[data-bs-toggle="popover"]').popover();
         });
     </script>
-    <header class=" navbar-bg-colorEsc sticky-top py-1 mb-4">
-        <div class="nav">
+
+    <header class=" navbar-bg-colorEsc sticky-top py-1 mb-4 ">
+        <div class="nav align-items-center ">
             <input type="checkbox" id="nav-check">
-            <div class="nav-header">
-                <div class="nav-title nav-title-display">
-                    <a href="/" style="margin-left:20%" class=" text-decoration-none">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" color="white" class="bi bi-house" viewBox="0 0 16 16">
+            <div class="nav-header ms-5 ">
+                <div class="nav-title nav-title-display ">
+                    <a href="/" class=" d-flex text-decoration-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="35" fill="currentColor" color="white" class="bi bi-house" viewBox="0 0 16 16">
                             <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z" />
                         </svg>
-
                     </a>
-                    <span class="text-light">Inicio</span>
                 </div>
             </div>
             <div class="nav-btn">
@@ -74,34 +73,32 @@
                 </label>
             </div>
             <div class="BarPesq">
-                <form class="d-flex BarPesqLen" role="search">
-                    <input type="search" class="form-control text-bg-dark semBordaDireita" placeholder="Pesquisar..." aria-label="Pesquisar" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Não desenvolvido">
+                
+                <form class="d-flex BarPesqLen " role="search">
+                    <input type="search" class="form-control text-bg-dark semBordaDireita" onchange="" placeholder="Pesquisar..." aria-label="Pesquisar">
                     <button class="input-group-text semBordaEsquerda BarraDePesquisa" id="BarraDePesquisa"><img src="~/icones/search.svg" class="imgPesquisa" alt="" /></button>
                 </form>
             </div>
-
             <div class="nav-links">
-
                 @if (ViewBag.nomeUser == null)
                 {
-                    <a class="btn text-light me-4 bordaBottom" data-bs-toggle="modal" data-bs-target="#ModalEndereco">
+                    <a class="btn text-light borda-branca-azul" data-bs-toggle="modal" data-bs-target="#ModalEndereco">
                         <div class="text-overflow ">Endereço</div>
                     </a>
                 }
                 else if (ViewBag.RNCUC[0] == "Cadastre")
                 {
-                    @Html.ActionLink("Cadastrar endereço","AddEndereco","Conta",null, new {@class="btn text-light bordaBottom me-4"})
+                    @Html.ActionLink("Cadastrar endereço","AddEndereco","Conta",null, new {@class="btn text-light borda-branca-azul me-4"})
                 }
                 else if (ViewBag.RNCUC[0] == "Sem endereço")
                 {
-                    @Html.ActionLink("Cadastrar endereço","AddEndereco","Conta",null, new {@class="btn text-light bordaBottom me-4"})
+                    @Html.ActionLink("Cadastrar endereço","AddEndereco","Conta",null, new {@class="btn text-light borda-branca-azul me-4"})
                 }
                 else
                 {
-
-                    <div class="btn botaoEnderecoInicio letraP text-light position-relative bordaBottom" id="BtnEndereco" style="height:50px" title="Endereço Padrão" data-bs-toggle="modal" data-bs-target="#ModalEndereco">
+                    <div class="btn botaoEnderecoInicio letraP text-light position-relative borda-branca-azul me-3" id="BtnEndereco" style="height:50px" title="Endereço Padrão" data-bs-toggle="modal" data-bs-target="#ModalEndereco">
                         <div>
-                            <span class="position-absolute spanBotaoEnd translate-middle text-opacity-50 text-light" style="white-space:nowrap;">
+                            <span class="position-absolute spanBotaoEnd translate-middle text-opacity-75 text-light" style="white-space:nowrap;">
                                 <span class="">Seu endereço padrão</span>
                             </span>
                             <div class="ajustaIcon">
@@ -115,15 +112,10 @@
                             </div>
                         </div>
                     </div>
-
-
-
                 }
                 @if (ViewBag.nomeUser != null)
                 {
-
-
-                    <button class="btn dropdown-toggle drop-nome text-light bordaBottom" type="button" id="droplogin" data-bs-toggle="dropdown" aria_expanded="false"> @ViewBag.nomeUser</button>
+                    <button class="btn dropdown-toggle drop-nome text-light borda-branca-azul" type="button" id="droplogin" data-bs-toggle="dropdown" aria_expanded="false"> @ViewBag.nomeUser</button>
                     <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="droplogin" id="ulDropDown">
                         <li>@Html.ActionLink("Sua conta","SuaConta","Conta",null, new {@class="dropdown-item"})</li>
                         <li>@Html.ActionLink("Seus Pedidos","SeusPedidos","Conta",null, new {@class="dropdown-item"})</li>
@@ -131,13 +123,12 @@
                         <li><hr class="dropdown-divider text-bg-light"></li>
                         <li><a class="dropdown-item link-light" href="/Home/Home/Sair">Sair</a></li>
                     </ul>
-
-
                 }
                 else
                 {
-                    @Html.ActionLink("Login","Login","Login",null, new {@class="btn bordaBottom me-2"})
-                    @Html.ActionLink("Criar conta","CriarConta","Login",null, new {@class="btn bordaBottom"})
+                    @Html.ActionLink("Login","Login","Login",null, new {@class="btn borda-branca-azul"})
+                    <span></span>
+                    @Html.ActionLink("Criar conta","CriarConta","Login",null, new {@class="btn borda-branca-azul"})
                 }
             </div>
         </div>

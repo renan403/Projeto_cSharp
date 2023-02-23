@@ -28,7 +28,7 @@ namespace ApiProjeto.Controllers
         [HttpDelete("DelProdCar/{userId}/{key}")]
         public async Task<IActionResult> DeleteProdCar([FromRoute] string userId, [FromRoute] string key)
         {
-            var rt = await _cart.DeleteProdCarrinho(userId, key);
+            var rt = await _cart.DeleteProdCarrinho( key, userId);
             return Ok(rt);
         }
         [HttpDelete("DelCar/{userId}")]

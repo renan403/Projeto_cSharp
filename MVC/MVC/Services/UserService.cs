@@ -126,7 +126,7 @@ namespace MVC.Services
             }
 
         }
-        public async Task<bool> DeletarConta(string email, string pwd, string idUser)
+        public async Task<bool> DeletarConta(string idUser,string email, string pwd )
         {
             try
             {

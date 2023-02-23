@@ -1,90 +1,69 @@
 ﻿@model ModelUsuario
-
 @{
     ViewBag.title = "Criar conta";
-
-  
 }
-
-
-
 @Html.AntiForgeryToken()
- 
-<div style="width:auto;height:100%; margin-top:3%">
-    @using(Html.BeginForm(FormMethod.Post,new { enctype = "application/x-www-form-urlencoded" }))
-{   @Html.ValidationSummary(true)
-    @if(Model.Erro == "Email ja Existe"){
-             <div class="boxErroLogin  card border-info ">                            
-                 <div style="margin: 2% 0 0 2%">
-                    <h5 style="color:rgb(193,55,55)">  <img src="~/icones/exclamation-triangle.svg" style="width:30px; margin:0 0 0 2%"/> Houve um problema</h5>
-                    <p>Email ja cadastrado.</p>
-                 </div>              
-            </div>
- }
-         <div class=" mb-3" style="width:40%;margin:auto">
-           <div class="card border-info  mb-3" style="height:100%">
-               <div class="card-header"><h3>Criar conta</h3></div>
-                   <div class="card-body">
-                       <div class="mb-1">
 
-                            <label for="InputNome" class="form-label"><strong>Seu nome</strong></label>
-                            @Html.TextBoxFor(m => m.Nome, "", new {@class="form-control letraP",@placeholder="nome",@type="text",@id="nome",@oninvalid="setCustomValidity('Campo deve possuir 6 caracteres!')",@oninput="setCustomValidity('')"}) 
-                            @Html.ValidationMessageFor(m => m.Nome,"", new {@class="text-danger",@id="validNome"})
-                           
-                        </div>                       
-                        <div class="mb-1">                        
-                            <label for="InputEmail" class="form-label"><strong>E-mail</strong></label>
-                            @Html.TextBoxFor(m => m.Email, "", new{@class="form-control letraP" , @placeholder="Exemplo@exemplo.com",@type="email"})
-                            @Html.ValidationMessageFor(m => m.Email, "",new {@class="text-danger",@id="validEmail"})
-                        </div>
-                        <div class="mb-1">
-                             <label for="exampleInputPassword1" class="form-label" ><strong>Senha</strong></label>
-                              <div class="input-group mb-3">
-                                  @Html.TextBoxFor(m => m.Senha, "", new{@class="form-control letraP", @id="passwordCriar", @placeholder="Pelo menos 8 caracteres", @type ="password"})
-                                  <span class="input-group-text" id="basic-addon2"><img id="olhoSenha" onmouseout="mostrarSenha()" onmouseup="mostrarSenha()" onmousedown="ocultarSenha()" src="~/icones/eye.svg" alt="" /></span>                               
-                              </div>
-                              @Html.ValidationMessageFor(m => m.Senha, "",new {@class="text-danger",@id="validSenha"})
-                        </div>                      
-                       <!-- <div id="descriSenha" class="form-text">&nbsp;&ImaginaryI; As senhas devem ter pelo menos 8 caracteres.</div>-->
-                        <div class="mb-1">
-                             <label for="exampleInputPassword1" class="form-label" ><strong>Confirme sua senha</strong></label>
-                             <div class="input-group">
-                                 @Html.TextBoxFor(m => m.ConfSenha,"",new{@class="form-control letraP",@id="passwordConf", @type="password",@placeholder="Confirme sua senha"})
-                                 <span class="input-group-text" id="basic-addon2">
-                                     <img id="olhoConf" onmouseout="mostrarConf()" onmouseup="mostrarConf()" onmousedown="ocultarConf()" src="~/icones/eye.svg" alt="" />
-                                 </span>   
-                             </div>
-                             @Html.ValidationMessageFor(m => m.ConfSenha, "",new {@class="text-danger"})
-                         </div>                       
-                    <br />
-                               
-                    <button onclick="ValidaCriaConta()" style="width:100%;" class="btn btn-primary btn-sm mb-1" >Confirmar</button>
-                    <span id="validacao" aria-hidden="true"></span>
-                        <hr class="dropdown-divider"  style="width:100%" />
-                        <p> Você já tem uma conta? &nbsp;<a asp-action="Login" asp-controller="Login" class="link-primary">Faça Login</a></p>     
+<div class="form-signin" id="AjustaCriarConta">
+    @using (Html.BeginForm(FormMethod.Post, new { enctype = "application/x-www-form-urlencoded" }))
+{
+        <div class="card border-primary mb-2">
+            @Html.ValidationSummary()
+            <div class="card-header"> <h1 class="h3 mb-1 fw-normal">Criar conta</h1></div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <div class="form-floating mb-3">
+                        @Html.TextBoxFor(m => m.Nome, "", new {@id="floatingInput",@class="form-control letraP", @TextMode="text", @placeholder="Nome",@type="text", @Required ="Required",@oninvalid="setCustomValidity('Campo senha vazio')",@oninput="setCustomValidity('')" })
+                        <label for="floatingInput">Nome</label>
                     </div>
-            </div> 
-        </div> 
+                    <div class="form-floating mb-3">
+                        @Html.TextBoxFor(m => m.Email, "", new {@id="floatingEmail",@class="form-control letraP", @TextMode="Email", @placeholder="Seu Email",@type="email", @Required ="Required",@oninvalid="setCustomValidity('Endereço de email inválido. Corrija e tente novamente.')",@oninput="setCustomValidity('')" })
+                        <label for="floatingEmail">Email</label>
+                    </div>
+
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.Senha, "", new {@id="passwordLogin",@class="form-control letraP",@type="password",@Required ="Required", @placeholder="Sua senha",@oninvalid="setCustomValidity('Campo senha vazio')",@oninput="setCustomValidity('')" })
+                        <label for="passwordLogin">Senha</label>
+                    </div>
+                    <div class="form-floating">
+                        @Html.TextBoxFor(m => m.ConfSenha, "", new {@id="passwordConfSenha",@class="form-control letraP",@type="password",@Required ="Required", @placeholder="Confirme sua senha",@oninvalid="setCustomValidity('Campo senha vazio')",@oninput="setCustomValidity('')" })
+                        <label for="passwordConfSenha">Confirme sua senha</label>
+                    </div>
+
+
+                </div>
+
+                <div class="w-75 m-auto d-grid">
+                    <button type="submit" class="btn bntPersGeral-bg-Darkpurple  btn-sm">Confirmar</button>
+                </div>
+
+                <p>
+                    <br />Esqueceu sua senha? <a class="text-decoration-none" asp-action="RecuperarSenha" asp-controller="Login">Clique aqui</a>
+                    <br />Ao continuar, você concorda com as <a class="text-decoration-none" href="#">Condições de uso</a> do APP.
+                </p>
+                <a class="text-decoration-none" href="#">Precisa de ajuda?</a>
+            </div>
+
+        </div>
     }
+    <div class="adpHr" style="width:100%;margin:auto;color:orange;">
+        <hr><p style="color:white;">&ensp;  Possui conta?  &ensp;</p><hr>
+    </div>
+    <div style="width:100%;margin:auto;text-align:center">
+        <a class="btn w-100  btn-sm text-light borda-branca-azul" asp-action="Login" asp-controller="Login"><strong>Login</strong></a>
+    </div>
 </div>
 
-@*<div class="modal fade" id="EnvioEmailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Email enviado</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <p>Você ira receber email para validação da sua conta, verifique na caixa de spam caso nao encontre.</p>
-      </div>
-      <div class="modal-footer">
-        <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
-        <button type="button" asp-action="Home" asp-controller="Home" class="btn btn-primary">Entendi</button>
-      </div>
-    </div>
-  </div>
-</div>*@
+<script type="text/javascript">
+    var j = document.documentElement.clientHeight / 14;
+    document.getElementById("AjustaCriarConta").style.marginTop = j + 'px';
+    window.onresize = resizeteste1
+    function resizeteste1() {
+        var j = document.documentElement.clientHeight / 14;
+        document.getElementById("AjustaCriarConta").style.marginTop = j + 'px';
+
+    }
+</script>
 <!--
 
 

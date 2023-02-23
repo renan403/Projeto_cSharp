@@ -4,21 +4,17 @@
 }
 @Html.AntiForgeryToken()
 
-
-  
-
-
 <div class="album py-5 body">
     <div class="container">
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="row row-cols-1 row-cols-sm-1 row-cols-md-3 g-3">
             @foreach (var produto in ViewBag.Produtos)
             {
                 <div class="col">
-                    <div class="card shadow-sm">
+                    <div class="card shadow-sm borda-preta">
                         <a class="link-primary text-decoration-none " style=" margin:auto" href="~/Produtos/Produtos/@produto.Value.IdProduto">
                             <img style="width:100%;" src="@produto.Value.UrlImg" class="img-fluid border tamanhoPadrao" title="@produto.Value.NomeProd" alt="@produto.Value.NomeProd">
                         </a>
-                        <div class="card-body">
+                        <div class="card-body bg-light-gray">
                             <div style="width:100%;height:60px">
                                 <p class="card-text ">
                                     @Html.ActionLink($"{@produto.Value.NomeProd}","Produtos","Produtos",new{id=$"{@produto.Value.IdProduto}"},new { enctype = "application/x-www-form-urlencoded",@class="link-primary text-decoration-none"})
@@ -35,4 +31,4 @@
         </div>
     </div>
 </div>
-   
+

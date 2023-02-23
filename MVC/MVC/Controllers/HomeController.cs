@@ -13,7 +13,7 @@ using MVC.Services.Funcoes;
 namespace MVC.Controllers
 {
     public class HomeController : Controller
-    {
+    {   
         private readonly IConfiguration _iconfig;
         private HttpClient? client;
         public HomeController(IConfiguration iconfig)
@@ -23,7 +23,7 @@ namespace MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Home()
         {
-
+            //return RedirectToAction("teste");
             try
             {
                 client = new()
@@ -51,8 +51,9 @@ namespace MVC.Controllers
         [HttpGet]
         public IActionResult teste()
         {
+
             return View();
-        }
+        }     
         [HttpGet("/Home/Home/Sair")]
         public IActionResult HomeSair()
         {

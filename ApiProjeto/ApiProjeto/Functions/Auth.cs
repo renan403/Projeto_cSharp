@@ -139,9 +139,10 @@ namespace ApiMvc.Functions
             {
                 if (ex.Message.Contains("INVALID_PASSWORD"))
                     return "INVALID_PASSWORD";
-
                 if (ex.Message.Contains("EMAIL_NOT_FOUND"))
                     return "EMAIL_NOT_FOUND";
+                if (ex.Message.Contains("TOO_MANY_ATTEMPTS_TRY_LATER"))
+                    return "TOO_MANY_ATTEMPTS_TRY_LATER";
                 else
                     return "Other error";
             }          

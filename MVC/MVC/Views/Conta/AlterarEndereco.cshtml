@@ -5,72 +5,112 @@
     List<string> Paises = new List<string>{"Brasil", "Ainda não desenvolvido ..."};
     			            
 }
-@using (Html.BeginForm(FormMethod.Post,new { enctype = "application/x-www-form-urlencoded" }))
+
+@using (Html.BeginForm(FormMethod.Post, new { enctype = "application/x-www-form-urlencoded" }))
 {
     
-    <div class="mb-3 " style="width:50%;margin:auto;">
-         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a class="text-warning text-decoration-none" asp-action="SuaConta" asp-controller="Conta">Sua Conta</a></li>
-        <li class="breadcrumb-item"><a class="text-warning text-decoration-none" asp-action="Endereco" asp-controller="Conta">Endereço</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Alterar endereço</li>
-      </ol>
-    </nav>
-      <div class="card border-info  mb-3" style="height:100%">
-       <div class="card-header"><h3>Alterar endereço</h3></div>
-           <div class="card-body">
-              <label for="pais" class="form-label"><strong>País/Região</strong></label>        
-               @Html.DropDownListFor(m => m.Pais,new SelectList(Paises) , "Escolha o pais", new {@class="form-select letraP", @id="pais" })
+    <div class="container" >
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a class="text-lightblue text-decoration-none" asp-action="SuaConta" asp-controller="Conta">Sua Conta</a></li>
+                <li class="breadcrumb-item"><a class="text-lightblue text-decoration-none" asp-action="Endereco" asp-controller="Conta">Endereço</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Alterar endereço</li>
+            </ol>
+        </nav>
+        </div>
+    <div class="container" style="background-color:white; border-radius:10px">
+    
+        <main >
+            <div class="py-5 text-center">
+                <h2>Alterar endereço</h2>
+            </div>
 
-              <label for="nome" class="form-label distTop"><strong>Nome completo (Nome e Sobrenome)</strong></label>
-              @Html.TextBoxFor(m => m.Nome, "", new {@id="nome", @class="form-control letraP", @TextMode="Text", @placeholder="",@type="text",@oninvalid="setCustomValidity('Erro')",@oninput="setCustomValidity('')" })  
-              
-              <label for="telefone" class="form-label distTop"><strong>Telefone</strong></label>
-              @Html.TextBoxFor(m => m.Telefone, "", new {@id="telefone",@class="form-control letraP", @TextMode="Text", @placeholder="",@type="text", aria_describedby="telefone",@autocomplete="off", @onkeypress="Tipo(this,'TELEFONE')", maxlength="14" })  
-              <div class="form-text"> Pode ser usado para auxiliar a entrega </div>       
-             
-              <label for="cep" class="form-label distTop" ><strong>CEP</strong></label>
-              @Html.TextBoxFor(m => m.Cep, "", new { @id="cep", @class="form-control letraP", @TextMode="Text", @placeholder="Exemplo. 12345-000",@type="text",@autocomplete="off", maxlength="9", @onkeypress="Tipo(this,'CEP')"})  
+            <div class="row g-3">
 
-              <label for="logradouro" class="form-label distTop"><strong>Endereço</strong></label>
-              @Html.TextBoxFor(m => m.Endereco, "", new {@id="logradouro", @class="form-control letraP", @TextMode="Text", @placeholder="Endereço, caixa postal, nome da empresa, A/C",@type="text", @oninvalid="setCustomValidity('Endereço de email inválido. Corrija e tente novamente.')",@oninput="setCustomValidity('')" ,@autocomplete="off"})  
-              
-              <label for="complemento" class="form-label distTop"><strong>Complemento (opcional)</strong></label>
-              @Html.TextBoxFor(m => m.Complemento, "", new {@id="complemento", @class="form-control letraP", @TextMode="Text", @placeholder="Apartamento, sala, conjunto, edifício, andar, etc.",@type="text",@oninvalid="setCustomValidity('Endereço de email inválido. Corrija e tente novamente.')",@oninput="setCustomValidity('')", @style="margin-top:0.5%",@autocomplete="off"})  
-                
-              <label for="numero" class="form-label distTop"><strong>Número</strong></label>
-              @Html.TextBoxFor(m => m.Numero, "", new {@id="numero",@class="form-control letraP", @TextMode="Text", @placeholder="número ou s/n",@type="text", @autocomplete="off" })  
+                <div class="col-md-9 col-lg-12">
+                    <form enctype="multipart/form-data" method="post">
+                        <div class="row g-3">
 
-              <label for="bairro" class="form-label distTop"><strong>Bairro</strong></label>
-              @Html.TextBoxFor(m => m.Bairro, "", new {@id="bairro", @class="form-control letraP", @TextMode="Text", @placeholder="",@type="text", @autocomplete="off" })  
-              
-              <label for="cidade" class="form-label distTop"><strong>Cidade</strong></label>
-              @Html.TextBoxFor(m => m.Cidade, "", new {@id="cidade", @class="form-control letraP", @placeholder="Insira o CEP acima para preencher a Cidade", @TextMode="Text",@type="text", @autocomplete="off" , @readonly="true" })  
-                    
-              <div class="input-group mb-3">  
-                  <div style="width:90%;margin-right:2%;">
-                      <label for="estado" class="form-label distTop"><strong>Estado</strong></label>
-                      @Html.TextBoxFor(m => m.Estado, "", new {@id="estado", @class="form-control letraP", @TextMode="Text", @placeholder="Insira o CEP acima para preencher a Estado",@type="text", @autocomplete="off", @readonly="true"  }) 
-                  </div>
-                  <div style="width:8%;margin-top:0.4%;">
-                     <label for="uf" class="form-label distTop" ><strong>UF</strong></label>                              
-                     @Html.TextBoxFor(m => m.UF, "", new {@class="form-control letraP ",@id="uf", @readonly="true" })
-                  </div>                  
-              </div> 
-              
-              <div class="form-check">
-                   @Html.CheckBoxFor(m =>m.Padrao, new{@class="botaoCheck form-check-input", @type="checkbox", @id="flexCheckDefault"})
-                  <label class="form-check-label" for="flexCheckDefault">
-                    Tornar este o meu endereço padrão
-                  </label>
-              </div>
-             
+                            <div class="col-12">
+                                <div class="form-floating py-1">
+                                    @Html.DropDownListFor(m => m.Pais,new SelectList(Paises) , "Escolha o pais", new {@class="form-select ", @id="pais" ,@oninvalid="setCustomValidity('Selecione um Pais/Região')",@oninput="setCustomValidity('')" })
+                                    <label class="text" for="Pais">País/Região</label>
+                                </div>
+                            </div>
 
-          </div>
-          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-          <button type="submit" style="width:20%;margin-bottom:2%" class="btn me-md-4 btn-primary btn-sm">Confirmar</button> 
-          </div>
-      </div>
+                            <div class="col-8">
+                                <div class="form-floating py-1">
+
+                                    @Html.TextBoxFor(m => m.Nome, "", new {@id="nome",@class="form-control form-control-sm letraP",@type="text", @placeholder="#",@title="Nome",@oninvalid="setCustomValidity('Campo vazio')",@oninput="setCustomValidity('')" })
+                                    <label class="letraP" for="Nome">Nome</label>
+                                </div>
+                            </div>
+
+                            <div class="col-4">
+                                <div class="form-floating py-1">
+
+                                    @Html.TextBoxFor(m => m.Telefone, "", new {@id="telefone",@class="form-control form-control-sm letraP",@type="text", @placeholder="#" ,@title="Telefone", @autocomplete="off", @onkeypress="Tipo(this,'TELEFONE')", maxlength="14" })
+                                    <label class="letraP" for="Telefone">Telefone</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-floating py-1">
+                                    @Html.TextBoxFor(m => m.Cep, "", new {@id="cep",@class="form-control form-control-sm letraP",@type="text", @placeholder="Exemplo. 12345-000" ,@title="Cep", @autocomplete="off",maxlength="9", @onkeypress="Tipo(this,'CEP')" })
+                                    <label class="letraP" for="cep">Cep</label>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="form-floating py-1">
+                                    @Html.TextBoxFor(m => m.Endereco, "", new {@id="logradouro",@class="form-control form-control-sm letraP",@type="text", @placeholder="Endereço, caixa postal, nome da empresa, A/C",@title="Logradouro",@oninvalid="setCustomValidity('Endereço inválido. Corrija e tente novamente.')",@oninput="setCustomValidity('')", @autocomplete="off"})
+                                    <label class="letraP" for="logradouro">Endereço</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-floating py-1">
+                                    @Html.TextBoxFor(m => m.Numero, "", new {@id="numero",@class="form-control form-control-sm letraP",@type="text", @placeholder="número ou s/n", @title="Número", @autocomplete="off"})
+                                    <label class="letraP" for="numero">Numero</label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12">
+                                <label for="exampleFormControlTextarea1" class="form-label">Complemento</label>
+                                @Html.TextBoxFor(m => m.Complemento, "", new {@id="complemento", @class="form-control ", @TextMode="Text", @placeholder="Apartamento, sala, conjunto, edifício e etc.",@type="text",@oninvalid="setCustomValidity('Informações inválidas. Corrija e tente novamente.')",@oninput="setCustomValidity('')", @style="margin-top:0.5%",@autocomplete="off"})
+                            </div>
+                            <div class="col-md-6">
+                                <label for="Bairro" class="form-label">Bairro</label>
+                                @Html.TextBoxFor(m => m.Bairro, "", new {@id="bairro", @class="form-control ", @TextMode="Text", @placeholder="Insira o CEP acima para preencher o Bairro",@type="text",@autocomplete="off", @readonly="true"  })
+                            </div>
+                            <div class="col-md-6">
+                            
+                                    <label class="letraP form-label" for="cidade">Cidade</label>
+                                    @Html.TextBoxFor(m => m.Cidade, "", new {@id="cidade", @class="form-control", @placeholder="Insira o CEP acima para preencher a Cidade", @TextMode="Text",@type="text",@autocomplete="off" , @readonly="true" })
+                            </div>
+                            <div class="col-md-11">
+                                <label for="Estado" class="form-label">Estado</label>
+                                @Html.TextBoxFor(m => m.Estado, "", new {@id="estado", @class="form-control ", @TextMode="Text", @placeholder="Insira o CEP acima para preencher o Estado",@type="text",@autocomplete="off", @readonly="true"  })
+                            </div>
+                            <div class="col-md-1">
+                                <label for="UF" class="form-label">UF</label>
+                                @Html.TextBoxFor(m => m.UF, "", new {@class="form-control  ",@id="uf", @readonly="true" })
+                            </div>
+                        </div>
+                        <div id="invalido">
+                        </div>
+                        <div class="form-check">
+                            @Html.CheckBoxFor(m =>m.Padrao, new{@class="botaoCheck form-check-input", @type="checkbox", @id="flexCheckDefault"})
+                            <label class="form-check-label" for="flexCheckDefault">
+                                Tornar este o meu endereço padrão
+                            </label>
+                        </div>
+                        <div id="ValidaEnvio" class=" d-grid mt-2 gap-2 col-6 mx-auto">
+                            <button class="w-100 btn btn-success btn-sm mb-3 mt-3" type="submit">Confirmar</button>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+
     </div>
-
 }

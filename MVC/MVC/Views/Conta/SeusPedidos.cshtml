@@ -9,7 +9,7 @@
 <div style="max-width:80%;margin:auto;border-radius:20px">
     <nav aria-label="breadcrumb " style="margin-left:0.5%">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a class="text-warning text-decoration-none" asp-action="SuaConta" asp-controller="Conta">Sua Conta</a></li>
+            <li class="breadcrumb-item"><a class="text-lightblue text-decoration-none" asp-action="SuaConta" asp-controller="Conta">Sua Conta</a></li>
             <li class="breadcrumb-item text-light active" aria-current="page">Pedidos</li>
         </ol>
     </nav>
@@ -19,9 +19,9 @@
 <div class="card text-dark mb-3" style="max-width:80%;margin:auto; background-color: #171f25;">
 
     <div class="row">
-        @if (ViewBag.NotasFiscais == null)
+        @if (ViewBag.NotasFiscais.Count == 0)
         {
-            <h5 style="text-align:center">Não há produto no seu historico de compra</h5>
+            <h5 class="text-light mt-1" style="text-align:center">Não há produto no seu historico de compra</h5>
         }
         @foreach (var item in ViewBag.NotasFiscais)
         {

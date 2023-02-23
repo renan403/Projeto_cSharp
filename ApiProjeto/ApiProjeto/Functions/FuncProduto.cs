@@ -27,7 +27,6 @@ namespace ApiMvc.Functions
             {
                 if (p.File.Length > 0)
                 {
-
                     try
                     {
                         var path = Path.Combine(_iweb.ContentRootPath, $"Img\\Temp\\{p.File.FileName}");

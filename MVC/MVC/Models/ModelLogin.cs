@@ -14,5 +14,6 @@ namespace MVC.Models
         public bool? Ativo { get; set; }
         public string? Nome { get; set; }
         public string? Resposta { get; set; }
+        public int Exist { get; set; }
     }
 }

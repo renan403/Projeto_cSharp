@@ -6,6 +6,8 @@ using Newtonsoft.Json;
 using Microsoft.Extensions.Primitives;
 using MVC.Services;
 using MVC.Services.Funcoes;
+using Firebase.Auth;
+using System.Drawing;
 
 namespace MVC.Controllers
 {
@@ -31,26 +33,21 @@ namespace MVC.Controllers
 
             return View(user);
         }
-
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(ModelLogin user)
+        public async Task<ActionResult>  PartialLogin(ModelLogin user)
         {
-
-            string? tela = TempData["Tela"] as string;
             string nome;
-            string idUsuario;
+            string? idUsuario;
 
             using (UserService serv = new(_iconfig))
             {
-                var login = await serv.Logar(user.Email, user.Senha);
+                var login = await serv.Logar(user.Email ?? "", user.Senha ?? "");
 
                 if (login == "Logged")
                 {
-
                     using EnderecoService endServ = new(_iconfig);
-                    idUsuario = await serv.RetornaID(user.Email);
-                    nome = await serv.RetornaNome(idUsuario);
+                    idUsuario = await serv.RetornaID(user.Email ?? "");
+                    nome = await serv.RetornaNome(idUsuario ?? "");
 
                     var end = await endServ.RetornarEndPadrao(idUsuario);
 
@@ -58,6 +55,7 @@ namespace MVC.Controllers
                         HttpContext.Session.SetString("Endereço", $"Cadastre");
                     else
                         HttpContext.Session.SetString("Endereço", $"{end.Endereco}/{end.Numero}/{end.Cidade}/{end.UF}/{end.Cep}/{end.Nome}");
+
                     using CartaoService cartaoServ = new(_iconfig);
                     var cartoes = await cartaoServ.ReturnCard(idUsuario);
                     foreach (var cartao in cartoes)
@@ -76,23 +74,37 @@ namespace MVC.Controllers
                         using GeralService endGeral = new();
                         HttpContext.Session.SetString("nomeFormatado", endGeral.FormatarNomeNav(HttpContext.Session.GetString("SessaoNome") ?? ""));
                     }
-                    if (tela == null)
-                        return RedirectToAction("Home", "Home");
-                    else
-                    {
-                        var telaSep = tela.Split("/");
-                        return RedirectToAction(telaSep[0], telaSep[1], new { id = telaSep[2] });
-                    }
-
+                    user.Exist = 1;
+                }else if(login == "TOO_MANY_ATTEMPTS_TRY_LATER")
+                {
+                    ViewBag.Erro = "Acesso desabilitado";
+                    ViewBag.MessageErro = "Muitas falhas de login, para entrar imediatamente você pode trocar a senha ou pode tentar novamente mais tarde.";
+                    ViewBag.SrcErro = "../icones/exclamation-triangle.svg";
+                }else if(login == "EMAIL_NOT_FOUND")
+                {
+                    ViewBag.Erro = "Email";
+                    ViewBag.MessageErro = "Email não encontrado.";
+                    ViewBag.SrcErro = "../icones/exclamation-triangle.svg";
+                }else if(login == "INVALID_PASSWORD")
+                {
+                    ViewBag.Erro = "Senha";
+                    ViewBag.MessageErro = "Senha não incorreta.";
+                    ViewBag.SrcErro = "../icones/exclamation-triangle.svg";
                 }
-                if (string.IsNullOrEmpty(login))
-                user.Resposta = "Sistema";
-                else
-                user.Resposta = login;
-            }         
-            return View(user);
 
+                if (string.IsNullOrEmpty(login)) 
+                {
+                    ViewBag.Erro = "Sistema";
+                    ViewBag.MessageErro = "Sistema está fora do ar, por favor tente mais tarde";
+                    ViewBag.SrcErro = "../icones/1873373.svg";
+                }                   
+            }
+            
+            return PartialView("PartialLogin", user);
         }
+
+
+       
 
         [HttpGet]
         public IActionResult CriarConta()
@@ -118,14 +130,14 @@ namespace MVC.Controllers
             {
 
                 using UserService serv = new(_iconfig);
-                var rt = await serv.RegistrarUser(model.Nome, model.Email, model.Senha);
+                 var rt = await serv.RegistrarUser(model.Nome, model.Email, model.Senha);
                 if (rt == "Criado")
                 {
                     TempData["email"] = model.Email;
                 }
                 else
                 {
-                    model.Erro = rt;
+                    ModelState.AddModelError("ConfSenha", rt == null ? "🌐 Serviço indisponivel, tente mais tarde!" : rt);
                     return View(model);
                 }
 

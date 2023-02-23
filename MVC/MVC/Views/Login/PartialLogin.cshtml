@@ -1,0 +1,70 @@
+﻿@model ModelLogin
+
+@Html.AntiForgeryToken()
+<form id="Logar" enctype="application/x-www-form-urlencoded">
+
+    <span hidden id="Exist"> @Model.Exist</span>
+    @if (ViewBag.Erro != null)
+    {
+        <div class="boxErroLogin  card border-info ">
+            <div class=" card-header">
+                <h3>@ViewBag.Erro </h3>
+            </div>
+            <div style="margin: 3%">
+                <h5 style="color:rgb(193,55,55)">  <img src=@ViewBag.SrcErro style="width:30px; margin:0 2% 0 2%" /> @ViewBag.MessageErro </h5>
+            </div>
+        </div>
+    }
+    <div class="card border-primary mb-2">
+        <div class="card-header"> <h1 class="h3 mb-1 fw-normal">Login</h1></div>
+        <div class="card-body">
+            <div class="mb-3">
+                <div class="form-floating">
+                    @Html.TextBox("Email",null,new {@id="floatingInput",@class="form-control letraP", @TextMode="Email", @placeholder="Seu Email",@type="email", @Required ="Required",@oninvalid="setCustomValidity('Endereço de email inválido. Corrija e tente novamente.')",@oninput="setCustomValidity('')" })
+                    <label for="Email">Email</label>
+                </div>
+                <div class="submit-line form-floating">
+                    @Html.TextBox("Senha",null, new {@id="passwordLogin",@class="form-control letraP",@type="password",@Required ="Required", @placeholder="Sua senha",@oninvalid="setCustomValidity('Campo senha vazio')",@oninput="setCustomValidity('')" })
+                    <label for="passwordLogin">Senha</label>
+                    <span class="submit-olho  "><img id="olho" onmouseout="mostrar()" onmouseup="mostrar()" onmousedown="ocultar()" src="~/icones/eye.svg" /></span>
+                </div>
+                <button type="button" class="btn bntPersGeral-bg-Darkpurple w-100  btn-sm" onclick="ValidarLogin()" id="BtnLogin">Confirmar</button>
+                <p>
+                    <br />Esqueceu sua senha? <a class="text-decoration-none" asp-action="RecuperarSenha" asp-controller="Login">Clique aqui</a>
+                    <br />Ao continuar, você concorda com as <a class="text-decoration-none" href="#">Condições de uso</a> do APP.
+                </p>
+                <a class="text-decoration-none" href="#">Precisa de ajuda?</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="adpHr" style="width:100%;margin:auto;color:orange;">
+        <hr><p style="color:white;">&ensp;  Possui conta?  &ensp;</p><hr>
+    </div>
+    <div style="width:100%;margin:auto;text-align:center">
+        <a style="width:100%;" class="btn  btn-sm text-light borda-branca-azul " asp-action="CriarConta" asp-controller="Login"><strong>Criar sua conta</strong></a>
+    </div>
+
+    <script type="text/javascript">
+        function ValidarLogin() {
+            var objeto = $("#Logar").serialize();
+            document.querySelector("#BtnLogin").innerHTML = "Logando...";
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("PartialLogin")',
+                data: objeto,
+                success: function (resp) {
+                    document.querySelector("#Logar").innerHTML = resp;
+                }
+            }).done(function () {
+                let resposta = document.getElementById("Exist").innerHTML;
+                if (parseInt(resposta) == 1) {
+                    window.location.href = '@Url.Action("Home","Home")';
+                }
+            }).fail(function () {
+                alert("erro");
+            })
+
+        }
+    </script>
+</form>

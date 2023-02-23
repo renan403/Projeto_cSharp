@@ -1,4 +1,31 @@
-﻿@{
-}
+﻿
+
+<div class="container">
+    <div id="PartialTest">
+        @await Html.PartialAsync("PartialTest.cshtml")
+    </div>
+   
+
+    <button id="btnteste" onclick="att()"> atualiza teste</button>
+</div>
+
+<script type="text/javascript">
+
+    //function att() {
+    //    console.log('teste');
+    //    $.ajax({
+    //    type:'POST',
+    //    url:'@Url.Action("PartialTest")',
+    //    success : function (data){
+    //            $('#PartialTest').html(data);
+                
+    //    }
+    //    })
+        
+
+    //}
+    //setInterval(att, 1000)
 
 
+
+</script>

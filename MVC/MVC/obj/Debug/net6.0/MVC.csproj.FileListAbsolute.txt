@@ -816,3 +816,8 @@ D:\repos\Projeto_cSharp\MVC\MVC\obj\Debug\net6.0\scopedcss\projectbundle\MVC.bun
 D:\repos\Projeto_cSharp\MVC\MVC\obj\Debug\net6.0\MVC.csproj.CopyComplete
 D:\repos\Projeto_cSharp\MVC\MVC\obj\Debug\net6.0\MVC.genruntimeconfig.cache
 D:\repos\Projeto_cSharp\MVC\MVC\obj\Debug\net6.0\ref\MVC.dll
+D:\repos\Projeto_cSharp\MVC\MVC\obj\Debug\net6.0\staticwebassets\msbuild.MVC.Microsoft.AspNetCore.StaticWebAssets.props
+D:\repos\Projeto_cSharp\MVC\MVC\obj\Debug\net6.0\staticwebassets\msbuild.build.MVC.props
+D:\repos\Projeto_cSharp\MVC\MVC\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.MVC.props
+D:\repos\Projeto_cSharp\MVC\MVC\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.MVC.props
+D:\repos\Projeto_cSharp\MVC\MVC\obj\Debug\net6.0\staticwebassets.pack.json

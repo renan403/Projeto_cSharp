@@ -81,8 +81,6 @@ namespace ApiMvc.Database
                         model.Padrao = true;
                         await _client.Child($"Usuarios/{chave}/Endereco/End{i + 1}").PatchAsync(model);
                     }
-
-
                 }
 
             }
