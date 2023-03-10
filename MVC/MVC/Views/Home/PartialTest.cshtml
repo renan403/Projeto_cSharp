@@ -1,0 +1,32 @@
+﻿@model MVC.Models.TestModel
+
+
+<form id="formPartial">
+
+    <span >@Model.Info</span>
+    <input id="Info" name="Info" value="10" hidden />
+    <button type="button" onclick="att()">atualizar</button>
+</form>
+
+
+<script type="text/javascript">
+
+    function att(){ 
+        var dados = $("#formPartial").serialize();
+        alert(dados);
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("PartialTest","Home")',
+            data: dados,
+            success : function(data){
+                document.querySelector("#formPartial").innerHTML= data;
+            }
+        }).done(function(){
+            alert("sucess")
+        }).fail(function(){
+            alert("fail")
+        })
+    }
+   
+
+</script>

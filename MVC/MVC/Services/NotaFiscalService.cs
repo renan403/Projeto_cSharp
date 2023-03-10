@@ -1,23 +1,19 @@
 ﻿using Firebase.Auth;
 using MVC.Models;
+using MVC.Repository;
 using Newtonsoft.Json;
 
 namespace MVC.Services
 {
-    public class NotaFiscalService : IDisposable
+    public class NotaFiscalService : UrlBase, IDisposable , INotaFiscalService
     {
-        private readonly IConfiguration _iconfig;
         private bool disposedValue;
 
-        public NotaFiscalService(IConfiguration iconfig)
-        {
-            _iconfig = iconfig;
-        }
         public async Task<Dictionary<string, ModelNotaFiscal>?> RetornarNotaFiscal(string userId)
         {
             try
             {
-                string url = $"{_iconfig.GetValue<string>("UrlApi")}Receipt/ReturnReceipt/{userId}";
+                string url = $"{_url}Receipt/ReturnReceipt/{userId}";
                 HttpClient client = new();
                 var rt = await client.GetAsync(url);
                 if (rt.IsSuccessStatusCode)
@@ -35,7 +31,7 @@ namespace MVC.Services
         {
             try
             {
-                string url = $"{_iconfig.GetValue<string>("UrlApi")}Receipt/GetReceipt/{userId}/{nota}";
+                string url = $"{_url}Receipt/GetReceipt/{userId}/{nota}";
                 HttpClient client = new();
                 var rt = await client.GetAsync(url);
                 if (rt.IsSuccessStatusCode)
@@ -53,7 +49,7 @@ namespace MVC.Services
         {
             try
             {
-                string url = $"{_iconfig.GetValue<string>("UrlApi")}Receipt/ConfReceipt/{userId}";
+                string url = $"{_url}Receipt/ConfReceipt/{userId}";
                 HttpClient client = new();
                 MultipartFormDataContent form = new()
                 {
@@ -74,7 +70,7 @@ namespace MVC.Services
         {
             try
             {
-                string url = $"{_iconfig.GetValue<string>("UrlApi")}Receipt/GenerateReceipt/{userId}";
+                string url = $"{_url}Receipt/GenerateReceipt/{userId}";
                 string jsonConvert = JsonConvert.SerializeObject(nota);
                 HttpClient client = new();
                 MultipartFormDataContent form = new()

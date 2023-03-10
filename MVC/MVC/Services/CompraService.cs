@@ -1,22 +1,16 @@
-﻿using Firebase.Auth;
-using FirebaseAdmin.Auth;
-using MVC.Models;
+﻿using MVC.Models;
+using MVC.Repository;
 
 namespace MVC.Services
 {
-    public class CompraService : IDisposable
+    public class CompraService :UrlBase, IDisposable , ICompraService
     {
         private bool disposedValue;
-
-        private readonly IConfiguration _iconfig;
-        public CompraService(IConfiguration iconfig)
-        {
-            _iconfig = iconfig;
-        }
+        
 
         public async Task AddItemUnico(string userId, ModelProduto prod)
         {
-            string url = $"{_iconfig.GetValue<string>("UrlApi")}Purchase/PickUpProduct/{userId}";
+            string url = $"{_url}Purchase/PickUpProduct/{userId}";
                 HttpClient client = new();
             MultipartFormDataContent content = new()
             {
@@ -42,7 +36,7 @@ namespace MVC.Services
 
         public async Task AlterarItemUnico(string userId, string qtd)
         {
-            string url = $"{_iconfig.GetValue<string>("UrlApi")}Purchase/AddOneItem/{userId}";
+            string url = $"{_url}Purchase/AddOneItem/{userId}";
                 HttpClient client = new();
             MultipartFormDataContent content = new()
             {
@@ -52,7 +46,7 @@ namespace MVC.Services
         }
         public async Task<ModelProduto?> PegarProduto(string userId)
         {
-            string url = $"{_iconfig.GetValue<string>("UrlApi")}Purchase/PickUpProduct/{userId}";
+            string url = $"{_url}Purchase/PickUpProduct/{userId}";
             HttpClient client = new();           
             var prod = await client.GetAsync(url);
             if (prod.IsSuccessStatusCode)

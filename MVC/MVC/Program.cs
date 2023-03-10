@@ -1,6 +1,6 @@
-
-
-
+using MVC.Funcoes;
+using MVC.Repository;
+using MVC.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +15,16 @@ builder.Services.AddSession(
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddSingleton<IUserService,UserService>();
+builder.Services.AddSingleton<IGeralService,GeralService>();
+builder.Services.AddSingleton<ICartaoService, CartaoService>();
+builder.Services.AddSingleton<IEnderecoService, EnderecoService>();
+builder.Services.AddSingleton<ICompraService, CompraService>();
+builder.Services.AddSingleton<ICarrinhoService, CarrinhoService>();
+builder.Services.AddSingleton<INotaFiscalService, NotaFiscalService>();
+builder.Services.AddSingleton<IProdutoService, ProdutoService>();
 builder.Services.AddControllersWithViews();
 
 

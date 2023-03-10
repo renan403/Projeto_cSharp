@@ -1,28 +1,25 @@
 ﻿using Firebase.Database;
+using MVC.Funcoes;
 using MVC.Models;
-using MVC.Services.Funcoes;
+using MVC.Repository;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Net.Http.Json;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security.Policy;
 using static System.Net.WebRequestMethods;
 
 
 namespace MVC.Services
 {
-    public class ProdutoService : IDisposable
+    public class ProdutoService : UrlBase,IProdutoService, IDisposable
     {
         private bool disposedValue;
-        private readonly IConfiguration _iconfig;
-        public ProdutoService(IConfiguration iconfig)
-        {       
-            _iconfig = iconfig;
-        }
 
         public async Task DeletarProdAsync(string keyProd)
         {
-            string url = $"{_iconfig.GetValue<string>("UrlApi")}Product/DeleteOneProd/{keyProd}";
+            string url = $"{_url}Product/DeleteOneProd/{keyProd}";
             using (HttpClient client = new())
             {
                 client.BaseAddress = new Uri(url);
@@ -31,7 +28,7 @@ namespace MVC.Services
         }
         public async Task<ModelProduto?> RetornaProdutoPorID(string prodId)
         {
-            string url = $"{_iconfig.GetValue<string>("UrlApi")}Product/ReturnProd/{prodId}";
+            string url = $"{_url}Product/ReturnProd/{prodId}";
             using (HttpClient client = new())
             {             
                var resp = await client.GetAsync(url);
@@ -46,7 +43,7 @@ namespace MVC.Services
         {
             using(HttpClient httpClient = new())
             {
-                var Url = new Uri($"{_iconfig.GetValue<string>("UrlApi")}Product/GetProdSeller/{userId}");
+                var Url = new Uri($"{_url}Product/GetProdSeller/{userId}");
                 var response = await httpClient.GetAsync(Url);
                 if (response.IsSuccessStatusCode)
                 {
@@ -54,7 +51,7 @@ namespace MVC.Services
                     {
                         return await response.Content.ReadFromJsonAsync<Dictionary<string, ModelProduto>>();
                     }
-                    catch (Exception e)
+                    catch (Exception )
                     {
                         return null;
                     }                  
@@ -66,7 +63,7 @@ namespace MVC.Services
         {
             using (HttpClient client = new())
             {
-                var Url = new Uri($"{_iconfig.GetValue<string>("UrlApi")}Product/AlterProd/{userId}");
+                var Url = new Uri($"{_url}Product/AlterProd/{userId}");
                 var ch = Chave.GetKey();
                 MultipartFormDataContent multiContent = new()
                 {
@@ -105,7 +102,7 @@ namespace MVC.Services
         {
           
                 HttpClient client = new();
-                var Url = new Uri($"{_iconfig.GetValue<string>("UrlApi")}Product/{userId}");
+                var Url = new Uri($"{_url}Product/{userId}");
                 byte[] file;
                 using (var br = new BinaryReader(p.File.OpenReadStream()))
                 {
@@ -132,13 +129,95 @@ namespace MVC.Services
                 return await client.PostAsync(Url, multiContent);
             
         }
-        public static string PegarNomeUrl(string url)
+        public string PegarNomeUrl(string url)
         {
             string separar = url;
             string[] separar1 = separar.Split("%2F");
             string[] separar2 = separar1[3].Split("?");
             return separar2[0];
         }
+
+        public async Task<Result> FinalizarCompra(Dictionary<string, ModelProduto> model)
+        {
+            float? valorTotal = 0;
+            int? quantiaTotal = 0;
+            List<dynamic> produtosEqtd = new();
+
+
+            List<ModelProduto> prod = new();
+            foreach (var idProduto in model)
+            {
+                var ID = idProduto.Value.IdProduto;
+                ModelProduto item = await RetornaProdutoPorID(ID) ?? new ModelProduto { };
+                valorTotal += item.PrecoProd * idProduto.Value.QtdPorProd;
+                quantiaTotal += idProduto.Value.QtdPorProd;
+
+                List<dynamic> unirLista = new()
+                {
+                    item,
+                    idProduto.Value.QtdPorProd ?? 0,
+                    idProduto.Key
+                };
+                produtosEqtd.Add(unirLista);
+
+                // Implementar na model para gerar nota
+
+                item.Qtd = idProduto.Value.QtdPorProd;
+                item.ValorTotal = (float)Math.Round((decimal)((decimal)item.PrecoProd * idProduto.Value.QtdPorProd), 2);
+                item.Cancelado = false;
+                item.Data = DateTime.Now.ToString("dd/MM/yyyy");
+                prod.Add(item);
+            }
+            Result rt = new()
+            {
+                Prod = prod,
+                ProdutosEqtd = produtosEqtd,
+                QuantiaTotal = quantiaTotal,
+                ValorTotal = valorTotal,
+            };
+            return rt;
+
+
+        }
+        public async Task<Tuple<ModelProduto, List<dynamic>>> RetornoProdModel(ICarrinhoService _carrinho, string idUser ) {
+
+            
+            var model = new ModelProduto();
+            List<dynamic> ProdutosEqtd = new();
+
+
+            float? valorTotal = 0;
+            int? quantiaTotal = 0;
+            List<int?> qtdProdutos = new();
+
+            List<ModelProduto> prod = new();
+            var Produtos = await _carrinho.RetornaCarrinho(idUser);
+            foreach (var idProduto in Produtos)
+            {
+                var ID = idProduto.Value.IdProduto;
+                var qtdBase = (await RetornaProdutoPorID(ID)).Qtd;
+                idProduto.Value.QtdPorProd = qtdBase <= idProduto.Value.QtdPorProd ? qtdBase : idProduto.Value.QtdPorProd;
+                ModelProduto item = await RetornaProdutoPorID(ID) ?? new ModelProduto { };
+                valorTotal += item.PrecoProd * idProduto.Value.QtdPorProd;
+                quantiaTotal += idProduto.Value.QtdPorProd;
+
+                List<dynamic> unirLista = new()
+                {
+                    item,
+                    idProduto.Value.QtdPorProd,
+                    idProduto.Key
+                };
+
+                ProdutosEqtd.Add(unirLista);
+            }
+            model.ValorTotal = Math.Round((double)valorTotal, 2);
+            model.Qtd = quantiaTotal;
+
+
+            return new Tuple<ModelProduto, List<dynamic>>(model, ProdutosEqtd);
+
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -154,5 +233,12 @@ namespace MVC.Services
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
+    }
+    public class Result
+    {
+        public List<dynamic>? ProdutosEqtd;
+        public float? ValorTotal;
+        public int? QuantiaTotal;
+        public List<ModelProduto>? Prod;
     }
 }

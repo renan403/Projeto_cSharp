@@ -205,8 +205,8 @@
                  <div style="display:flex;">
                       <img src="@Url.Content($"~/{@cartao.Value.CaminhoImgCartao}")" width="200" height="125"/>                              
                       <div style="margin-left:2%">
-                         <h4>@cartao.Object.NomeCard</h4>
-                         <p style="font-size:15px">Cartão de crédito terminando em @cartao.Object.QuatroDigCard </p>
+                         <h4>@cartao.Value.NomeCard</h4>
+                         <p style="font-size:15px">Cartão de crédito terminando em @cartao.Value.QuatroDigCard </p>
                          <button type="submit" id="cardTrocar" name="cardTrocar"  class=" btn-sm btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#@cartao.Key" value="@cartao.Key">Selecionar</button>
                      </div>
                 </div> 

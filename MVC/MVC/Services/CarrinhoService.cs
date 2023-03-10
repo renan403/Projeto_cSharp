@@ -1,19 +1,16 @@
 ﻿using MVC.Models;
+using MVC.Repository;
 using System.ComponentModel;
 
 namespace MVC.Services
 {
-    public class CarrinhoService
+    public class CarrinhoService : UrlBase , ICarrinhoService
     {
-        private readonly IConfiguration _iconfig;
-        public CarrinhoService(IConfiguration iconfig)
-        {
-            _iconfig = iconfig;
-        }
+
 
         public async Task<Dictionary<string, ModelProduto>?> RetornaCarrinho(string userId)
         {
-            string url = $"{_iconfig.GetValue<string>("UrlApi")}Cart/ReturnCart/{userId}";
+            string url = $"{_url}Cart/ReturnCart/{userId}";
             HttpClient client = new();
             var rt = await client.GetAsync(url);
             if (rt.IsSuccessStatusCode)
@@ -26,7 +23,7 @@ namespace MVC.Services
         {
             try
             {
-                string url = $"{_iconfig.GetValue<string>("UrlApi")}Cart/SaveCart/{userId}";
+                string url = $"{_url}Cart/SaveCart/{userId}";
                 HttpClient client = new();
                 MultipartFormDataContent form = new()
                 {
@@ -47,7 +44,7 @@ namespace MVC.Services
         }
         public async Task<bool> DeleteProdCarrinho(string userId, string excluir)
         {
-            string url = $"{_iconfig.GetValue<string>("UrlApi")}Cart/DelProdCar/{userId}/{excluir}";
+            string url = $"{_url}Cart/DelProdCar/{userId}/{excluir}";
             try
             {
                 HttpClient client = new();
@@ -66,7 +63,7 @@ namespace MVC.Services
 
             try
             {
-                string url = $"{_iconfig.GetValue<string>("UrlApi")}Cart/DelCar/{userId}";
+                string url = $"{_url}Cart/DelCar/{userId}";
                 HttpClient client = new();
                 var rt = await client.DeleteAsync(url);
                 if (rt.IsSuccessStatusCode)
@@ -82,7 +79,7 @@ namespace MVC.Services
         {
             try
             {
-                string url = $"{_iconfig.GetValue<string>("UrlApi")}Cart/HaveInTheCar/{userId}/{prodId}";
+                string url = $"{_url}Cart/HaveInTheCar/{userId}/{prodId}";
                 HttpClient client = new();
                 var rt = await client.GetAsync(url);
                 if (rt.IsSuccessStatusCode)
@@ -98,7 +95,7 @@ namespace MVC.Services
         {
             try
             {
-                string url = $"{_iconfig.GetValue<string>("UrlApi")}Cart/AddQtdCar/{userId}";
+                string url = $"{_url}Cart/AddQtdCar/{userId}";
                 HttpClient client = new();
                 MultipartFormDataContent form = new()
                 {
@@ -107,7 +104,7 @@ namespace MVC.Services
                 };
                 var rt = await client.PostAsync(url, form);
                 if (rt.IsSuccessStatusCode)
-                    return await rt.Content.ReadAsAsync<string>();
+                    return await rt.Content.ReadAsStringAsync();
                 return "erro";
             }
             catch (Exception)
@@ -119,7 +116,7 @@ namespace MVC.Services
         {
             try
             {
-                string url = $"{_iconfig.GetValue<string>("UrlApi")}Cart/AltQtdCar/{userId}";
+                string url = $"{_url}Cart/AltQtdCar/{userId}";
                 HttpClient client = new();
                 MultipartFormDataContent form = new()
                 {

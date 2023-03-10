@@ -15,7 +15,7 @@
         public string? IdProduto { get; set; }
 
         //funçao especifica
-        public float? ValorTotal { get; set; }
+        public double? ValorTotal { get; set; }
         public int? Qtd { get; set; }
         public int? QtdPorProd { get; set; }
         public string? ErroProd { get; set; }

@@ -1,38 +1,87 @@
 :root {
-    --color: white;
+    --color--white: white;
+    --color--blue: rgba(15,255,255,0.95);
+    --color--black: black;
+}
+.animacao {
+    border: solid 2px blue;
+    border-radius: 5px;
+    width: 100%;
+    animation: btnteste 5s infinite linear;
 }
 
-
+@keyframes btnteste {
+    0% {
+        border: solid 2px blue;
+        transition: width 2s,background-color 4s;
+    }
+    25% {
+        border: solid 2px blue;
+        transition: width 2s,background-color 4s;
+    }
+    50% {
+       
+        width: 80%;
+        transition: width 2s,background-color 4s;
+    }
+    75% {
+        border: solid 2px var(--color--blue);
+        
+        transition: background-color 4s;
+    }
+    100% {
+        border: solid 2px blue;
+        
+        width: 100%;
+        transition: width 2s,background-color 4s;
+    }
+    
+}
+.bg-verdinho{
+    background: linear-gradient(to top,rgba(15,255,255,0.2), rgba(15,15,15,0.95) 50%);
+    border-radius: 10px 
+}
 body {
     display: flex;
     flex-direction: column;
     background-attachment: fixed;
     background: rgba(15,15,15,1);
-    /*background-image: linear-gradient( to bottom,transparent,rgba(79,79,79,0.100), rgba(255,140,0,0.20),rgba(255,140,0,0.30));*/
 }
-.borda-bottom-azul{
-    border-bottom:solid 1px blue;
+.d-flex-block{
+    display:flex;
+}
+.border-black-azul {
+    border: solid 1px var(--color--black);
+    background-color: var(--color--white);
+    transition: border 1s,background-color 1.5s;
+}
+.border-black-azul:hover {
+    background-color: lightblue;
+    border: solid 2px darkblue;
+}
+.borda-bottom-azul {
+    border-bottom: solid 1px var(--color--blue);
 }
 .border-black {
-    border: solid 1px black;
+    border: solid 1px var(--color--black);
 }
 .bg-cinza{
     background-color : rgba(0,0,0,0.7);
 }
 .borda-branca-azul {
-    border: solid 1px white;
+    border: solid 1px var(--color--white);
     transition: border 1s
 }
     .borda-branca-azul:hover {
-        border: solid 1px blue
+        border: solid 1px var(--color--blue)
     }
 .borda-preta-azul {
-    border: solid 1px blue;
+    border: solid 1px var(--color--blue);
     transition: border 1s
 }
 
     .borda-preta-azul:hover {
-        border: solid 1px black
+        border: solid 1px var(--color--black)
     }
 .text-lightblue{
     color: lightblue;
@@ -139,13 +188,24 @@ body {
 .nav > #nav-check {
     display: none;
 }
+.boxProduto{
+ width:427px;
+ margin:3px
+}
+.img-produto{
+    max-width:400px
+}
 
 @media (max-width:1000px) {
     .nav > .BarPesq {
         display: grid;
         place-items: center;
         margin: 0 0 0 10%;
-        width: 35%;
+        width: 26%;
+    }
+    .boxProduto {
+        width: 550px;
+        margin: 3px
     }
 }
 
@@ -156,10 +216,23 @@ body {
         margin: 0 0 0 10%;
         width: 25%;
     }
+    .d-flex-block {
+        display: block;
+    }
+    .boxProduto {
+        width: 500px;
+        margin: 3px
+    }
 }
 
 @media (max-width:700px) {
-
+    .boxProduto {
+        width: 520px;
+        margin: 3px
+    }
+    .d-flex-block {
+        display: block;
+    }
     .imagemLoc {
         width: 15px;
         position: absolute;
@@ -275,8 +348,8 @@ body {
 footer.fixar-rodape {
     flex-shrink: 0;
     width: 100%;
-    background-color: black;
-    border-top: solid 1px white
+    background-color: var(--color--black);
+    border-top: solid 1px var(--color--white)
 }
 
 .conteudo {

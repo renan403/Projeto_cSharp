@@ -1,14 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MVC.Models;
+using MVC.Repository;
 using System.Diagnostics;
 using System.Text;
-using System.Text.Json;
-using Newtonsoft.Json;
-using System.Net.Http.Headers;
-using System.Net.Http;
-using System.Security.Cryptography;
-using MVC.Services;
-using MVC.Services.Funcoes;
+using System.Xml.Linq;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace MVC.Controllers
 {
@@ -16,14 +12,18 @@ namespace MVC.Controllers
     {   
         private readonly IConfiguration _iconfig;
         private HttpClient? client;
-        public HomeController(IConfiguration iconfig)
+        private readonly IGeralService _IGeral;
+        public HomeController(IConfiguration iconfig , IGeralService geralService)
         {
             _iconfig = iconfig;
+            _IGeral = geralService; 
         }
         [HttpGet]
         public async Task<IActionResult> Home()
         {
-            //return RedirectToAction("teste");
+            // return RedirectToAction("teste");
+
+
             try
             {
                 client = new()
@@ -36,11 +36,10 @@ namespace MVC.Controllers
 
                     ViewBag.Produtos = await response.Content.ReadFromJsonAsync<Dictionary<string, ModelProduto>>();
                 }
-                using (GeralService geral = new())
-                {
-                    ViewBag.nomeUser = geral.RetornaNomeNull(HttpContext.Session.GetString("nomeFormatado") ?? "");
-                    ViewBag.RNCUC = geral.RetornoRNCUC(HttpContext.Session.GetString("Endereço") ?? "");
-                }
+              
+                    ViewBag.nomeUser = _IGeral.RetornaNomeNull(HttpContext.Session.GetString("nomeFormatado") ?? "");
+                    ViewBag.RNCUC = _IGeral.RetornoRNCUC(HttpContext.Session.GetString("Endereço") ?? "");
+                
             }
             catch (Exception)
             {
@@ -49,10 +48,22 @@ namespace MVC.Controllers
             return View();
         }
         [HttpGet]
-        public IActionResult teste()
+        public PartialViewResult PartialTest(TestModel test)
         {
 
-            return View();
+            return PartialView(test);
+        }
+        [HttpPost]
+        public PartialViewResult PartialTest2(TestModel test)
+        {
+
+            return PartialView(test);
+        }
+        [HttpGet]
+        public IActionResult teste()
+        {
+            var m = new TestModel() { Info = "1" };
+            return View(m);
         }     
         [HttpGet("/Home/Home/Sair")]
         public IActionResult HomeSair()

@@ -1,25 +1,21 @@
 ﻿using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using MVC.Models;
+using MVC.Repository;
 using Newtonsoft.Json;
 using System.Security.Policy;
 
 namespace MVC.Services
 {
-    public class CartaoService : IDisposable
+    public class CartaoService : UrlBase, IDisposable , ICartaoService
     {
-        private readonly IConfiguration _iconfig;
+     
         private bool disposedValue;
-
-        public CartaoService(IConfiguration iconfig)
-        {
-            _iconfig = iconfig;
-        }
 
         public async Task<string> SalvarCartao(string userId, ModelCartao cartao)
         {
             try
             {
-                string url = $"{_iconfig.GetValue<string>("UrlApi")}Card/SaveCard/{userId}";
+                string url = $"{_url}Card/SaveCard/{userId}";
                 HttpClient client = new();
 
                 var jsonCartao = JsonConvert.SerializeObject(cartao);
@@ -47,9 +43,11 @@ namespace MVC.Services
 
             
         }
-        public async Task<Dictionary<string, ModelCartao>?> ReturnCard(string userId)
+        public async Task<Dictionary<string, ModelCartao>?> ReturnCard(string? userId)
         {
-            string url = $"{_iconfig.GetValue<string>("UrlApi")}Card/ReturnCard/{userId}";
+            if (string.IsNullOrEmpty(userId) )
+                return null;
+            string url = $"{_url}Card/ReturnCard/{userId}";
             try
             {
                 HttpClient client = new();
@@ -66,7 +64,7 @@ namespace MVC.Services
         }
         public async Task<bool> DeleteCartao(string userId, string cartao)
         {
-            string url = $"{_iconfig.GetValue<string>("UrlApi")}Card/DeleteCard/{userId}/{cartao}";
+            string url = $"{_url}Card/DeleteCard/{userId}/{cartao}";
             try
             {
                 HttpClient client = new();
@@ -83,7 +81,7 @@ namespace MVC.Services
         public async Task<Dictionary<string,ModelCartao>?> RetornarCartaoPadrao(string userId)
         {
             HttpClient client = new();
-            string url = $"{_iconfig.GetValue<string>("UrlApi")}Card/ReturnPatternCard/{userId}";            
+            string url = $"{_url}Card/ReturnPatternCard/{userId}";            
             var rp = await client.GetAsync(url);
             if (rp.IsSuccessStatusCode)
                 return await rp.Content.ReadAsAsync<Dictionary<string, ModelCartao>>();
@@ -92,7 +90,7 @@ namespace MVC.Services
         }
         public async Task<bool> MudarPadraoCard(string userId, string key)
         {
-            string url = $"{_iconfig.GetValue<string>("UrlApi")}Card/ChangePatternCard/{userId}";
+            string url = $"{_url}Card/ChangePatternCard/{userId}";
             try
             {
                 HttpClient client = new();
@@ -112,7 +110,7 @@ namespace MVC.Services
         }
         public async Task<ModelCartao?> Cartao(string userId, string keyCard)
         {
-            string url = $"{_iconfig.GetValue<string>("UrlApi")}Card/Card/{userId}/{keyCard}";
+            string url = $"{_url}Card/Card/{userId}/{keyCard}";
             try
             {
                 HttpClient client = new();             
@@ -129,7 +127,7 @@ namespace MVC.Services
         }
         public async Task<bool> AlterarCartao(string userId, string cartao, string nome, string data)
         {
-            string url = $"{_iconfig.GetValue<string>("UrlApi")}Card/AlterCard/{userId}";
+            string url = $"{_url}Card/AlterCard/{userId}";
             try
             {
                 HttpClient client = new();

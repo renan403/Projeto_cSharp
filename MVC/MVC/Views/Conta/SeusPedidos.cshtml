@@ -46,19 +46,19 @@
                                 <li> Enviar para</li>
                                 <li>
                                     <a class="text-decoration-none text-capitalize"
-                                   data-bs-trigger="focus hover"
-                                   data-bs-content="<ul class='list-unstyled text-capitalize'>
-                                                               <li ><strong>@item.Value.Endereco.Nome</strong></li>
-                                                               <li>@item.Value.Endereco.Endereco, @item.Value.Endereco.Numero</li>
-                                                               <li>@item.Value.Endereco.Cidade, @item.Value.Endereco.UF</li>
-                                                               <li>@item.Value.Endereco.Cep</li>
-                                                               <li>@item.Value.Endereco.Pais</li>
-                                                            </ul>"
-                                           data-bs-toggle="popover"
-                                           data-bs-html="true"
-                                           data-bs-placement="bottom"
-                                           data-bs-container="body">@item.Value.Endereco.Nome
-                                                </a>
+                                       data-bs-trigger="focus hover"
+                                       data-bs-content="<ul class='list-unstyled text-capitalize'>
+                                                                       <li ><strong>@item.Value.Endereco.Nome</strong></li>
+                                                                       <li>@item.Value.Endereco.Endereco, @item.Value.Endereco.Numero</li>
+                                                                       <li>@item.Value.Endereco.Cidade, @item.Value.Endereco.UF</li>
+                                                                       <li>@item.Value.Endereco.Cep</li>
+                                                                       <li>@item.Value.Endereco.Pais</li>
+                                                                    </ul>"
+                                                   data-bs-toggle="popover"
+                                                   data-bs-html="true"
+                                                   data-bs-placement="bottom"
+                                                   data-bs-container="body">@item.Value.Endereco.Nome
+                                                        </a>
                                 </li>
                             </ul>
                         </div>
@@ -96,10 +96,10 @@
                                                         <li class="mb-1"><h5>@Html.ActionLink($"{@i.NomeProd}","Produtos","Produtos", new{id = $"{@i.IdProduto}"}, new {@class="text-decoration-none text-capitalize link-laranja-cinza" })</h5></li>
                                                         <li class="mb-1">R$<span> @i.PrecoProd</span></li>
                                                         <li class="mb-3">Vendido por:<a class="text-decoration-none link-laranja-cinza text-capitalize" href="#"> @i.NomeVendedor</a></li>
-                                                        <li class="mb-1"><h6>Entregue:@item.Value.Destinatario.Data </h6></li>
+                                                        <li class="mb-1"><h6>Entregue: @item.Value.Destinatario.Data </h6></li>
                                                         <li class="mb-1">Assinado por: <span class="text-capitalize">@item.Value.Destinatario.Nome</span> </li>
                                                         <li class="mb-3">Elegível para devolução até: @item.Value.Destinatario.Devolucao </li>
-                                                        <li class="mb-1"><a href="/Produtos/Produtos/@i.IdProduto" class="btn border"><img src="~/icones/sacola-de-compras.png" widht="25px" height="25px" />&nbsp;Compra novamente</a></li>
+                                                        <li class="mb-1"><a href="/Produtos/Produtos/@i.IdProduto" class="btn border-black-azul">Compra novamente</a></li>
                                                     </ul>
                                                 </div>
                                                 <div class="col order-first">
@@ -113,11 +113,11 @@
                                 <div class="col-sm-4 " style="text-align: center">
                                     <button class="btn btn-outline-dark w-50 mb-2" data-bs-toggle="modal" data-bs-target="#@i.IdProduto">Rastrear pacote </button>
                                     <a class="btn btn-outline-dark w-50  mb-2"
-                           data-bs-trigger="focus hover"
-                           data-bs-content="Não desenvolvido"
-                           data-bs-toggle="popover"
-                           data-bs-placement="right"
-                           data-bs-container="body">
+                                       data-bs-trigger="focus hover"
+                                       data-bs-content="Não desenvolvido"
+                                       data-bs-toggle="popover"
+                                       data-bs-placement="right"
+                                       data-bs-container="body">
                                         Devolver Produto
                                     </a>
                                     <button class="btn btn-outline-dark w-50">Avaliar produto </button>
@@ -179,8 +179,7 @@
                                                         <li class="mb-1">R$<span> @i.PrecoProd</span></li>
                                                         <li class="mb-3">Vendido por:<a class="text-decoration-none link-laranja-cinza text-capitalize" href="#"> @i.NomeVendedor</a></li>
                                                         <li class="mb-3"><h6>Previsão de entrega: @data</h6></li>
-
-                                                        <li class="mb-1"> <a href="/Produtos/Produtos/@i.IdProduto" class="btn border"><img src="~/icones/sacola-de-compras.png" widht="25px" height="25px" />&nbsp;Compra novamente</a></li>
+                                                        <li class="mb-1"> <a href="/Produtos/Produtos/@i.IdProduto" class="btn border-black-azul">Compra novamente</a></li>
                                                     </ul>
                                                 </div>
                                                 <div class="col order-first">
@@ -212,9 +211,7 @@
                                         <div class="modal-body">
                                             <div class="container text-end">
                                                 <div class="row">
-
                                                     <div class="col order-last">
-
                                                         Previsão de entrega: @data
                                                     </div>
                                                     <div class="col">
@@ -229,10 +226,8 @@
                                                 </div>
                                             </div>
                                             <div class="progress">
-
                                                 <div class="progress-bar progress-bar-animated" role="progressbar" aria-label="Animated striped example" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 71%;align-items:end"><span class="bola"></span></div>
                                             </div>
-
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn " data-bs-dismiss="modal">Fechar</button>
@@ -240,7 +235,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="modal fade" id="@id" tabindex="-1" aria-labelledby="Modal confirmar recebimento" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered modal-lg">
                                     <div class="modal-content">

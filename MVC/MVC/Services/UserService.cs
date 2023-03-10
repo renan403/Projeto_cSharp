@@ -1,22 +1,25 @@
 ﻿using Firebase.Auth;
-using MVC.Services.Funcoes;
+using MVC.Funcoes;
+using MVC.Models.User;
+using MVC.Repository;
+using System.Security.Permissions;
 using System.Security.Policy;
 
 namespace MVC.Services
 {
-    public class UserService : IDisposable
+    public class UserService : UrlBase, IDisposable, IUserService
     {
         private bool disposedValue;
-        private IConfiguration _iconfig;
-        public UserService(IConfiguration iconfig)
-        {
-            _iconfig = iconfig;
-        }
-        public async Task<string?> RegistrarUser(string nome, string email, string pwd)
+        
+
+        public async Task<string?> RegistrarUser(string? nome, string? email, string? pwd)
         {
             try
             {
-                string url = $"{_iconfig.GetValue<string>("UrlApi")}Auth/Register/{nome}";
+                if (string.IsNullOrEmpty(nome) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(pwd))
+                    return null;
+
+                string url = $"{_url}Auth/Register/{nome}";
                 using HttpClient client = new();
                 var ch = Chave.GetKey();
                 MultipartFormDataContent form = new()
@@ -31,18 +34,19 @@ namespace MVC.Services
                 }
                 return null;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }
-
         }
-        public async Task<string?> RetornaID(string email)
+        public async Task<string?> RetornaID(string? email)
         {
             try
             {
+                if (email == null)
+                    return null;
                 var ch = Chave.GetKey();
-                string url = $"{_iconfig.GetValue<string>("UrlApi")}Auth/ReturnId/{email}";
+                string url = $"{_url}Auth/ReturnId/{email}";
                 using HttpClient client = new();
                 var rt = await client.GetAsync(url);
                 if (rt.IsSuccessStatusCode)
@@ -51,39 +55,40 @@ namespace MVC.Services
                 }
                 return null;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }
-            
         }
-        public async Task<string> RetornaNome(string userId)
-        { 
-            try
-            {
-                string url = $"{_iconfig.GetValue<string>("UrlApi")}Auth/ReturnName/{userId}";
-                using HttpClient client = new();
-                var rt = await client.GetAsync(url);
-                if (rt.IsSuccessStatusCode)
-                {
-                    return await rt.Content.ReadAsStringAsync();
-                }
-                return null;
-            }
-            catch (Exception e)
-            {
-
-                return null;
-            }
-
-        }
-        public async Task<string> TrocarNome(string IdUser, string nome)
+        public async Task<string?> RetornaNome(string? userId)
         {
             try
             {
-                string url = $"{_iconfig.GetValue<string>("UrlApi")}Auth/ChangeName";
+                if (userId == null)
+                    return null;
+                string url = $"{_url}Auth/ReturnName/{userId}";
                 using HttpClient client = new();
-                MultipartFormDataContent form = new() 
+                var rt = await client.GetAsync(url);
+                if (rt.IsSuccessStatusCode)
+                {
+                    return await rt.Content.ReadAsStringAsync();
+                }
+                return null;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+        public async Task<string> TrocarNome(string? IdUser, string? nome)
+        {
+            try
+            {
+                if (IdUser == null || nome == null)
+                    return "erro";
+                string url = $"{_url}Auth/ChangeName";
+                using HttpClient client = new();
+                MultipartFormDataContent form = new()
                 {
                     {new StringContent(IdUser), "idUser"},
                     {new StringContent(nome), "nome"}
@@ -95,17 +100,18 @@ namespace MVC.Services
                 }
                 return "erro na alteração";
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return "erro";
             }
-
         }
-        public async Task<string?> Logar(string email, string pwd)
+        public async Task<Logar?> Logar(string? email, string? pwd)
         {
             try
             {
-                string url = $"{_iconfig.GetValue<string>("UrlApi")}Auth/Login";
+                if (string.IsNullOrEmpty(email))
+                    return new Logar();
+                string url = $"{_url}Auth/Login";
                 using HttpClient client = new();
                 var ch = Chave.GetKey();
                 MultipartFormDataContent form = new()
@@ -114,23 +120,57 @@ namespace MVC.Services
                     {new StringContent(Convert.ToBase64String(Seguranca.Cript.EncryptarStringParaByte(pwd, ch.Item1, ch.Item2, "#P>EET|MkkPa{oE0[Zcm"))), "pwd"}
                 };
                 var rt = await client.PostAsync(url, form);
-                if (rt.IsSuccessStatusCode)
+                return await rt.Content.ReadAsStringAsync() switch
                 {
-                    return await rt.Content.ReadAsStringAsync();
-                }
-                return null;
+                    "Logged" => new Logar() { Resposta = "Logged" },
+                    "TOO_MANY_ATTEMPTS_TRY_LATER" => new Logar()
+                    {
+                        Resposta = "TOO_MANY_ATTEMPTS_TRY_LATER",
+                        Erro = "Acesso desabilitado",
+                        MessageErro = "Muitas falhas de login, para entrar imediatamente você pode trocar a senha ou pode tentar novamente mais tarde.",
+                        SrcErro = "../icones/exclamation-triangle.svg"
+                    },
+                    "EMAIL_NOT_FOUND" => new Logar()
+                    {
+                        Resposta = "EMAIL_NOT_FOUND",
+                        Erro = "Email",
+                        MessageErro = "Email não encontrado, verifique por favor.",
+                        SrcErro = "../icones/exclamation-triangle.svg"
+                    },
+                    "INVALID_PASSWORD" => new Logar()
+                    {
+                        Resposta = "INVALID_PASSWORD",
+                        Erro = "Senha",
+                        MessageErro = "Senha incorreta, verifique por favor.",
+                        SrcErro = "../icones/exclamation-triangle.svg"
+                    },
+                    _ => new Logar()
+                    {
+                        Resposta = "SYSTEM_ERROR",
+                        Erro = "Sistema",
+                        MessageErro = "Sistema está fora do ar, por favor, tente mais tarde.",
+                        SrcErro = "../icones/exclamation-triangle.svg"
+                    },
+                };
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                return null;
+                return new Logar()
+                {
+                    Resposta = "SYSTEM_ERROR",
+                    Erro = "Sistema",
+                    MessageErro = "Sistema está fora do ar, por favor, tente mais tarde.",
+                    SrcErro = "../icones/exclamation-triangle.svg"
+                };
             }
-
         }
-        public async Task<bool> DeletarConta(string idUser,string email, string pwd )
+        public async Task<bool> DeletarConta(string? idUser, string? email, string? pwd)
         {
             try
             {
-                string url = $"{_iconfig.GetValue<string>("UrlApi")}Auth/DeleteAcount";
+                if (string.IsNullOrEmpty(idUser) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(pwd))
+                    return false;
+                string url = $"{_url}Auth/DeleteAcount";
                 using HttpClient client = new();
                 var ch = Chave.GetKey();
 
@@ -147,19 +187,21 @@ namespace MVC.Services
                 return false;
             }
         }
-        public async Task<string> ResetarSenha(string email)
+        public async Task<string> ResetarSenha(string? email)
         {
             try
             {
+                if (string.IsNullOrEmpty(email))
+                    return "erro";
                 using HttpClient client = new();
-                string url = $"{_iconfig.GetValue<string>("UrlApi")}Auth/RecoverPassword";
+                string url = $"{_url}Auth/RecoverPassword";
                 var ch = Chave.GetKey();
                 MultipartFormDataContent content = new()
                 {
-                    {new StringContent(Convert.ToBase64String(Seguranca.Cript.EncryptarStringParaByte(email, ch.Item1, ch.Item2, "#P>EET|MkkPa{oE0[Zcm"))), "email"},                   
+                    {new StringContent(Convert.ToBase64String(Seguranca.Cript.EncryptarStringParaByte(email, ch.Item1, ch.Item2, "#P>EET|MkkPa{oE0[Zcm"))), "email"},
                 };
-                var rt = await client.PostAsync(url,content);
-                if(rt.IsSuccessStatusCode)
+                var rt = await client.PostAsync(url, content);
+                if (rt.IsSuccessStatusCode)
                     return await rt.Content.ReadAsStringAsync();
                 return "erro";
             }
@@ -169,8 +211,6 @@ namespace MVC.Services
                 throw;
             }
         }
-
-
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)

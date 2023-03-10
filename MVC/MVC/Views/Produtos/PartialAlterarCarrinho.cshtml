@@ -1,0 +1,187 @@
+﻿@model ModelProduto
+@{
+    ViewBag.Title = "Carrinho";
+    int con = 1;
+    string qtd = string.Empty;
+    string valor = string.Empty;
+    string val = string.Empty;
+
+}
+
+
+<form id="formAltCarrinho">
+    <div class="container">
+        @foreach (var produto in ViewBag.Carrinho)
+        {
+
+            qtd = "qtd" + con;
+            valor = "Valor" + con;
+            val = "val" + con;
+
+
+            <div class="p-1">
+                <div id="bloco" class="d-flex text-light justify-content-around bg-verdinho align-items-center border border-light">
+                    <div class="m-2 w-50 img-produto">
+                        <img class="w-100 bordaPoucoRedonda border-bottom" src="@produto[0].UrlImg" title="@produto[0].NomeProd" alt="Imagem do produto" />
+                    </div>
+                    <div class=" d-flex flex-column justify-content-center m-3">
+                        <div class="m-2 ">
+                            <h4><a class="text-decoration-none" href="">@produto[0].NomeProd</a></h4>
+                        </div>
+                        <div class="m-2 ">
+                            <input type="checkbox" />
+                            <span>Pedido para presente?</span>
+                        </div>
+                        <div class="m-2 d-flex flex-wrap">
+                            <div class=" m-1 ">
+                                <label>Quantidade:</label>
+                                <select id="@qtd" onchange="attValor(@con)">
+                                    @if (produto[0].Qtd > 5)
+                                    {
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            <option value="@i">@i</option>
+                                        }
+                                    }
+                                    else if (produto[0].Qtd == 0)
+                                    {
+                                        <option selected value="0">Indisponivel</option>
+
+                                    }
+                                    else
+                                    {
+                                        @for (int i = 1; i <= produto[0].Qtd; i++)
+                                        {
+                                            <option value="@i">@i</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="m-1 ">
+                                <input type="button" class="bg-transparent text-light border-none" onclick="Excluir('@produto[2]')" value="Excluir" />
+                            </div>
+                        </div>
+                        <div class="m-2 d-flex flex-wrap ">
+                            <h5 class="m-1">Valor: R$ </h5>
+                            <span class="m-1" id="@valor">@produto[0].PrecoProd</span>
+                            <input id="@val" hidden value="@produto[0].PrecoProd" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <script type="text/javascript">
+
+
+                window.onload = function () {
+                    var selectElement = document.querySelector("#qtd1");
+                    var num = @produto[1];
+                    selectElement.value = num.toString();
+
+                    let quantBlocoCod = document.querySelectorAll("#bloco").length;
+
+                    for (var i = 1; i <= quantBlocoCod; i++) {
+                        attValor(i)
+                    }
+                    attValorTotal(quantBlocoCod);
+                }
+                const formatNumber = new Intl.NumberFormat('pt-BR', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                });
+                function attValor(div = 0) {
+
+                    // Declarar Variavel e receber valores do for
+                    let divValor = "#Valor" + div;
+                    let divValorHidden = "#val" + div;
+                    let qtdVal = "qtd" + div;
+
+                    // Pegar quantidade de itens selecionados
+                    let select = document.getElementById(qtdVal);
+                    let quantidade = select.options[select.selectedIndex].value;
+
+                    // Valor unico do produto em forma Hidden
+                    let valor = document.querySelector(divValorHidden).value;
+
+                    //Atualiza o valor com base na quantidade de itens e no valor unico do produto
+                    let Rep = valor.replace(".", "")
+                    document.querySelector(divValor).innerHTML = formatNumber.format(parseFloat(Rep.replace(",", ".")) * quantidade);
+
+                    //Pegar quantia para atualizar a quantia total
+                    let quantBlocoCod = document.querySelectorAll("#bloco").length
+                    attValorTotal(quantBlocoCod)
+
+                }
+
+
+            </script>
+            con += 1;
+        }
+        <hr class="hrNav" />
+        <div class="text-light d-flex justify-content-between py-2 ">
+            <div class="w-25 ms-1">
+                <button class=" btn btn-sm w-100 text-light borda-branca-azul">Comprar</button>
+           </div>
+           <div class="d-flex">
+                <h5>
+                    Subtotal &nbsp;
+                </h5>
+                <h5 id="QtdTotal">
+                </h5>
+                <h5>
+                    &nbsp; R$ <span id="Total"></span>
+                </h5>
+           </div>
+            
+        </div>
+        
+    </div>
+   
+</form>
+
+<script>
+    function Excluir(prod) {
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("PartialAlterarCarrinho", "Produtos")?Prod=' + prod,
+            success: function (data) {
+                document.querySelector("#formAltCarrinho").innerHTML = data;
+
+                let quantBlocoCod = document.querySelectorAll("#bloco").length;
+
+                for (var i = 1; i <= quantBlocoCod; i++) {
+                    attValor(i)
+                }
+                attValorTotal(quantBlocoCod);
+
+            }
+        })
+    }
+    function attValorTotal(quant = 0) {
+        var acumulador = 0;
+        var acumuladorQuantidade = 0;
+
+        for (var i = 1; i <= parseInt(quant); i++) {
+            let divValor = "#Valor" + i;
+            let qtdVal = "qtd" + i;
+
+            //Pegar valor total do produto, Produto x quantidade
+            let valor = document.querySelector(divValor).innerHTML;
+
+            //Pegar a quantidade para que possa recalcular no outro metodo
+            let select = document.getElementById(qtdVal);
+            let quantidade = select.options[select.selectedIndex].value;
+
+            //Acumulando para recalcular e dando replace para corrigir erro
+            let Rep = valor.replace(".", "");
+            acumulador += parseFloat(Rep.replace(",", "."));
+            acumuladorQuantidade += parseInt(quantidade);
+        }
+
+        //Resultado final
+        document.querySelector("#Total").innerHTML = formatNumber.format(acumulador);
+        document.querySelector("#QtdTotal").innerHTML = "( " + acumuladorQuantidade + " ) :";
+    }
+</script>

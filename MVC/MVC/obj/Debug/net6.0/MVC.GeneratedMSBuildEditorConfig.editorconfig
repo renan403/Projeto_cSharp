@@ -84,6 +84,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxIb21lLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/repos/Projeto_cSharp/MVC/MVC/Views/Home/PartialTest.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQYXJ0aWFsVGVzdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/repos/Projeto_cSharp/MVC/MVC/Views/Home/teste.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVx0ZXN0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -114,6 +118,18 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/repos/Projeto_cSharp/MVC/MVC/Views/Produtos/ComprarProd.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHV0b3NcQ29tcHJhclByb2QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/repos/Projeto_cSharp/MVC/MVC/Views/Produtos/PartialAlterarCarrinho.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHV0b3NcUGFydGlhbEFsdGVyYXJDYXJyaW5oby5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/repos/Projeto_cSharp/MVC/MVC/Views/Produtos/PartialProdutos.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHV0b3NcUGFydGlhbFByb2R1dG9zLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/repos/Projeto_cSharp/MVC/MVC/Views/Produtos/PartialQuantidade.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHV0b3NcUGFydGlhbFF1YW50aWRhZGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/repos/Projeto_cSharp/MVC/MVC/Views/Produtos/Produtos.cshtml]

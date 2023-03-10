@@ -1,31 +1,17 @@
-﻿
-
-<div class="container">
-    <div id="PartialTest">
-        @await Html.PartialAsync("PartialTest.cshtml")
-    </div>
+﻿@model TestModel
+<div class="container justify-content-center bordarParaTest bg-white d-block">
    
+ 
+        @await Html.PartialAsync("PartialTest",Model)
+ 
+  
+    <form id="formPartial2">
+        @await Html.PartialAsync("PartialTest2",Model)
+    </form>
 
-    <button id="btnteste" onclick="att()"> atualiza teste</button>
+   
 </div>
 
 <script type="text/javascript">
-
-    //function att() {
-    //    console.log('teste');
-    //    $.ajax({
-    //    type:'POST',
-    //    url:'@Url.Action("PartialTest")',
-    //    success : function (data){
-    //            $('#PartialTest').html(data);
-                
-    //    }
-    //    })
-        
-
-    //}
-    //setInterval(att, 1000)
-
-
 
 </script>
