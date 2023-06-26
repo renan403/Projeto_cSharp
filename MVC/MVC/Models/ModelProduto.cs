@@ -8,6 +8,19 @@
         public string? ModeloProd { get; set; }
         public string? DescriProd { get; set; }
         public float? PrecoProd { get; set; }
+       public string? PrecoProdStr { get 
+            {
+                string? rt;
+                try
+                {
+                    rt = ((decimal)PrecoProd).ToString("N2");
+                }catch{
+                    rt = null;
+                }
+                return rt;
+            } 
+        }
+
         public string? Categoria { get; set; }
         public IFormFile? File { get; set; }
         public string? UrlImg { get; set; }
@@ -15,6 +28,21 @@
         public string? IdProduto { get; set; }
 
         //funçao especifica
+        public string? ValorTotalStr { get {
+                
+                    string? rt;
+                    try
+                    {
+                        rt = ((decimal)ValorTotal).ToString("N2");
+                    }
+                    catch
+                    {
+                        rt = null;
+                    }
+                    return rt;
+                
+            } }
+        public string? ValorTotalStrPorProd { get; set; }
         public double? ValorTotal { get; set; }
         public int? Qtd { get; set; }
         public int? QtdPorProd { get; set; }

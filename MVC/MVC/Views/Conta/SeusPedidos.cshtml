@@ -38,7 +38,7 @@
                         <div class="col">
                             <ul class="list-unstyled">
                                 <li> Total</li>
-                                <li>R$@item.Value.Produto[0].ValorTotal</li>
+                                <li>R$@item.Value.Produto[0].ValorTotalStr</li>
                             </ul>
                         </div>
                         <div class="col ">
@@ -94,7 +94,8 @@
                                                 <div class="col order-last" style="text-align:left">
                                                     <ul class="list-unstyled">
                                                         <li class="mb-1"><h5>@Html.ActionLink($"{@i.NomeProd}","Produtos","Produtos", new{id = $"{@i.IdProduto}"}, new {@class="text-decoration-none text-capitalize link-laranja-cinza" })</h5></li>
-                                                        <li class="mb-1">R$<span> @i.PrecoProd</span></li>
+                                                        <li class="mb-1">R$<span> @i.PrecoProdStr</span></li>
+                                                        <li class="mb-1">Quantidade:<span> @i.QtdPorProd</span></li>
                                                         <li class="mb-3">Vendido por:<a class="text-decoration-none link-laranja-cinza text-capitalize" href="#"> @i.NomeVendedor</a></li>
                                                         <li class="mb-1"><h6>Entregue: @item.Value.Destinatario.Data </h6></li>
                                                         <li class="mb-1">Assinado por: <span class="text-capitalize">@item.Value.Destinatario.Nome</span> </li>
@@ -121,7 +122,7 @@
                                         Devolver Produto
                                     </a>
                                     <button class="btn btn-outline-dark w-50">Avaliar produto </button>
-
+                                    <a href="/Produtos/Produtos/@i.IdProduto" class="btn btn-outline-dark w-50">Compra novamente</a>
                                 </div>
                             </div>
                             <div class="modal fade" id="@i.IdProduto" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -175,11 +176,11 @@
                                                 }
                                                 <div class="col order-last" style="text-align:left">
                                                     <ul class="list-unstyled">
-                                                        <li class="mb-1"><h5>@Html.ActionLink($"{@i.NomeProd}","Produtos","Produtos", new{id = $"{@i.IdProduto}"}, new {@class="text-decoration-none text-capitalize link-laranja-cinza" })</h5></li>
-                                                        <li class="mb-1">R$<span> @i.PrecoProd</span></li>
+                                                        <li class="mb-1"><h5>@Html.ActionLink($"{@i.NomeProd}","Produtos","Produtos", new{id = $"{@i.IdProduto}"}, new {@class="text-decoration-none text-capitalize link-laranja-cinza" })</h5></li>                                                      
+                                                        <li class="mb-1">R$<span> @i.PrecoProdStr</span></li>
+                                                        <li class="mb-1">Quantidade:<span> @i.QtdPorProd</span></li>
                                                         <li class="mb-3">Vendido por:<a class="text-decoration-none link-laranja-cinza text-capitalize" href="#"> @i.NomeVendedor</a></li>
                                                         <li class="mb-3"><h6>Previsão de entrega: @data</h6></li>
-                                                        <li class="mb-1"> <a href="/Produtos/Produtos/@i.IdProduto" class="btn border-black-azul">Compra novamente</a></li>
                                                     </ul>
                                                 </div>
                                                 <div class="col order-first">
@@ -191,14 +192,15 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-4 " style="text-align: center">
-                                    <button class="btn btn-outline-dark w-50 mb-2" data-bs-toggle="modal" data-bs-target="#@i.IdProduto">Rastrear pacote </button>
-                                    <a class="btn btn-outline-dark w-50  mb-2" data-bs-trigger="focus hover" data-bs-content="Não desenvolvido" data-bs-toggle="popover" data-bs-placement="right" data-bs-container="body">
+                                    <button class="btn btn-outline-dark w-50 mb-1" data-bs-toggle="modal" data-bs-target="#@i.IdProduto">Rastrear pacote </button>
+                                    <a class="btn btn-outline-dark w-50  mb-1" data-bs-trigger="focus hover" data-bs-content="Não desenvolvido" data-bs-toggle="popover" data-bs-placement="right" data-bs-container="body">
                                         Devolver Produto
                                     </a>
                                     @{
                                         string id = "M" + @item.Key;
                                     }
-                                    <button class="btn btn-outline-dark w-50" data-bs-toggle="modal" data-bs-target="#@id">Recebeu pedido?</button>
+                                    <button class="btn btn-outline-dark w-50 mb-1" data-bs-toggle="modal" data-bs-target="#@id">Recebeu pedido?</button>
+                                    <a href="/Produtos/Produtos/@i.IdProduto" class="btn btn-outline-dark w-50">Compra novamente</a>
                                 </div>
                             </div>
                             <div class="modal fade" id="@i.IdProduto" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

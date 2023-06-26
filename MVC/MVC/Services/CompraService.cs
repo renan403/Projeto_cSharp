@@ -10,7 +10,7 @@ namespace MVC.Services
 
         public async Task AddItemUnico(string userId, ModelProduto prod)
         {
-            string url = $"{_url}Purchase/PickUpProduct/{userId}";
+            string url = $"{_url}Purchase/AddOneItem/{userId}";
                 HttpClient client = new();
             MultipartFormDataContent content = new()
             {
@@ -27,16 +27,19 @@ namespace MVC.Services
                 {new StringContent(prod.NomeVendedor ?? ""),"NomeVendedor"},
                 {new StringContent(prod.Path ?? ""),"Path"},
                 {new StringContent(prod.PrecoProd.ToString() ?? ""),"PrecoProd"},
+                {new StringContent(prod.PrecoProdStr ?? ""),"PrecoProdStr"},
                 {new StringContent(prod.Qtd.ToString() ?? ""),"Qtd"},
+                {new StringContent(prod.QtdPorProd.ToString() ?? ""),"QtdPorProd"},
                 {new StringContent(prod.UrlImg ?? ""),"UrlImg"},
                 {new StringContent(prod.ValorTotal.ToString() ?? ""),"ValorTotal"},
+                {new StringContent(prod.ValorTotalStr ?? ""),"ValorTotalStr"},
             };
             await client.PostAsync(url, content);
         }
 
         public async Task AlterarItemUnico(string userId, string qtd)
         {
-            string url = $"{_url}Purchase/AddOneItem/{userId}";
+            string url = $"{_url}Purchase/ChangeSingleItem/{userId}";
                 HttpClient client = new();
             MultipartFormDataContent content = new()
             {

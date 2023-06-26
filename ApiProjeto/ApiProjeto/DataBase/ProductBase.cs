@@ -94,9 +94,11 @@ namespace ApiMvc.Database
                 objt.Data = model.Data ?? objt.Data;
                 objt.DescriProd = model.DescriProd ?? objt.DescriProd;
                 objt.ValorTotal = model.ValorTotal ?? objt.ValorTotal;
+                objt.ValorTotalStr = model.ValorTotalStr ?? objt.ValorTotalStr;
                 objt.Cancelado = model.Cancelado ?? objt.Cancelado;
                 objt.MarcaProd = model.MarcaProd ?? objt.MarcaProd;
                 objt.PrecoProd = model.PrecoProd ?? objt.PrecoProd;
+                objt.PrecoProdStr = model.PrecoProdStr ?? objt.PrecoProdStr;
                 objt.Qtd = model.Qtd ?? objt.Qtd;
                 objt.UrlImg = model.UrlImg ?? objt.UrlImg;
                 objt.NomeProd = model.NomeProd ?? objt.NomeProd;

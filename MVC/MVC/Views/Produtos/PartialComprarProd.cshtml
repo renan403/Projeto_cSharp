@@ -1,0 +1,191 @@
+﻿
+@{
+    int con = 1;
+    string qtd = string.Empty;
+    string valor = string.Empty;
+    string inputHiddenQuantidade = string.Empty;
+}
+
+
+@foreach (var produto in ViewBag.Carrinho)
+{
+    qtd = "qtd" + con;
+    valor = "Valor" + con;
+    inputHiddenQuantidade = "inputHiddenQuantidade" + con;
+    ViewBag.Title = $"Comprar {@produto[0].NomeProd}";
+    <div class="d-flex justify-content-between align-items-center" id="bloco">
+        <div class="col-md-4">
+            <a href="~/Produtos/Produtos/@produto[0].IdProduto">
+                <div class="card " style="width:auto;max-width:260px">
+                    <img src="@produto[0].UrlImg" class="img-fluid border" style="border-radius:5px;min-height:200px;max-height:201px;" alt="img" />
+                </div>
+            </a>
+        </div>
+        <div class="col" style="min-height:150px;max-height:151px;">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 style="margin-left:2%"><a href="~/Produtos/Produtos/@produto[0].IdProduto" class="text-decoration-none">@produto[0].NomeProd</a></h5>
+                <span id="@valor" hidden>@produto[0].PrecoProd</span>
+                <h5 style="margin-right:2%">R$ @produto[0].PrecoProdStr</h5>
+            </div>
+            <span style="margin-left:2%">Vendido por : @produto[0].NomeVendedor </span><br />
+            <div class="d-flex">
+                <span style="margin-left:2%">Qtd:</span>
+                <select onchange="attQuantidade('@produto[0].IdProduto','@qtd')" id="@qtd" class="bg-white btn-sm" style="width:40px;margin-right:2%;margin-left:0.5%;border-radius:5px" aria-label="Default select example">
+                    @if (produto[0].Qtd > 5)
+                    {
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    }
+                    else if (produto[0].Qtd == 0)
+                    {
+                        <option selected value="0">Indisponivel</option>
+
+                    }
+                    else
+                    {
+                        @for (int i = 1; i <= produto[0].Qtd; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    }
+                </select>
+         
+                <div class="vr"></div>
+                @Html.ActionLink("Excluir","AlterarCompraProd","Produtos",new{Excluir = $"{produto[2]}", quantia = 6},new {@class="text-decoration-none",@style="margin-left:2%"})
+                <a href="#" class="text-decoration-none" style="margin-left:2%"> </a>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <script type="text/javascript">
+
+        var selectElement = document.querySelector("#@qtd");
+        var num = @produto[1]
+            selectElement.value = num;
+        console.log("bloco");
+
+    </script>
+    con++;
+}
+   
+<div class="semBorda">
+
+
+    
+
+            <div class="justify-content-between d-flex">
+
+                <div class="d-flex justify-content-end align-items-end">
+                    <div class="btn-group justify-content-end">
+                        <form>
+                            @if (ViewBag.Cartao != null)
+                            {
+                                @if (ViewBag.RNCUC[0] == "Cadastre")
+                                {
+                                    <span class="d-inline-block" tabindex="0" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-trigger="hover focus" data-bs-content="Necessario um endereço para prosseguir">
+                                        <button class="btn btn-sm btn-outline-dark" disabled>Finalizar pedido</button>
+                                    </span>
+                                }
+                                else
+                                {
+                                    @if (@Model.Qtd < 1)
+                                    {
+                                        <span class="d-inline-block" tabindex="0" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-trigger="hover focus" data-bs-content="Carrinho está vazio">
+                                            <button class="btn btn-sm btn-outline-dark" disabled>Finalizar pedido</button>
+                                        </span>
+
+                                    }
+                                    else
+                                    {
+                                        @Html.ActionLink("Finalizar pedido","redirectFinalVenda","Produtos",null, new {@class="btn btn-sm btn-outline-dark",@value="finalizar"})
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                <span class="d-inline-block" tabindex="0" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-trigger="hover focus" data-bs-content="Necessario um cartão para prosseguir">
+                                    <button class="btn btn-sm btn-outline-dark" disabled>Finalizar pedido</button>
+                                </span>
+
+                            }
+                        </form>
+                    </div>
+                </div>
+                <p class="card-text" style="font-size:larger">Subtotal <span id="QtdTotal">( @Model.QtdPorProd itens ) :</span> <strong id="VTotal">@Model.ValorTotalStr</strong></p>
+
+            </div>
+                
+   
+</div>
+<script type="text/javascript">
+    window.onload = function () {
+        let quantBlocoCod = document.querySelectorAll("#bloco").length;
+        console.log("bloco");
+        for (var i = 1; i <= quantBlocoCod; i++) {
+            let num = document.querySelector("#inputHiddenQuantidade" + i)
+            var selectElement = document.querySelector("#qtd" + i);
+            selectElement.value = num.value;
+            
+        }
+        attValorTotal(quantBlocoCod);
+    }
+
+    const formatNumber = new Intl.NumberFormat('pt-BR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    });
+
+
+    function attQuantidade(idprod, selectVar) {
+
+        let selectResp = document.getElementById(selectVar);
+
+        let quantidade = selectResp.options[selectResp.selectedIndex].value;
+        
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("PartialComprarProd")?id=' + idprod + '&quantidade=' + quantidade
+        })
+        //Pegar quantia para atualizar a quantia total
+        let quantBlocoCod = document.querySelectorAll("#bloco").length
+        attValorTotal(quantBlocoCod)
+    }
+    function attValorTotal(quant = 0) {
+   
+        var acumulador = 0;
+        var acumuladorQuantidade = 0;
+        
+        for (var i = 1; i <= parseInt(quant); i++) {
+            console.log("teste");
+            let divValor = "#Valor" + i;
+            let qtdVal = "qtd" + i;
+            console.log(divValor);
+            //Pegar valor total do produto, Produto x quantidade
+            let valor = document.querySelector(divValor).innerHTML;
+            
+            //Pegar a quantidade para que possa recalcular no outro metodo
+            let select = document.getElementById(qtdVal);
+           
+            console.log(qtdVal);
+            let quantidade = select.options[select.selectedIndex].value;
+            
+            //Acumulando para recalcular e dando replace para corrigir erro
+            let Rep = valor.replace(".", "");
+            
+            acumulador += parseFloat(Rep.replace(",", ".")) * quantidade;
+           
+            acumuladorQuantidade += parseInt(quantidade);
+           
+        }
+
+        //Resultado final
+        console.log(formatNumber.format(acumulador));
+        document.querySelector("#VTotal").innerHTML = formatNumber.format(acumulador);
+        document.querySelector("#QtdTotal").innerHTML = "( " + acumuladorQuantidade + " itens ) :";
+       
+
+    }
+
+</script>

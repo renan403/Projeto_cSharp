@@ -1,7 +1,7 @@
 ﻿@model ModelNotaFiscal
 @{
     Layout = "LayoutNota";
-    
+    ViewBag.Title ="Recibo";
 }
 
 <div class="Box">
@@ -35,15 +35,15 @@
               <td scope="row">
             
                   <ul class="list-unstyled ">
-                      <li><small>@item.Qtd unidade(s) de:&nbsp;<span class="text-capitalize">@item.NomeProd</span></small></li>
+                      <li><small>@item.QtdPorProd unidade(s) de:&nbsp;<span class="text-capitalize">@item.NomeProd</span></small></li>
                       <li> <small>Vendido por:&nbsp;<span class="text-capitalize">@item.NomeVendedor </span> <a class="text-decoration-none">(perfil do vendedor)</a></small></li>   
                   </ul>                        
               </td>
               <td  style="text-align:right;">
                   <ul class="list-unstyled ">
-                   
-                      <li>R$ @item.PrecoProd</li>    
-                  </ul>                
+
+                                    <li>R$ @item.ValorTotalStrPorProd</li>
+                                </ul>                
               </td>  
             </tr>
         }
@@ -97,13 +97,13 @@
           </td>
           <td style="text-align:right;">
             <p>
-            
-             <small>Subtotal do(s) item(ns): @Model.Produto[0].ValorTotal</small> <br />                
-            <small>Frete e manuseio:R$ 0</small><br />
+
+                                <small>Subtotal do(s) item(ns): @Model.Produto[0].ValorTotalStr</small> <br />
+                                <small>Frete e manuseio:R$ 0</small><br />
             <small>-----</small><br />
             <small>Total:R$@Model.Produto[0].ValorTotal</small><br />
             <small>-----</small><br />
-            <small><strong>Total geral:R$@Model.Produto[0].ValorTotal</strong></small>
+                                <small><strong>Total geral:R$@Model.Produto[0].ValorTotalStr</strong></small>
             </p>            
           </td>     
         </tr>     
@@ -115,8 +115,8 @@
           <tbody>
             <tr>
               <th scope="row">Transações</th>
-              <td style="text-align:right;">(Crédito) @Model.Cartao.Bandeira terminando em @Model.Cartao.QuatroDigCard: @Model.Produto[0].Data: R$ @Model.Produto[0].ValorTotal</td>     
-            </tr>
+                        <td style="text-align:right;">(Crédito) @Model.Cartao.Bandeira terminando em @Model.Cartao.QuatroDigCard: @Model.Produto[0].Data: R$ @Model.Produto[0].ValorTotalStr</td>
+                    </tr>
             <tr>  
           </tbody>
         </table>

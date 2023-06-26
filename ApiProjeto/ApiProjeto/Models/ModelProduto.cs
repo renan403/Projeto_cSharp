@@ -8,6 +8,7 @@
         public string? ModeloProd { get; set; }
         public string? DescriProd { get; set; }
         public float? PrecoProd { get; set; }
+        public string? PrecoProdStr { get; set; }
         public string? Categoria { get; set; }
         public IFormFile? File { get; set; }
         public string? UrlImg { get; set; }
@@ -16,6 +17,8 @@
 
         //funçao especifica
         public float? ValorTotal { get; set; }
+        public string? ValorTotalStr { get; set; }
+        public string? ValorTotalStrPorProd { get; set; }
         public int? Qtd { get; set; }
         public int? QtdPorProd { get; set; }
         public string? ErroProd { get; set; }

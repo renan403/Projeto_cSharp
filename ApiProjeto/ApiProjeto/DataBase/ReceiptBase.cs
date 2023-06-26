@@ -24,7 +24,8 @@ namespace ApiMvc.Database
                 notaFiscal.Produto[i].Recebido = false;
                 total += notaFiscal.Produto[i].ValorTotal;
             }
-            notaFiscal.Produto[0].ValorTotal = (float?)Math.Round((decimal)total, 2);
+            
+            notaFiscal.Produto[0].ValorTotal = (float?)Convert.ToDouble((total).ToString());
             notaFiscal.Registro = DateTime.Now;
             string numPedido = $"{ gera.AleatoriosComprarProd() }-{ gera.AleatoriosComprarProd()}";
             var key = await GetUserKey(userId);

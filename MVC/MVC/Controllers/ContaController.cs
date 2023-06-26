@@ -1,5 +1,6 @@
 ﻿using Firebase.Auth;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using MVC.Funcoes;
 using MVC.Models;
 using MVC.Repository;
@@ -141,6 +142,11 @@ namespace MVC.Controllers
 
 
         }
+        [HttpPost]
+        public async void AlterarQuantidadeCarrinho(string id, string quantidade)
+        {
+            await _carrinho.AlterarQtdCarrinho(HttpContext.Session.GetString("IdUsuario"), id, Convert.ToInt32(quantidade));
+        }
 
         public IActionResult AcessoSeg()
         {
@@ -272,13 +278,13 @@ namespace MVC.Controllers
 
 
 
-            List<ModelProduto> prod = new();
+            //List<ModelProduto> prod = new();
          
             var Produtos = await _carrinho.RetornaCarrinho(HttpContext.Session.GetString("IdUsuario"));
          
             var final = await _produto.FinalizarCompra(Produtos);
             ViewBag.Carrinho = final.ProdutosEqtd;
-            model.ValorTotal = final.ValorTotal;
+            model.ValorTotal = Convert.ToDouble(((decimal)final.ValorTotal).ToString("N2"));
             model.Qtd = final.QuantiaTotal;
 
             if (cardTrocar == null)
@@ -291,32 +297,66 @@ namespace MVC.Controllers
             }
 
             ViewBag.ArrayCartoes = await _cartao.ReturnCard(HttpContext.Session.GetString("IdUsuario"));
-            if (!string.IsNullOrEmpty(finalizar))
-            {
-                var notaFiscal = new ModelNotaFiscal
-                {
-                    Cartao = ViewBag.Cartao,
-                    Endereco = await _endereco.RetornarEndPadrao(HttpContext.Session.GetString("IdUsuario")),
-                    Produto = final.Prod
-                };
+            //if (!string.IsNullOrEmpty(finalizar))
+            //{
+            //    var notaFiscal = new ModelNotaFiscal
+            //    {
+            //        Cartao = ViewBag.Cartao,
+            //        Endereco = await _endereco.RetornarEndPadrao(HttpContext.Session.GetString("IdUsuario")),
+            //        Produto = final.Prod
+            //    };
 
 
-                await _notaFiscal.GerarNotaFiscal(HttpContext.Session.GetString("IdUsuario"), notaFiscal);
-                for (int i = 0; i < prod.Count; i++)
-                {
+            //    await _notaFiscal.GerarNotaFiscal(HttpContext.Session.GetString("IdUsuario"), notaFiscal);
+            //    for (int i = 0; i < prod.Count; i++)
+            //    {
 
-                    var produtoRt = await _produto.RetornaProdutoPorID(prod[i].IdProduto);
-                    prod[i].Qtd = produtoRt.Qtd - prod[i].Qtd;
-                    prod[i].Data = null;
-                    prod[i].Cancelado = null;
-                    prod[i].ValorTotal = null;
-                    await _produto.AlterarProduto(HttpContext.Session.GetString("IdUsuario"), null, HttpContext.Session.GetString("SessaoEmail"), HttpContext.Session.GetString("Senha"), prod[i]);
-                }
-                await _carrinho.DeletarCarrinho(HttpContext.Session.GetString("IdUsuario"));
-                return RedirectToAction("FinalizarPedido", "Conta", new { endereco = ViewBag.RNCUC });
-            }
+            //        var produtoRt = await _produto.RetornaProdutoPorID(prod[i].IdProduto);
+            //        prod[i].Qtd = produtoRt.Qtd - prod[i].Qtd;
+            //        prod[i].Data = null;
+            //        prod[i].Cancelado = null;
+            //        prod[i].ValorTotal = null;
+            //        await _produto.AlterarProduto(HttpContext.Session.GetString("IdUsuario"), null, HttpContext.Session.GetString("SessaoEmail"), HttpContext.Session.GetString("Senha"), prod[i]);
+            //    }
+            //    await _carrinho.DeletarCarrinho(HttpContext.Session.GetString("IdUsuario"));
+            //    return RedirectToAction("FinalizarPedido", "Conta", new { endereco = ViewBag.RNCUC });
+            //}
 
             return View(model);
+        }
+        public async Task<ActionResult> redirectFinalVenda()
+        {
+            var Produtos = await _carrinho.RetornaCarrinho(HttpContext.Session.GetString("IdUsuario"));
+            var final = await _produto.FinalizarCompra(Produtos);
+            final.ValorTotal = Convert.ToDouble(((decimal)final.ValorTotal).ToString("N2"));
+            foreach(var i in final.Prod)
+            {
+               // i.ValorTotalStr = ((decimal)final.ValorTotal).ToString("N2");
+                i.ValorTotalStrPorProd = ((decimal)(i.QtdPorProd * i.PrecoProd)).ToString("N2");
+            }
+            var notaFiscal = new ModelNotaFiscal
+            {
+                Cartao = await _cartao.Cartao(HttpContext.Session.GetString("IdUsuario"), HttpContext.Session.GetString("cartao")),
+                Endereco = await _endereco.RetornarEndPadrao(HttpContext.Session.GetString("IdUsuario")),
+                Produto = final.Prod
+            };
+            await _notaFiscal.GerarNotaFiscal(HttpContext.Session.GetString("IdUsuario"), notaFiscal);
+
+            foreach(var i in Produtos)
+            {
+                var produtoRt = await _produto.RetornaProdutoPorID(i.Value.IdProduto);
+                i.Value.Qtd = produtoRt.Qtd - i.Value.QtdPorProd;
+                i.Value.Cancelado = null; 
+                await _produto.AlterarProduto(HttpContext.Session.GetString("IdUsuario"), null, HttpContext.Session.GetString("SessaoEmail"), HttpContext.Session.GetString("Senha"), i.Value);
+            }
+            
+
+           
+
+            await _carrinho.DeletarCarrinho(HttpContext.Session.GetString("IdUsuario"));
+            ViewBag.RNCUC = _IGeral.RetornoRNCUC(HttpContext.Session.GetString("Endereço") ?? "");
+            return RedirectToAction("FinalizarPedido", "Conta", new { endereco = ViewBag.RNCUC });
+
         }
         [HttpGet("Conta/FinalizarCompra/{Excluir}")]
         public async Task<IActionResult> ExcluirCarrinho(string excluir, int quantia)
@@ -348,12 +388,12 @@ namespace MVC.Controllers
             
             ModelEndereco model = new()
             {
-                Endereco = endereco[0],
-                Numero = Convert.ToInt32(endereco[1]),
-                Cidade = endereco[2],
-                UF = endereco[3],
-                Cep = endereco[4],
-                Nome = endereco[5]
+                Endereco = ViewBag.RNCUC[0],
+                Numero = Convert.ToInt32(ViewBag.RNCUC[1]),
+                Cidade = ViewBag.RNCUC[2],
+                UF = ViewBag.RNCUC[3],
+                Cep = ViewBag.RNCUC[4],
+                Nome = ViewBag.RNCUC[5]
             };
             return View(model);
         }
@@ -421,10 +461,11 @@ namespace MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> VendaNoApp(ModelProduto p)
         {
-
+            
             var idUser = HttpContext.Session.GetString("IdUsuario") ?? "";
             if (idUser != "")
             {
+                
                 var retorno = await _produto.VendaNoApp(idUser, HttpContext.Session.GetString("SessaoEmail"), HttpContext.Session.GetString("Senha"), p);
                 return RedirectToAction("SuaConta", "Conta");
             }

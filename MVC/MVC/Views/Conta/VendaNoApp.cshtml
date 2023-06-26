@@ -1,7 +1,7 @@
 ﻿@model ModelProduto
 @{
     ViewBag.Title = "Venda no app";
-    List<string> categorias = new List<string>{"Computadores e informática", "Eletrônicos, TV e Áudio","Games e Consoles","Galáxia"};
+    List<string> categorias = new List<string> { "Computadores e informática", "Eletrônicos, TV e Áudio", "Games e Consoles", "Outros" };
 }
 
 @Html.AntiForgeryToken()
@@ -33,7 +33,7 @@
         <div class="row g-3">
 
             <div class="col-md-9 col-lg-12">
-                <h4 class="mb-3">Seu produto</h4>
+                <h4 class="mb-3">Seu produto</h4>              
                 <form enctype="multipart/form-data" method="post">
                     <div class="row g-3">
 

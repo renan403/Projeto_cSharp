@@ -8,17 +8,17 @@
 {
 
     <div class="container">
-        <div class="d-flex flex-sm-wrap justify-content-center">
-            <div class="boxProduto  border border-light bordaPoucoRedonda">
+        <div class="d-flex flex-wrap justify-content-center ">
+            <div class="boxProduto border border-light bd-rd5p">
                 <div class="card bg-transparent border-none" style="height:256px">
                     <div class="card border-none bg-transparent d-flex justify-content-center">
-                        <img id="imagemGrande" class="tamanhoPadrao" src="@Model.UrlImg" title="@Model.NomeProd" alt="@Model.NomeProd">
+                        <img id="imagemGrande " class="tamanhoPadrao" src="@Model.UrlImg" title="@Model.NomeProd" alt="@Model.NomeProd">
                     </div>
                 </div>
             </div>
             <div class="boxProduto">
                 <div class="card shadow-sm " style="height:256px">
-                    <div width="100%">
+                    <div width="99%">
                         <div class="card-body" style="height:155px">
                             <div style="width:100%;">
                                 <h5 class="card-text ">
@@ -32,7 +32,7 @@
                             <hr />
                             <div class="align-content-end">
                                 <span>
-                                    Preço: <span style="font-size:medium;color:black"><strong>  @Model.PrecoProd  </strong></span>
+                                    Preço: <span style="font-size:medium;color:black"><strong>  @Model.PrecoProdStr  </strong></span>
                                 </span>
                             </div>
 
@@ -95,7 +95,7 @@
                     <div class="card shadow-sm" style="height:256px">
                         <div class="card-body ">
                             R$ <span style="font-size:large" class="card-text ">
-                                <strong> @Model.PrecoProd </strong>
+                                <strong> @Model.PrecoProdStr </strong>
                             </span>
                             <br />
 
@@ -172,44 +172,50 @@
             </div>
         </div>
 
+        <div class="d-flex flex-wrap justify-content-center ">
+        <div class=" boxProdutoDetalhe mt-2 m-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Decrição detalhada</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered table-striped-columns">
+                        <tbody>
+                            <tr>
+                                <th scope="row">Fabricante</th>
+                                <td>@Model.Fabricante</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Número de unidades</th>
+                                <td>1</td>
 
+                            </tr>
+                            <tr>
+                                <th scope="row">Marca</th>
+                                <td colspan="2">@Model.MarcaProd</td>
 
-        <div class="card mt-1">
-            <div class="card-header">
-                <h5>Decrição detalhada</h5>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div class="card-body">
-                <table class="table table-bordered table-striped-columns">
-                    <tbody>
-                        <tr>
-                            <th scope="row">Fabricante</th>
-                            <td>@Model.Fabricante</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Número de unidades</th>
-                            <td>1</td>
-
-                        </tr>
-                        <tr>
-                            <th scope="row">Marca</th>
-                            <td colspan="2">@Model.MarcaProd</td>
-
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                    
         </div>
 
-        <div class="card mt-2">
-            <div class="card-header">
-                <h5>Decrição do produto</h5>
-            </div>
-            <div class="card-body">
-                <p class="card-text">Descrição: @Model.DescriProd</p>
 
-            </div>
-        </div>
+        <div class="boxProdutoDetalhe  mt-2 m-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Decrição do produto</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Descrição: @Model.DescriProd</p>
 
+                </div>
+            </div>
+         </div>
+
+    </div>
     </div>
 
     <!-- Modal -->
@@ -242,9 +248,6 @@
 
                     <h5>Bebidas Alcoólicas</h5>
                     <p>Bebidas alcoólicas podem ser devolvidas no prazo de até sete dias após o recebimento do pedido, desde que o lacre original do fabricante não tenha sido removido.</p>
-
-                    <h5>Galáxias</h5>
-                    <p>Galáxias podem ser devolvidas no prazo de até 1 ano luz após o recebimento do pedido, desde que a realidade original do fabricante não tenha sido alterada.</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Sair</button>

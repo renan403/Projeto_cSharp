@@ -21,11 +21,12 @@ namespace MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Home()
         {
-            // return RedirectToAction("teste");
-
-
+            //return RedirectToAction("teste");
+ 
             try
             {
+                ViewBag.nomeUser = _IGeral.RetornaNomeNull(HttpContext.Session.GetString("nomeFormatado") ?? "");
+                ViewBag.RNCUC = _IGeral.RetornoRNCUC(HttpContext.Session.GetString("Endereço") ?? "");
                 client = new()
                 {
                     BaseAddress = new Uri(_iconfig.GetValue<string>("UrlApi"))
@@ -37,8 +38,7 @@ namespace MVC.Controllers
                     ViewBag.Produtos = await response.Content.ReadFromJsonAsync<Dictionary<string, ModelProduto>>();
                 }
               
-                    ViewBag.nomeUser = _IGeral.RetornaNomeNull(HttpContext.Session.GetString("nomeFormatado") ?? "");
-                    ViewBag.RNCUC = _IGeral.RetornoRNCUC(HttpContext.Session.GetString("Endereço") ?? "");
+                  
                 
             }
             catch (Exception)

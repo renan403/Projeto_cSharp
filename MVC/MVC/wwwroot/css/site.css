@@ -10,6 +10,13 @@
     animation: btnteste 5s infinite linear;
 }
 
+
+
+
+
+
+
+
 @keyframes btnteste {
     0% {
         border: solid 2px blue;
@@ -76,12 +83,12 @@ body {
         border: solid 1px var(--color--blue)
     }
 .borda-preta-azul {
-    border: solid 1px var(--color--blue);
+    border: solid 1px var(--color--black);
     transition: border 1s
 }
 
     .borda-preta-azul:hover {
-        border: solid 1px var(--color--black)
+        border: solid 1px var(--color--blue)
     }
 .text-lightblue{
     color: lightblue;
@@ -189,14 +196,29 @@ body {
     display: none;
 }
 .boxProduto{
- width:427px;
- margin:3px
+ width:33%;
+ margin:0.5px;
+ 
+}
+.boxProdutoDetalhe{
+    width: 99%;
+    margin: 0.5px;
 }
 .img-produto{
     max-width:400px
 }
 
+.w99{
+    width : 99.5%;
+    margin:auto
+}
+
 @media (max-width:1000px) {
+
+    .boxProdutoDetalhe {
+        width: 90%;
+        margin: 0.5px;
+    }
     .nav > .BarPesq {
         display: grid;
         place-items: center;
@@ -204,30 +226,40 @@ body {
         width: 26%;
     }
     .boxProduto {
-        width: 550px;
-        margin: 3px
+        width: 90%;
+        margin: 5px;
+        
+    }
+    #imagemGrande{
+        height:255px
     }
 }
 
 @media (max-width:800px) {
+    .wrap {
+        flex-wrap: wrap
+    }
     .nav > .BarPesq {
         display: grid;
         place-items: center;
         margin: 0 0 0 10%;
-        width: 25%;
+        width: 22%;
     }
     .d-flex-block {
         display: block;
     }
     .boxProduto {
-        width: 500px;
+        width: 90%;
         margin: 3px
     }
 }
 
-@media (max-width:700px) {
+@media (max-width:760px) {
+    .wrap {
+        flex-wrap: wrap
+    }
     .boxProduto {
-        width: 520px;
+        width: 90%;
         margin: 3px
     }
     .d-flex-block {
@@ -467,8 +499,8 @@ footer.fixar-rodape {
 }
 
 .tamanhoPadrao {
-    min-height: 250px;
-    max-height: 300px;
+    min-height: 254px;
+    max-height: 298px;
     border-radius: 5px;
 }
 
@@ -496,7 +528,8 @@ fontsmall {
 }
 
 .alinhacentro {
-    z-index: 1;
+    text-align:center;
+
 }
 
 .text-overflow {
@@ -866,13 +899,15 @@ fontsmall {
 }
 
 .boxEnderecoFinalizarCompra {
-    border: 1px solid orange;
+    max-width:350px;
     background-color: rgb(254,248,242);
     border-radius: 5px;
 }
 
 
-
+.bd-rd5p{
+    border-radius : 5px;
+}
 
 
 .spanBotaoEnd {

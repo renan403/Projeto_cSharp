@@ -63,9 +63,12 @@ namespace MVC.Services
         {
             using (HttpClient client = new())
             {
+               
                 var Url = new Uri($"{_url}Product/AlterProd/{userId}");
                 var ch = Chave.GetKey();
-                MultipartFormDataContent multiContent = new()
+                try
+                {
+                    MultipartFormDataContent multiContent = new()
                 {
                     { new StringContent(userId), "IdUser" },
                     { new StringContent($"{Convert.ToBase64String(Seguranca.Cript.EncryptarStringParaByte(pwd, ch.Item1, ch.Item2, "#P>EET|MkkPa{oE0[Zcm"))}"), "Pwd" },
@@ -79,23 +82,32 @@ namespace MVC.Services
                     { new StringContent($"{p.Fabricante}"), "Fabricante" },
                     { new StringContent($"{p.NomeProd}"), "NomeProd" },
                     { new StringContent($"{p.PrecoProd}"), "PrecoProd" },
+                    { new StringContent($"{p.PrecoProdStr}"), "PrecoProdStr" },
                     { new StringContent($"{p.Qtd}"), "Qtd" }
                 };
-                if (p.File != null)
-                {
-                    if (img != null)
+                    if (p.File != null)
                     {
-                        byte[] file;
-                        using (var br = new BinaryReader(p.File.OpenReadStream()))
+                        if (img != null)
                         {
-                            file = br.ReadBytes((int)p.File.OpenReadStream().Length);
+                            byte[] file;
+                            using (var br = new BinaryReader(p.File.OpenReadStream()))
+                            {
+                                file = br.ReadBytes((int)p.File.OpenReadStream().Length);
+                            }
+                            multiContent.Add(new StringContent($"{img}"), "imgDel");
+                            multiContent.Add(new ByteArrayContent(file), "file", p.File.FileName);
                         }
-                        multiContent.Add(new StringContent($"{img}"), "imgDel");
-                        multiContent.Add(new ByteArrayContent(file), "file", p.File.FileName);
                     }
+
+                    return await client.PatchAsync(Url, multiContent);
                 }
+                catch (Exception e)
+                {
+
+                    throw;
+                }
+               
                 
-                return await client.PatchAsync(Url, multiContent);
             }
         }
         public async Task<HttpResponseMessage> VendaNoApp(string userId, string email, string pwd, ModelProduto p)
@@ -123,6 +135,7 @@ namespace MVC.Services
                     { new StringContent($"{p.Fabricante}"), "Fabricante" },
                     { new StringContent($"{p.NomeProd}"), "NomeProd" },
                     { new StringContent($"{p.PrecoProd}"), "PrecoProd" },
+                    { new StringContent($"{p.PrecoProdStr}"), "PrecoProdStr" },
                     { new StringContent($"{p.Qtd}"), "Qtd" }
                 };
 
@@ -136,10 +149,11 @@ namespace MVC.Services
             string[] separar2 = separar1[3].Split("?");
             return separar2[0];
         }
-
-        public async Task<Result> FinalizarCompra(Dictionary<string, ModelProduto> model)
+    
+            public async Task<Result> FinalizarCompra(Dictionary<string, ModelProduto> model)
         {
-            float? valorTotal = 0;
+            
+            double? valorTotalProd = 0;
             int? quantiaTotal = 0;
             List<dynamic> produtosEqtd = new();
 
@@ -147,9 +161,11 @@ namespace MVC.Services
             List<ModelProduto> prod = new();
             foreach (var idProduto in model)
             {
+                double?  valorTotal = 0;
                 var ID = idProduto.Value.IdProduto;
-                ModelProduto item = await RetornaProdutoPorID(ID) ?? new ModelProduto { };
+                ModelProduto item = await RetornaProdutoPorID(ID) ?? new ModelProduto { };         
                 valorTotal += item.PrecoProd * idProduto.Value.QtdPorProd;
+                valorTotalProd += item.PrecoProd * idProduto.Value.QtdPorProd;
                 quantiaTotal += idProduto.Value.QtdPorProd;
 
                 List<dynamic> unirLista = new()
@@ -162,19 +178,20 @@ namespace MVC.Services
 
                 // Implementar na model para gerar nota
 
-                item.Qtd = idProduto.Value.QtdPorProd;
-                item.ValorTotal = (float)Math.Round((decimal)((decimal)item.PrecoProd * idProduto.Value.QtdPorProd), 2);
+                item.QtdPorProd = idProduto.Value.QtdPorProd;
+                item.ValorTotal = Convert.ToDouble(((decimal)valorTotal).ToString("N2"));
                 item.Cancelado = false;
                 item.Data = DateTime.Now.ToString("dd/MM/yyyy");
                 prod.Add(item);
+           
             }
             Result rt = new()
             {
                 Prod = prod,
                 ProdutosEqtd = produtosEqtd,
                 QuantiaTotal = quantiaTotal,
-                ValorTotal = valorTotal,
-            };
+                ValorTotal = Convert.ToDouble(((decimal)valorTotalProd).ToString("N2"))
+        };
             return rt;
 
 
@@ -237,7 +254,7 @@ namespace MVC.Services
     public class Result
     {
         public List<dynamic>? ProdutosEqtd;
-        public float? ValorTotal;
+        public double? ValorTotal;
         public int? QuantiaTotal;
         public List<ModelProduto>? Prod;
     }

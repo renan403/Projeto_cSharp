@@ -5,7 +5,7 @@
     string qtd = string.Empty;
     string valor = string.Empty;
     string val = string.Empty;
-
+    string inputHiddenQuantidade = string.Empty;
 }
 
 
@@ -13,11 +13,10 @@
     <div class="container">
         @foreach (var produto in ViewBag.Carrinho)
         {
-
             qtd = "qtd" + con;
             valor = "Valor" + con;
             val = "val" + con;
-
+            inputHiddenQuantidade = "inputHiddenQuantidade" + con;
 
             <div class="p-1">
                 <div id="bloco" class="d-flex text-light justify-content-around bg-verdinho align-items-center border border-light">
@@ -34,8 +33,9 @@
                         </div>
                         <div class="m-2 d-flex flex-wrap">
                             <div class=" m-1 ">
+                                <input value="@produto[1]" id="@inputHiddenQuantidade" hidden />
                                 <label>Quantidade:</label>
-                                <select id="@qtd" onchange="attValor(@con)">
+                                <select id="@qtd" onchange="attValor(@con),attQuantidade('@produto[0].IdProduto','@qtd')">
                                     @if (produto[0].Qtd > 5)
                                     {
                                         @for (int i = 1; i <= 5; i++)
@@ -69,24 +69,7 @@
                     </div>
                 </div>
             </div>
-
-
-
-            <script type="text/javascript">
-
-
-                window.onload = function () {
-                    var selectElement = document.querySelector("#qtd1");
-                    var num = @produto[1];
-                    selectElement.value = num.toString();
-
-                    let quantBlocoCod = document.querySelectorAll("#bloco").length;
-
-                    for (var i = 1; i <= quantBlocoCod; i++) {
-                        attValor(i)
-                    }
-                    attValorTotal(quantBlocoCod);
-                }
+            <script type="text/javascript">               
                 const formatNumber = new Intl.NumberFormat('pt-BR', {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
@@ -112,17 +95,14 @@
                     //Pegar quantia para atualizar a quantia total
                     let quantBlocoCod = document.querySelectorAll("#bloco").length
                     attValorTotal(quantBlocoCod)
-
                 }
-
-
             </script>
             con += 1;
         }
         <hr class="hrNav" />
         <div class="text-light d-flex justify-content-between py-2 ">
             <div class="w-25 ms-1">
-                <button class=" btn btn-sm w-100 text-light borda-branca-azul">Comprar</button>
+                @Html.ActionLink("Comprar","FinalizarCompra","Conta",null, new {@class="btn btn-sm w-100 text-light borda-branca-azul"})
            </div>
            <div class="d-flex">
                 <h5>
@@ -142,6 +122,17 @@
 </form>
 
 <script>
+    window.onload = function () {
+        let quantBlocoCod = document.querySelectorAll("#bloco").length;
+        // for para atualizar informaçoes de cada bloco de produto
+        for (var i = 1; i <= quantBlocoCod; i++) {
+            let num = document.querySelector("#inputHiddenQuantidade"+i)  
+            var selectElement = document.querySelector("#qtd"+i);         
+            selectElement.value = num.value;
+            attValor(i)
+        }
+        attValorTotal(quantBlocoCod);
+    }
     function Excluir(prod) {
         $.ajax({
             type: 'GET',
@@ -155,10 +146,18 @@
                     attValor(i)
                 }
                 attValorTotal(quantBlocoCod);
-
             }
         })
     }
+    function attQuantidade(idprod, selectVar) {
+        
+        let selectResp = document.getElementById(selectVar);
+        let quantidade = selectResp.options[selectResp.selectedIndex].value;
+        $.ajax({
+            type : "POST",
+            url: '@Url.Action("AlterarQuantidadeCarrinho")?id=' + idprod + '&quantidade=' + quantidade
+        })
+    }  
     function attValorTotal(quant = 0) {
         var acumulador = 0;
         var acumuladorQuantidade = 0;
@@ -179,7 +178,6 @@
             acumulador += parseFloat(Rep.replace(",", "."));
             acumuladorQuantidade += parseInt(quantidade);
         }
-
         //Resultado final
         document.querySelector("#Total").innerHTML = formatNumber.format(acumulador);
         document.querySelector("#QtdTotal").innerHTML = "( " + acumuladorQuantidade + " ) :";

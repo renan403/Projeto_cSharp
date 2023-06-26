@@ -22,7 +22,8 @@ namespace ApiMvc.Database
             var key = await GetUserKey(userId);
             var item = await PegarItemUnico(key);
             item.ValorTotal = (float)Math.Round(((decimal)item.PrecoProd * qtd), 2); ;
-            item.Qtd = qtd;
+            item.ValorTotalStr = ((decimal)item.ValorTotal).ToString("N2"); ;
+            item.QtdPorProd = qtd;
             await AddItemUnico(userId, item);
         }
         public async Task<ModelProduto> PegarProduto(string userId)

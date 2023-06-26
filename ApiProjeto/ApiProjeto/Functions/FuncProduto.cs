@@ -30,6 +30,10 @@ namespace ApiMvc.Functions
                     try
                     {
                         var path = Path.Combine(_iweb.ContentRootPath, $"Img\\Temp\\{p.File.FileName}");
+                        if(!Directory.Exists(Path.Combine(Path.Combine(_iweb.ContentRootPath, $"Img\\Temp"))))
+                        {
+                            Directory.CreateDirectory(Path.Combine(_iweb.ContentRootPath, $"Img\\Temp"));
+                        }                    
                         using Stream stream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
                         p.File.CopyTo(stream);
 
