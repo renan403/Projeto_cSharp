@@ -17,7 +17,7 @@
                         <label for="floatingInput">Nome</label>
                     </div>
                     <div class="form-floating mb-3">
-                        @Html.TextBoxFor(m => m.Email, "", new {@id="floatingEmail",@class="form-control letraP", @TextMode="Email", @placeholder="Seu Email",@type="email", @Required ="Required",@oninvalid="setCustomValidity('Endereço de email inválido. Corrija e tente novamente.')",@oninput="setCustomValidity('')" })
+                        @Html.TextBoxFor(m => m.Email, "", new {@autocomplete = "off",@id="floatingEmail",@class="form-control letraP", @TextMode="Email", @placeholder="Seu Email",@type="email", @Required ="Required",@oninvalid="setCustomValidity('Endereço de email inválido. Corrija e tente novamente.')",@oninput="setCustomValidity('')" })
                         <label for="floatingEmail">Email</label>
                     </div>
 

@@ -33,7 +33,7 @@
                         <tr>
                             <td scope="row">
                                 <h6>@item.Value.Cartao.Bandeira ****@item.Value.Cartao.QuatroDigCard</h6>
-                                Número do pedido : <a href="#" class="text-decoration-none text-xl-start"> @item.Key</a>
+                                Número do pedido : @Html.ActionLink($"{@item.Key}","DetalhePedido","Conta",new{nota = @item.Key},new{@class="text-decoration-none"})
                             </td>
                             <td style="text-align:right;" scope="row"><h6>-R$ @item.Value.Produto[0].ValorTotal</h6></td>
                         </tr>

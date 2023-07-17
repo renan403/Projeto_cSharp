@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
-
+ 
 namespace MVC.Controllers
 {
     public class HomeController : Controller
@@ -21,8 +21,6 @@ namespace MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Home()
         {
-            //return RedirectToAction("teste");
- 
             try
             {
                 ViewBag.nomeUser = _IGeral.RetornaNomeNull(HttpContext.Session.GetString("nomeFormatado") ?? "");
@@ -33,46 +31,20 @@ namespace MVC.Controllers
                 };
                 HttpResponseMessage response = await client.GetAsync("Product/GetAll");
                 if (response.IsSuccessStatusCode)
-                {
-
-                    ViewBag.Produtos = await response.Content.ReadFromJsonAsync<Dictionary<string, ModelProduto>>();
-                }
-              
-                  
-                
+                { 
+                    ViewBag.Produtos = await response.Content.ReadFromJsonAsync<Dictionary<string, ModelProduto>>(); // se houver erro, o motivo é que está nulo e com erro
+                }                            
             }
             catch (Exception)
             {
-                ViewBag.Produtos = new Dictionary<string, ModelProduto>();
+                ViewBag.Produtos = new Dictionary<string, ModelProduto>();// caindo na exception inciado o produto para não dar erro no FOR da pagina
             }
             return View();
-        }
-        [HttpGet]
-        public PartialViewResult PartialTest(TestModel test)
-        {
-
-            return PartialView(test);
-        }
-        [HttpPost]
-        public PartialViewResult PartialTest2(TestModel test)
-        {
-
-            return PartialView(test);
-        }
-        [HttpGet]
-        public IActionResult teste()
-        {
-            var m = new TestModel() { Info = "1" };
-            return View(m);
-        }     
+        }        
         [HttpGet("/Home/Home/Sair")]
         public IActionResult HomeSair()
         {
-            HttpContext.Session.SetString("SessaoNome", "");
-            HttpContext.Session.SetString("Endereço", "");
-            HttpContext.Session.SetString("nomeFormatado", "");
-            HttpContext.Session.SetString("IdUsuario", "");
-            HttpContext.Session.SetString("Senha", "");
+            HttpContext.Session.Clear();
             return RedirectToAction("Home");
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -43,18 +43,13 @@ namespace MVC.Controllers
             if (prodId.Contains("Erro***"))
             {
                 var urlErro = prodId.IndexOf("***");
-
                 IdProduto = prodId[(urlErro + 3)..];
-
-
-
                 model = await _produto.RetornaProdutoPorID(IdProduto);
                 var quantia = prodId[0].ToString();
                 model.ErroProd = $"Máximo até 5 produtos iguais no carrinho, quantidade atual {quantia}.";
                 ViewBag.pagProduto = model;
                 TempData["prodId"] = IdProduto;
                 return View(model);
-
             }
             try
             {
@@ -62,60 +57,43 @@ namespace MVC.Controllers
             }
             catch (Exception)
             {
-
                 ViewBag.pagProduto = model = new ModelProduto();
             }
-
             TempData["prodId"] = IdProduto;
-
             return View(model);
         }
         [HttpGet]
         public PartialViewResult PartialProdutos()
         {
-
             return PartialView();
         }
 
         [HttpGet("/Produtos/PartialQuantidade/{prodId}")]
         public async Task<ActionResult> PartialQuantidade(string prodId)
         {
-
             var model = await _produto.RetornaProdutoPorID(prodId) ?? new ModelProduto()
             {
                 Qtd = 0
             };
-
             return PartialView(model);
         }
-
-
         [HttpPost]
         public async Task<IActionResult> Produtos(int select, string botao)
         {
-            var idP = TempData["prodId"] as string;
-            if (idP != null)
+            if (TempData["prodId"] is string idP)
             {
                 switch (botao)
                 {
                     case "addCar":
-
-
                         var jaPossuiNoCarrinho = await _carrinho.PossuiNoCarrinho(HttpContext.Session.GetString("IdUsuario"), idP);
                         if (jaPossuiNoCarrinho)
                         {
                             string resp = await _carrinho.AddQtdCarrinho(HttpContext.Session.GetString("IdUsuario"), idP, select);
                             if (resp == "sucesso")
-                            {
                                 return RedirectToAction("Carrinho", "Produtos");
-                            }
                             return RedirectToAction("Produtos", "Produtos", new { prodId = $"{resp}Erro***{idP}" });
                         }
-
-
-                        var result = await _carrinho.SalvarProdCarrinho(HttpContext.Session.GetString("IdUsuario"), idP, select);
-
-
+                        await _carrinho.SalvarProdCarrinho(HttpContext.Session.GetString("IdUsuario"), idP, select);
                         return RedirectToAction("Carrinho", "Produtos");
 
                     case "Comprar":
@@ -124,20 +102,15 @@ namespace MVC.Controllers
                         produto.Cancelado = false;
                         produto.Data = DateTime.Now.ToString("dd/MM/yyyy");
                         produto.ValorTotal = (float)Math.Round(((decimal)produto.PrecoProd * select), 2);
-                        //produto.ValorTotalStr = ((decimal)produto.ValorTotal).ToString("N2");
                         await _compra.AddItemUnico(HttpContext.Session.GetString("IdUsuario"), produto);
-
-                        return RedirectToAction("ComprarProd", "Produtos", new { produto = idP});
+                        return RedirectToAction("ComprarProd", "Produtos", new { produto = idP });
                 }
-
             }
             return RedirectToAction("Error", "Home");
-
         }
         [HttpGet("Produtos/ComprarProd/{produto}")]
         public async Task<IActionResult> ComprarProd(string produto, int quantia, string cardTrocar, string finalizar)
         {
-
             ViewBag.nomeUser = _IGeral.RetornaNomeNull(HttpContext.Session.GetString("nomeFormatado") ?? "");
             ViewBag.RNCUC = _IGeral.RetornoRNCUC(HttpContext.Session.GetString("Endereço") ?? "");
 
@@ -148,15 +121,12 @@ namespace MVC.Controllers
             f.Add("12", item);
             var final = await _produto.FinalizarCompra(f);
             final.ValorTotal = Convert.ToDouble(((decimal)final.ValorTotal).ToString("N2"));
-
-           
             List<dynamic> unirLista = new()
             {
                 item,
                 item.QtdPorProd,
                 item.IdProduto ?? ""
             };
-
             ProdutosEqtd.Add(unirLista);
             ViewBag.Carrinho = ProdutosEqtd;
             var model = new ModelProduto()
@@ -167,9 +137,6 @@ namespace MVC.Controllers
                 Qtd = item.Qtd,
                 QtdPorProd = item.QtdPorProd,
             };
-
-
-
             if (cardTrocar == null)
                 ViewBag.Cartao = await _cartao.Cartao(HttpContext.Session.GetString("IdUsuario"), HttpContext.Session.GetString("cartao"));
             else
@@ -186,12 +153,8 @@ namespace MVC.Controllers
                     Produto = prod
                 };
                 await _notaFiscal.GerarNotaFiscal(HttpContext.Session.GetString("IdUsuario"), notafiscal);
-
                 var produtoRt = await _produto.RetornaProdutoPorID(item.IdProduto);
                 prod[0].Qtd = produtoRt.Qtd - prod[0].QtdPorProd;
-                //prod[0].Cancelado = null;
-                //prod[0].ValorTotal = null;
-
                 await _produto.AlterarProduto(HttpContext.Session.GetString("IdUsuario"), null, HttpContext.Session.GetString("SessaoEmail"), HttpContext.Session.GetString("Senha"), prod[0]);
 
                 return RedirectToAction("FinalizarPedido", "Conta", new { endereco = ViewBag.RNCUC });
@@ -202,18 +165,16 @@ namespace MVC.Controllers
         public async Task<IActionResult> redirectFinalVenda()
         {
             ModelProduto? item = await _compra.PegarProduto(HttpContext.Session.GetString("IdUsuario"));
-           item.ValorTotalStrPorProd = ((decimal)item.PrecoProd).ToString("N2");
+            item.ValorTotalStrPorProd = ((decimal)item.PrecoProd).ToString("N2");
             List<ModelProduto> prod = new() {
                 item
             };
-            
             var notafiscal = new ModelNotaFiscal
             {
-                Cartao =  await _cartao.Cartao(HttpContext.Session.GetString("IdUsuario"), HttpContext.Session.GetString("cartao")),
+                Cartao = await _cartao.Cartao(HttpContext.Session.GetString("IdUsuario"), HttpContext.Session.GetString("cartao")),
                 Endereco = await _endereco.RetornarEndPadrao(HttpContext.Session.GetString("IdUsuario")),
                 Produto = prod
             };
-        
             var produtoRt = await _produto.RetornaProdutoPorID(item.IdProduto);
             item.Qtd = produtoRt.Qtd - item.QtdPorProd;
             item.Cancelado = null;
@@ -223,7 +184,7 @@ namespace MVC.Controllers
 
             return RedirectToAction("FinalizarPedido", "Conta", new { endereco = ViewBag.RNCUC });
         }
-        public async Task PartialComprarProd(string id,string quantidade)
+        public async Task PartialComprarProd(string id, string quantidade)
         {
             var idUser = HttpContext.Session.GetString("IdUsuario") ?? "";
             await _compra.AlterarItemUnico(idUser, quantidade);
@@ -251,8 +212,7 @@ namespace MVC.Controllers
             if (excluir.Contains("***"))
             {
                 string[] alterar = excluir.Split("--");
-                string idprod = "";
-                string quant = "";
+                string idprod, quant;
                 if (alterar[0] == "unico")
                 {
                     var splitExcluir = alterar[1].Split("***");
@@ -281,13 +241,8 @@ namespace MVC.Controllers
 
             var model = new ModelProduto();
             List<dynamic> ProdutosEqtd = new();
-
-
             float? valorTotal = 0;
             int? quantiaTotal = 0;
-            List<int?> qtdProdutos = new();
-
-            List<ModelProduto> prod = new();
             var Produtos = await _carrinho.RetornaCarrinho(HttpContext.Session.GetString("IdUsuario"));
             foreach (var idProduto in Produtos)
             {
@@ -301,7 +256,7 @@ namespace MVC.Controllers
                 List<dynamic> unirLista = new()
                 {
                     item,
-                    idProduto.Value.QtdPorProd,
+                    idProduto.Value.QtdPorProd ?? 0,
                     idProduto.Key
                 };
 
@@ -321,12 +276,10 @@ namespace MVC.Controllers
                 var splitExcluir = excluir.Split("***");
                 var idprod = splitExcluir[0];
                 var quant = splitExcluir[1];
-                var r = await _carrinho.AlterarQtdCarrinho(HttpContext.Session.GetString("IdUsuario"), idprod, int.Parse(quant));
+                await _carrinho.AlterarQtdCarrinho(HttpContext.Session.GetString("IdUsuario"), idprod, int.Parse(quant));
                 return RedirectToAction("Carrinho", "Produtos");
             }
-
             await _carrinho.DeleteProdCarrinho(HttpContext.Session.GetString("IdUsuario"), excluir);
-
             return RedirectToAction("Carrinho", "Produtos");
         }
 

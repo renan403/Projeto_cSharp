@@ -1,6 +1,7 @@
 ﻿@model ModelNotaFiscal
 @{
     ViewBag.Title = " Detalhes do Pedido";
+    var dia = DateTime.Now.AddDays(1).ToString("dd MMMM yyyy");
 }
 <div class="album py-5 body">
 
@@ -14,8 +15,8 @@
     </nav>
        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-1 g-3">
            <div class="col">
-              <div class=" boxEnderecoFinalizarCompra d-flex" style=" background-color:white">                             
-                  <div class="card " style="width:40rem;margin-bottom:auto;border:none">                                                                
+                <div class="bordaPoucoRedonda d-flex" style=" background-color:white">
+                    <div class="card " style="width:50rem;margin-bottom:auto;border:none">                                                                
                              @if (ViewBag.RNCUC[0] == "Cadastre")
                               {
                                   <div class="card-body" style="text-align:center">
@@ -163,7 +164,7 @@
                                                               <li class="mb-1"><h5>@Html.ActionLink($"{@i.NomeProd}","Produtos","Produtos", new{id = $"{@i.IdProduto}"}, new {@class="text-decoration-none text-capitalize link-laranja-cinza" })</h5></li>
                                                               <li class="mb-1">R$<span> @i.PrecoProd</span></li>
                                                               <li class="mb-3">Vendido por:<a class="text-decoration-none link-laranja-cinza text-capitalize" href="#"> @i.NomeVendedor</a></li>
-                                                              <li class="mb-1"><h6>Previsão de entrega [dia da semana]</h6></li>
+                                                                    <li class="mb-1"><h6>Previsão de entrega: @dia</h6></li>
                                                               <li class="mb-1">Elegível para devolução até [data por extenso]</li>                         
                                                         </ul> 
                                                     </div>                                       

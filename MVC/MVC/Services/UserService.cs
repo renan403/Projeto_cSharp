@@ -130,6 +130,13 @@ namespace MVC.Services
                         MessageErro = "Muitas falhas de login, para entrar imediatamente você pode trocar a senha ou pode tentar novamente mais tarde.",
                         SrcErro = "../icones/exclamation-triangle.svg"
                     },
+                    "UNAUTHENTICATED" => new Logar()
+                    {
+                        Resposta = "UNAUTHENTICATED",
+                        Erro = "Não Autenticado",
+                        MessageErro = "Não Autenticado, verifique seu email por favor.",
+                        SrcErro = "../icones/exclamation-triangle.svg"
+                    },
                     "EMAIL_NOT_FOUND" => new Logar()
                     {
                         Resposta = "EMAIL_NOT_FOUND",

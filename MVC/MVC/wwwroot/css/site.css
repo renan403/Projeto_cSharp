@@ -7,40 +7,29 @@
     border: solid 2px blue;
     border-radius: 5px;
     width: 100%;
-    animation: btnteste 5s infinite linear;
+    animation: BtnLogin 5s infinite linear;
 }
 
-
-
-
-
-
-
-
-@keyframes btnteste {
+@keyframes BtnLogin {
     0% {
-        border: solid 2px blue;
-        transition: width 2s,background-color 4s;
+        border: solid 1px blue;
+        transition: background-color 4s;      
     }
     25% {
-        border: solid 2px blue;
-        transition: width 2s,background-color 4s;
+        border: solid 1px blue;
+        background-color: rgba(0,0,255, 0.3);     
+        transition: background-color 4s;
     }
-    50% {
-       
-        width: 80%;
-        transition: width 2s,background-color 4s;
+    50% {              
+        transition: background-color 4s;
     }
     75% {
-        border: solid 2px var(--color--blue);
-        
+        border: solid 1px var(--color--blue);        
         transition: background-color 4s;
     }
     100% {
-        border: solid 2px blue;
-        
-        width: 100%;
-        transition: width 2s,background-color 4s;
+        border: solid 1px blue; 
+        transition: background-color 4s;
     }
     
 }

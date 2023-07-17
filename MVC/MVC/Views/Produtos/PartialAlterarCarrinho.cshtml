@@ -6,6 +6,7 @@
     string valor = string.Empty;
     string val = string.Empty;
     string inputHiddenQuantidade = string.Empty;
+    int lp = 0;
 }
 
 
@@ -13,6 +14,7 @@
     <div class="container">
         @foreach (var produto in ViewBag.Carrinho)
         {
+            lp++;
             qtd = "qtd" + con;
             valor = "Valor" + con;
             val = "val" + con;
@@ -99,24 +101,32 @@
             </script>
             con += 1;
         }
-        <hr class="hrNav" />
-        <div class="text-light d-flex justify-content-between py-2 ">
-            <div class="w-25 ms-1">
-                @Html.ActionLink("Comprar","FinalizarCompra","Conta",null, new {@class="btn btn-sm w-100 text-light borda-branca-azul"})
-           </div>
-           <div class="d-flex">
-                <h5>
-                    Subtotal &nbsp;
-                </h5>
-                <h5 id="QtdTotal">
-                </h5>
-                <h5>
-                    &nbsp; R$ <span id="Total"></span>
-                </h5>
-           </div>
-            
-        </div>
-        
+       
+        @if(lp > 0)
+        {
+            <hr class="hrNav" />
+            <div class="text-light d-flex justify-content-between py-2 ">
+                <div class="w-25 ms-1">
+                    @Html.ActionLink("Comprar","FinalizarCompra","Conta",null, new {@class="btn btn-sm w-100 text-light borda-branca-azul"})
+                </div>
+                <div class="d-flex">
+                    <h5>
+                        Subtotal &nbsp;
+                    </h5>
+                    <h5 id="QtdTotal">
+                    </h5>
+                    <h5>
+                        &nbsp; R$ <span id="Total"></span>
+                    </h5>
+                </div>
+
+            </div>
+        }
+        else
+        {
+            <h3 class="text-white text-center mt-3">Carrinho vazio!!</h3>
+        }
+
     </div>
    
 </form>
